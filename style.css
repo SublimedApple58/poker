@@ -14,8 +14,8 @@ body{
 }
 
 .tavolo{
-    width: 900px;
-    height: 500px;
+    width: 1000px;
+    height: 550px;
     border: 3px solid yellow;
     border-radius: 30%;
     display: flex;
