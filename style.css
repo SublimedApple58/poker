@@ -40,12 +40,26 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 30px;
 }
 
 .card{
-    background: red;
+    background: rgb(193, 22, 22);
     border: 2px solid white;
     height: 100px;
     width: 60px;
+    border-radius: 7px;
+    transition: all .2s ease-out;
+}
+
+
+.card:hover{
+    height: calc(100px + 10%);
+    width: calc(60px + 5%);
+}
+
+@keyframes rotazione {
+    0%{}
+    50%{}
+    100%{}
 }
