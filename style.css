@@ -56,10 +56,21 @@ body{
 .card:hover{
     height: calc(100px + 10%);
     width: calc(60px + 5%);
+    animation-name: rotazione;
+    animation-duration: 1s;
+    animation-delay: .2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
 }
 
 @keyframes rotazione {
-    0%{}
-    50%{}
-    100%{}
+    from {
+        width: calc(60px + 5%);
+    }
+    50%{
+        width: 0;
+    }
+    to{
+        width: calc(60px + 5%)
+    }
 }
