@@ -3,22 +3,49 @@
     margin: 0;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: white;
+    box-sizing: border-box;
 }
 
 body{
     background: #0d220d;
+    height: 100vh;
+}
+
+.contenitore{
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .tavolo{
     width: 1000px;
     height: 550px;
-    border: 3px solid yellow;
+    border: 15px solid rgb(89, 59, 3);
     border-radius: 30%;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: #265f2a;
+    -webkit-box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85); 
+    box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85);
+}
+
+.rows{
+    width: 85%;
+    height: 85%;
+    border: 1px solid white;
+    border-radius:25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.card{
+    background: red;
+    border: 2px solid white;
+    height: 100px;
+    width: 60px;
 }
