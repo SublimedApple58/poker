@@ -80,7 +80,7 @@ body{
 
 .card:hover .figura{
     animation: rotazione 1s ease-out .2s
-     1 normal forwards;
+     2 normal forwards;
 }
 
 
