@@ -44,33 +44,66 @@ body{
 }
 
 .card{
-    background: rgb(193, 22, 22);
-    border: 2px solid white;
     height: 100px;
     width: 60px;
     border-radius: 7px;
     transition: all .2s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.figura{
+    background: rgb(193, 22, 22);
+    height: 100%;
+    width: 100%;
+    border-radius: 7px;
+    border: 2px solid white;
+    transition: all .2s ease-out;
+}
+
+
+/* .card:hover{
+    animation-name: rotazione;
+    animation-duration: .5s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    animation-delay: 0;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+} */
 
 .card:hover{
-    height: calc(100px + 10%);
-    width: calc(60px + 5%);
-    animation-name: rotazione;
-    animation-duration: 1s;
-    animation-delay: .2s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1;
+    height: 130px;
+    width: 80px;
 }
+
+.card:hover .figura{
+    animation: rotazione 1s ease-out .2s
+     1 normal forwards;
+}
+
 
 @keyframes rotazione {
     from {
-        width: calc(60px + 5%);
+       width: 100%;
+       height: 100%;
+       border: 2px solid white;
+    }
+    40%{
+        border: 2px solid white;
     }
     50%{
         width: 0;
+        height: 100%;
+        border: none;
+    }
+    60%{
+        border: 2px solid white;
     }
     to{
-        width: calc(60px + 5%)
+        width: 100%;
+        height: 100%;
+        border: 2px solid white;
     }
 }
