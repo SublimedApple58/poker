@@ -1,27 +1,23 @@
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import './App.css'
+import Player from './components/Player/Player';
 
 function App() {
 
+    const numberPlayer = 2;
+
+
   return (
-    <>
+    <>  
+        <Router>
           <div className="contenitore">
-              <div className="tavolo">
-                  <div className="rows">
-                      <div className="card">
-                          <div className="figura"></div>
-                      </div>
-                      <div className="card">
-                          <div className="figura"></div>
-                      </div>
-                      <div className="card">
-                          <div className="figura"></div>
-                      </div>
-                      <div className="card">
-                          <div className="figura"></div>
-                      </div>
-                  </div>
-              </div>
+              <div className='tavolo'><div className="rows"></div></div>
+              <div className='top'></div>
+              <div className='bottom'></div>
+              <div className='right'></div>
+              <div className='left'></div>
           </div>
+        </Router>
     </>
   )
 }

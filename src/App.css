@@ -14,14 +14,22 @@ body{
 .contenitore{
     height: 100vh;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 'l t t t t r'
+                        'l c c c c r'
+                        'l c c c c r'
+                        'l c c c c r'
+                        'l b b b b r';
+
+    
 }
 
+
 .tavolo{
-    width: 1000px;
-    height: 550px;
+    width: 100%;
+    height: 100%;
     border: 15px solid rgb(89, 59, 3);
     border-radius: 30%;
     display: flex;
@@ -30,6 +38,31 @@ body{
     background: #265f2a;
     -webkit-box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85); 
     box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85);
+    grid-area: c;
+} 
+
+.top{
+    grid-area: t;
+}
+
+.bottom{
+    grid-area: b;
+}
+
+.right{
+    grid-area: r;
+}
+
+.left{
+    grid-area: l
+}
+
+.left, .top, .right, .bottom{
+    border: 1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
 }
 
 .rows{
@@ -37,9 +70,6 @@ body{
     height: 85%;
     border: 1px solid white;
     border-radius:25%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 30px;
 }
 
@@ -72,7 +102,7 @@ body{
     animation-iteration-count: 1;
     animation-direction: normal;
 } */
-
+/* 
 .card:hover{
     height: 130px;
     width: 80px;
@@ -109,4 +139,4 @@ body{
         border: 2px solid white;
         background: white;
     }
-}
+}  */
