@@ -17,13 +17,11 @@ body{
     display: grid;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-areas: 'l t t t t r'
+    grid-template-areas: 'f t t t t r'
                         'l c c c c r'
                         'l c c c c r'
                         'l c c c c r'
-                        'l b b b b r';
-
-    
+                        'w b b b b r';
 }
 
 
@@ -57,9 +55,28 @@ body{
     grid-area: l
 }
 
-.left, .top, .right, .bottom{
-    border: 1px solid white;
+.form{
+    grid-area: f;
+    height: 100%;
+    width: 100%;
+    background: #333;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px
+}
+
+.top, .bottom{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.left, .right{
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 40px;
