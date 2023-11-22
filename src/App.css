@@ -15,13 +15,13 @@ body{
     height: 100vh;
     width: 100%;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-areas: 'f t t t t r'
+    grid-template-areas:
+                        'f f t t w r'
                         'l c c c c r'
                         'l c c c c r'
-                        'l c c c c r'
-                        'w b b b b r';
+                        'u b b b b r';
 }
 
 
@@ -53,18 +53,6 @@ body{
 
 .left{
     grid-area: l
-}
-
-.form{
-    grid-area: f;
-    height: 100%;
-    width: 100%;
-    background: #333;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px
 }
 
 .top, .bottom{
