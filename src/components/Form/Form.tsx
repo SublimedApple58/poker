@@ -2,12 +2,22 @@ import './Form.css'
 import { useDispatch } from 'react-redux';
 import { choise } from '../../state/formPlayer/nPlayerSlice';
 import { useRef } from 'react'
+// import { RootState } from '../../state/store'; 
 // import Player from './components/Player/Player'; 
 
 function Form(){
 
     const riferimento = useRef(null);
     const dispatch = useDispatch();
+    // const numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer); 
+    // const form = document.querySelector('.form'); 
+
+    // if(numberPlayer >=3){
+    //   form?.classList.add("formDisappear")
+    //   setTimeout(()=>{
+    //     form.style.display = "none";
+    //   }, 3000)
+    // }
 
     return(
         <>

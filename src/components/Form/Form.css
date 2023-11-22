@@ -18,6 +18,14 @@
     align-self: center;
 }
 
+.formDisappear{
+    animation-name: apparizione;
+    animation-duration: 3s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
 @keyframes apparizione{
     from{
         opacity: 100%

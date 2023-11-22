@@ -13,8 +13,11 @@ function App() {
   return (
     <>  
           <div className="contenitore">       
-              {numberPlayer <= 2 &&  <Form />}
+              {numberPlayer <= 2 && <Form />}
               {numberPlayer >= 3 && numberPlayer <= 6 && <Table />}
+              {/* {numberPlayer >= 3 && numberPlayer <= 6 && setTimeout(()=>{
+                  {<Table />}
+              },3000)} */}
           </div>
     </>
   )
