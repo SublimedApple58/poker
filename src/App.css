@@ -16,85 +16,12 @@ body{
     width: 100%;
     display: grid;
     grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-areas:
-                        'f f t t w r'
-                        'l c c c c r'
-                        'l c c c c r'
-                        'u b b b b r';
-}
-
-
-.tavolo{
-    width: 100%;
-    height: 100%;
-    border: 15px solid rgb(89, 59, 3);
-    border-radius: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #265f2a;
-    -webkit-box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85); 
-    box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85);
-    grid-area: c;
-} 
-
-.top{
-    grid-area: t;
-}
-
-.bottom{
-    grid-area: b;
-}
-
-.right{
-    grid-area: r;
-}
-
-.left{
-    grid-area: l
-}
-
-.top, .bottom{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-}
-
-.left, .right{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-}
-
-.rows{
-    width: 85%;
-    height: 85%;
-    border: 1px solid white;
-    border-radius:25%;
-    gap: 30px;
-}
-
-.card{
-    height: 100px;
-    width: 60px;
-    border-radius: 7px;
-    transition: all .2s ease-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.figura{
-    background: rgb(193, 22, 22);
-    height: 100%;
-    width: 100%;
-    border-radius: 7px;
-    border: 2px solid white;
-    transition: all .2s ease-out;
+                        'l t t r'
+                        'l c c r'
+                        'l c c r'
+                        'l b b r';
 }
 
 

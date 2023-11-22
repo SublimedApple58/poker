@@ -15,7 +15,16 @@
     -webkit-box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85); 
     box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85);
     justify-self: center;
-    align-self: center
+    align-self: center;
+}
+
+@keyframes apparizione{
+    from{
+        opacity: 100%
+    }
+    to{
+        opacity: 0%
+    }
 }
 
 .submit{

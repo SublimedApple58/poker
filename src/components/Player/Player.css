@@ -7,5 +7,25 @@
     /* left: 50%;
     bottom: 45px;
     transform: translateX(-50%) */
+    animation-name: apparizione;
+    animation-duration: 3s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
 }
 
+.left .player{
+    margin-right: 15%
+}
+
+.right .player{
+    margin-left: 15%;
+}
+
+.top .player{
+    margin-bottom: 5%;
+}
+
+.bottom .player{
+    margin-top: 5%;
+}

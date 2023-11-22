@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
+import './Table.css'
 
 function Table(){
 
