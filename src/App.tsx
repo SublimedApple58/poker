@@ -12,11 +12,9 @@ function App() {
 
   return (
     <>  
-          <div className="contenitore">
-              
-              {numberPlayer <= 1&&  <Form />}
-
-              {numberPlayer >= 2 && numberPlayer <= 6 && <Table />}
+          <div className="contenitore">       
+              {numberPlayer <= 2 &&  <Form />}
+              {numberPlayer >= 3 && numberPlayer <= 6 && <Table />}
           </div>
     </>
   )
