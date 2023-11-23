@@ -69,13 +69,4 @@
     gap: 30px;
 }
 
-.figura{
-    background: rgb(193, 22, 22);
-    height: 100%;
-    width: 100%;
-    border-radius: 7px;
-    border: 2px solid white;
-    transition: all .2s ease-out;
-}
-
 
