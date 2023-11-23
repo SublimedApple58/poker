@@ -29,7 +29,7 @@ function Table(){
     return(
         <>
              <div className='tavolo'>
-                <Card />
+                <Card number={52}/>
              </div>
               <div className='bottom'>{renderPlayer(2)}</div>
               <div className='left'>{renderPlayer(1)}</div>

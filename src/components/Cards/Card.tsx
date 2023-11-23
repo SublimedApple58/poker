@@ -1,9 +1,13 @@
 import './cards.css'
+import cardHelper from '../../helper/cardHelper';
+import { useRef } from 'react';
 
-function Card(){
+function Card(props: {number: number}){
 
     // const src: string = `../../..//cartePng/${prop.number}_of_${prop.suit}`
 
+    const cartaEsatta = cardHelper.converNumberToCard(props.number);
+    console.log(cartaEsatta.src);
 
     return(
         <>

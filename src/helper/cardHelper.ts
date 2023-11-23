@@ -47,7 +47,7 @@ class cardHelper{
                     break;
             }
 
-            src = `../../cartePng/${numero}_of_${seme}`;
+            src = `../../cartePng/${numero}_of_${seme}.png`;
 
             return {seme, numero, valore, src}
         }
