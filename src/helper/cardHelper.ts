@@ -1,7 +1,8 @@
 interface cardProperties{
     seme: string,
     numero: string,
-    valore: number
+    valore: number,
+    src: string
 }
 
 class cardHelper{
@@ -10,6 +11,7 @@ class cardHelper{
             let numero: string;
             let seme: string;
             let valore: number;
+            let src: string
 
             if(number<=13){
                 seme = 'hearts';
@@ -45,7 +47,9 @@ class cardHelper{
                     break;
             }
 
-            return {seme, numero, valore}
+            src = `../../cartePng/${numero}_of_${seme}`;
+
+            return {seme, numero, valore, src}
         }
     }
 
