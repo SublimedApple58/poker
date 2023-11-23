@@ -1,6 +1,5 @@
 import './cards.css'
 import cardHelper from '../../helper/cardHelper';
-import { useRef } from 'react';
 
 function Card(props: {number: number}){
 

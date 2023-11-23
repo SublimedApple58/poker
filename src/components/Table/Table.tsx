@@ -29,7 +29,13 @@ function Table(){
     return(
         <>
              <div className='tavolo'>
-                <Card number={52}/>
+                <div className="bottomPlayer">
+                    <Card number={45}/>
+                    <Card number={32}/>
+                </div>
+                <div className="topPlayer"></div>
+                <div className="leftPlayer"></div>
+                <div className="rightPlayer"></div>
              </div>
               <div className='bottom'>{renderPlayer(2)}</div>
               <div className='left'>{renderPlayer(1)}</div>

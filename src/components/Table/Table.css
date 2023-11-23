@@ -3,9 +3,12 @@
     height: 100%;
     border: 15px solid rgb(89, 59, 3);
     border-radius: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 'l t r'
+                        'l c r'
+                        'l b r';
     background: #265f2a;
     -webkit-box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85); 
     box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85);
@@ -16,6 +19,18 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 } 
+
+.bottomPlayer, .topPlayer, .leftPlayer, .rightPlayer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    gap: 10px
+}
+
+.bottomPlayer{
+    grid-area: b;
+}
 
 @keyframes apparizione{
     from{
