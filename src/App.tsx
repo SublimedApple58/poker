@@ -18,6 +18,7 @@ function App() {
               {/* {numberPlayer >= 3 && numberPlayer <= 6 && setTimeout(()=>{
                   {<Table />}
               },3000)} */}
+              
           </div>
     </>
   )

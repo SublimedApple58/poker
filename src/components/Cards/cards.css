@@ -1,0 +1,47 @@
+.card{
+    height: 80px;
+    width: 50px;
+    border-radius: 7px;
+    transition: all .2s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card:hover{
+    height: 130px;
+    width: 80px;
+}
+
+.card:hover .figura{
+    animation: rotazione 1s ease-out .2s
+     1 normal forwards;
+}
+
+
+@keyframes rotazione {
+    from {
+       width: 100%;
+       height: 100%;
+       border: 2px solid white;
+    }
+    40%{
+        border: 2px solid white;
+    }
+    50%{
+        width: 0;
+        height: 100%;
+        border: none;
+        background: rgb(193, 22, 22);
+    }
+    60%{
+        border: 2px solid white;
+        background: white;
+    }
+    to{
+        width: 100%;
+        height: 100%;
+        border: 2px solid white;
+        background: white;
+    }
+} 

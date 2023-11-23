@@ -3,6 +3,7 @@ import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import { ReactElement } from "react";
+import Card from "../Cards/Card";
 
 function Table(){
 
@@ -27,7 +28,9 @@ function Table(){
 
     return(
         <>
-             <div className='tavolo'><div className="rows"></div></div>
+             <div className='tavolo'>
+                <Card />
+             </div>
               <div className='bottom'>{renderPlayer(2)}</div>
               <div className='left'>{renderPlayer(1)}</div>
               <div className='top'>{renderPlayer(0)}</div>

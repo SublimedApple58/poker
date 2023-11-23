@@ -69,16 +69,6 @@
     gap: 30px;
 }
 
-.card{
-    height: 100px;
-    width: 60px;
-    border-radius: 7px;
-    transition: all .2s ease-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .figura{
     background: rgb(193, 22, 22);
     height: 100%;
