@@ -18,7 +18,6 @@ function Form(){
     //     form.style.display = "none";
     //   }, 3000)
     // }
-
     return(
         <>
           <div className="form">
