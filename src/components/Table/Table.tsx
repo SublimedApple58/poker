@@ -12,7 +12,7 @@ function Table(){
     mettere il primo giocatore alla posizione bottom [0], secondo posizione left [1], terzo posizione top [2], quarto posizione right [3] etc...
     */
     const posizioneGiocatori: ReactElement<typeof Player>[][] = [[], [], [], []];
-    
+
     for(let i = 1; i<=numberPlayer; i++){
       const
             integerTableSide = Math.trunc(i/4),

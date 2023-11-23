@@ -12,7 +12,7 @@ const playerSlice = createSlice({
     name: "numberPlayer",
     initialState,
     reducers: {
-        choise: (state, action) => {
+        choise: (state, action: {payload: number}) => {
             state.nplayer = action.payload;
         }   
     }
