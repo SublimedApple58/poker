@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
+import { ReactElement } from "react";
 
 function Table(){
 
@@ -10,39 +11,27 @@ function Table(){
     algoritmo per scelta posizioni deve:
     mettere il primo giocatore alla posizione bottom [0], secondo posizione left [1], terzo posizione top [2], quarto posizione right [3] etc...
     */
-    let posizioneGiocatori: number[][] = [[], [], [], []]
-    let conto = 0
+    const posizioneGiocatori: ReactElement<typeof Player>[][] = [[], [], [], []];
+    
     for(let i = 1; i<=numberPlayer; i++){
-      if(conto>3){
-        conto = 0;
-      }
-      posizioneGiocatori[conto].push(1)
-      // posizioneGiocatori[conto].push(1); 
-      conto++
+      const
+            integerTableSide = Math.trunc(i/4),
+            tableSide = 3 - (i - (integerTableSide * 4));
+
+      posizioneGiocatori[tableSide].push(<Player key = {i}/>);
     }
 
-    console.log(posizioneGiocatori)
-    let keys = 0
+    function renderPlayer(side: number){
+        return posizioneGiocatori[side].map((player) => player)
+    }
 
     return(
         <>
              <div className='tavolo'><div className="rows"></div></div>
-              <div className='bottom'>{posizioneGiocatori[0].map(()=>{
-                keys++
-               return <Player key={keys}/>
-              })}</div>
-              <div className='left'>{posizioneGiocatori[1].map(()=>{
-                keys++
-               return <Player key={keys}/>
-              })}</div>
-              <div className='top'>{posizioneGiocatori[2].map(()=>{
-                keys++
-               return <Player key={keys}/>
-              })}</div>
-              <div className='right'>{posizioneGiocatori[3].map(()=>{
-                keys++
-               return <Player key={keys}/>
-              })}</div>
+              <div className='bottom'>{renderPlayer(2)}</div>
+              <div className='left'>{renderPlayer(1)}</div>
+              <div className='top'>{renderPlayer(0)}</div>
+              <div className='right'>{renderPlayer(3)}</div>
         </>
     )
 }
