@@ -13,20 +13,20 @@ class cardHelper{
 
             if(number<=13){
                 seme = 'hearts';
-                numero = `${number}`;
-                valore = parseInt(numero)
+                valore = number;
+                numero = valore.toString();
             } else if(number<=26){
                 seme = 'spades';
-                numero = `${number - 13}`;
-                valore = parseInt(numero)
+                valore = number - 13;
+                numero = valore.toString();
             } else if(number<=39){
                 seme = 'clubs';
-                numero = `${number - 26}`;
-                valore = parseInt(numero)
+                valore = number - 26;
+                numero = valore.toString();
             } else{
                 seme = 'diamonds';
-                numero = `${number - 39}`;
-                valore = parseInt(numero)
+                valore = number - 39;
+                numero = valore.toString();
             }
 
             switch (parseInt(numero)) {
@@ -48,3 +48,5 @@ class cardHelper{
             return {seme, numero, valore}
         }
     }
+
+    export default cardHelper;
