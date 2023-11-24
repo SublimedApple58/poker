@@ -7,11 +7,16 @@ function Card(props: {number: number}){
 
     const cartaEsatta = cardHelper.converNumberToCard(props.number);
     console.log(cartaEsatta.src);
+    console.log(props.number)
+
+    const backgroundCard = {
+        backgroundImage: `url(${cartaEsatta.src})`,
+    }
 
     return(
-        <>
+        <>  
             <div className="card">
-                <div className="figura"></div>
+                <div className="figura"  style={backgroundCard}></div>
             </div>
         </>
     )

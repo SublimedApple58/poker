@@ -1,5 +1,5 @@
 .card{
-    height: 85px;
+    height: 87px;
     width: 60px;
     border-radius: 7px;
     transition: all .2s ease-out;
@@ -9,9 +9,9 @@
 }
 
 .figura{
-    background: rgb(193, 22, 22);
-    /* background: url('../../../cartePng/10_of_clubs.png'); */
-    /* background-size: cover; */
+    /* background: rgb(193, 22, 22); */
+    background-image: url('../../../cartePng/10_of_clubs.png');
+    background-size: cover;
     height: 100%;
     width: 100%;
     border-radius: 7px;
@@ -24,11 +24,14 @@
     width: 71px;
 }
 
-.card:hover .figura{
+/* .card:hover .figura{
     animation: rotazione 1s ease-out .2s
      1 normal forwards;
-}
+} */
 
+img{
+    width: 60px
+}
 
 @keyframes rotazione {
     from {

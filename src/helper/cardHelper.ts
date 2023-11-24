@@ -51,6 +51,10 @@ class cardHelper{
 
             return {seme, numero, valore, src}
         }
+
+        static generateCasualCard(){
+            return Math.floor(Math.random() * 52) + 1;
+        }
     }
 
     export default cardHelper;

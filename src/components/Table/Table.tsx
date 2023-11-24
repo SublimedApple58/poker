@@ -4,6 +4,7 @@ import Player from "../Player/Player";
 import './Table.css'
 import { ReactElement } from "react";
 import Card from "../Cards/Card";
+import cardHelper from "../../helper/cardHelper";
 
 function Table(){
 
@@ -30,8 +31,8 @@ function Table(){
         <>
              <div className='tavolo'>
                 <div className="bottomPlayer">
-                    <Card number={45}/>
-                    <Card number={32}/>
+                    <Card number={cardHelper.generateCasualCard()}/>
+                    <Card number={cardHelper.generateCasualCard()}/>
                 </div>
                 <div className="topPlayer"></div>
                 <div className="leftPlayer"></div>
