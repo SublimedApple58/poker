@@ -8,9 +8,18 @@
     align-items: center;
 }
 
+.leftPlayer .card{
+    transform: rotate(90deg)
+}
+
+.rightPlayer .card{
+    transform: rotate(90deg)
+}
+
+
 .figura{
     /* background: rgb(193, 22, 22); */
-    background-image: url('../../../cartePng/10_of_clubs.png');
+    /* background-image: url('../../../cartePng/10_of_clubs.png'); */
     background-size: cover;
     height: 100%;
     width: 100%;

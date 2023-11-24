@@ -27,16 +27,28 @@ function Table(){
         return posizioneGiocatori[side].map((player) => player)
     }
 
+    function renderCard(side: number){
+
+        const posizioneCarte: ReactElement<typeof Card>[][] = [[], [], [], []]
+        
+        for(let i =0; i<posizioneGiocatori[side].length; i+=2){
+            posizioneCarte[side].push(<Card number={cardHelper.generateCasualCard()} key={i}/>);
+            posizioneCarte[side].push(<Card number={cardHelper.generateCasualCard()} key={i+1}/>)
+        }
+
+        return posizioneCarte[side].map((carte) => carte)
+
+        // k+=2;
+        // return posizioneGiocatori[side].map(() => <> <Card number={cardHelper.generateCasualCard()} key={k}/><Card number={cardHelper.generateCasualCard()} key={k+1}/> </>)
+    }
+
     return(
         <>
              <div className='tavolo'>
-                <div className="bottomPlayer">
-                    <Card number={cardHelper.generateCasualCard()}/>
-                    <Card number={cardHelper.generateCasualCard()}/>
-                </div>
-                <div className="topPlayer"></div>
-                <div className="leftPlayer"></div>
-                <div className="rightPlayer"></div>
+                    <div className="bottomPlayer">{renderCard(2)}</div>
+                    <div className="leftPlayer">{renderCard(1)}</div>
+                    <div className="topPlayer">{renderCard(0)}</div>
+                    <div className="rightPlayer">{renderCard(3)}</div>
              </div>
               <div className='bottom'>{renderPlayer(2)}</div>
               <div className='left'>{renderPlayer(1)}</div>

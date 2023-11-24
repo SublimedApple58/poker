@@ -6,9 +6,9 @@
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas: 'l t r'
+    grid-template-areas: 'n t m'
                         'l c r'
-                        'l b r';
+                        'e b q';
     background: #265f2a;
     -webkit-box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85); 
     box-shadow: 0px 0px 45px 6px rgba(0,0,0,0.85);
@@ -28,8 +28,23 @@
     gap: 10px
 }
 
+.leftPlayer, .rightPlayer{
+    flex-direction: column;
+    
+    gap: 0;
+}
+
 .bottomPlayer{
     grid-area: b;
+}
+.topPlayer{
+    grid-area: t;
+}
+.leftPlayer{
+    grid-area: l;
+}
+.rightPlayer{
+    grid-area: r;
 }
 
 @keyframes apparizione{
