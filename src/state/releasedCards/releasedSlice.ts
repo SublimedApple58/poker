@@ -1,13 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface releasedState{
-    key: number,
-    array: number[],
+    mazzo: number[],
 }
 
 const initialState: releasedState = {
-    key: 0,
-    array: []
+    mazzo: []
 }
 
 const releaseSlice = createSlice({
@@ -15,14 +13,13 @@ const releaseSlice = createSlice({
     initialState,
     reducers: {
         addCard:(state, action)=>{
-            state.array[state.key] = action.payload;
-            state.key += 1;
+            state.mazzo.push(action.payload);
         },
         empty: (state)=>{
-            state.array  = [];
+            state.mazzo  = [];
         }
     }
 })
 
 export default releaseSlice.reducer;
-export const {addCard} = releaseSlice.actions;
+export const {addCard, empty} = releaseSlice.actions;

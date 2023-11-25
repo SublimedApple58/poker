@@ -4,7 +4,6 @@ import releasedSlice from "./releasedCards/releasedSlice";
 
 const store = configureStore({
     reducer: {
-        // giocatori:
         giocatori: playerSlice,
         carteUscite: releasedSlice,
     }

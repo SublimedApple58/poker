@@ -1,14 +1,19 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import { ReactElement } from "react";
 import Card from "../Cards/Card";
 import cardHelper from "../../helper/cardHelper";
+import { addCard } from "../../state/releasedCards/releasedSlice";
 
 function Table(){
 
+    const dispatch = useDispatch()
+
+    const carteUscite = useSelector((state: RootState)=> state.carteUscite.mazzo)
     const numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer);
+
     /* 
     algoritmo per scelta posizioni deve:
     mettere il primo giocatore alla posizione bottom [0], secondo posizione left [1], terzo posizione top [2], quarto posizione right [3] etc...
@@ -27,13 +32,30 @@ function Table(){
         return posizioneGiocatori[side].map((player) => player)
     }
 
+    function verifiedCard(){
+        let idCard = cardHelper.generateCasualCard();
+        for(let i=0; i<carteUscite.length; i++){
+            if(idCard == carteUscite[i]){
+                idCard = cardHelper.generateCasualCard();
+                i=0;
+            }
+        }
+        
+        dispatch(addCard(idCard));
+
+        return idCard;
+    }
+
     function renderCard(side: number){
 
         const posizioneCarte: ReactElement<typeof Card>[][] = [[], [], [], []]
+
+        let keys = 0;
         
-        for(let i =0; i<posizioneGiocatori[side].length; i+=2){
-            posizioneCarte[side].push(<Card number={cardHelper.generateCasualCard()} key={i}/>);
-            posizioneCarte[side].push(<Card number={cardHelper.generateCasualCard()} key={i+1}/>)
+        for(let i =0; i<posizioneGiocatori[side].length; i+=1){
+            posizioneCarte[side].push(<Card number={verifiedCard()} key={keys}/>);
+            posizioneCarte[side].push(<Card number={verifiedCard()} key={keys+1}/>);
+            keys+=2;
         }
 
         return posizioneCarte[side].map((carte) => carte)

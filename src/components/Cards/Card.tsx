@@ -3,9 +3,7 @@ import cardHelper from '../../helper/cardHelper';
 
 function Card(props: {number: number}){
 
-    // const src: string = `../../..//cartePng/${prop.number}_of_${prop.suit}`
-
-    const cartaEsatta = cardHelper.converNumberToCard(props.number);
+    let cartaEsatta = cardHelper.converNumberToCard(props.number);
     
     const backgroundCard = {
         backgroundImage: `url(${cartaEsatta.src})`,
