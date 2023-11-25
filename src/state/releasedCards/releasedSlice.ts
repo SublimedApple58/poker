@@ -20,9 +20,9 @@ const releaseSlice = createSlice({
             state.carteUscite[state.key] = action.payload;
             state.key += 1;
         },
-        // removeCard: (state, action) => {
-        //     state.carteUscite[nonsaprei] = null; 
-        // }
+        empty: (state)=>{
+            state.carteUscite = [{}];
+        }
     }
 })
 
