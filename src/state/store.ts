@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import playerSlice from "./formPlayer/nPlayerSlice";
+import releasedSlice from "./releasedCards/releasedSlice";
 
 const store = configureStore({
     reducer: {
         // giocatori:
         giocatori: playerSlice,
+        carteUscite: releasedSlice,
     }
 })
 
