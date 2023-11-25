@@ -1,7 +1,4 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../state/store";
 
-const carteUscite = useSelector((state: RootState)=> state.carteUscite.array)
 
 interface cardProperties{
     seme: string,
@@ -58,13 +55,7 @@ class cardHelper{
         }
 
         static generateCasualCard(){
-            let card = Math.floor(Math.random() * 52) + 1;
-            carteUscite.map(carta=>{
-                if(card == carta){
-                    card = Math.floor(Math.random() * 52) + 1;
-                }
-            })
-            return card;
+            return Math.floor(Math.random() * 52) + 1;
         }
     }
 
