@@ -15,7 +15,7 @@ const releaseSlice = createSlice({
     initialState,
     reducers: {
         addCard:(state, action)=>{
-            state.array[state.key] = action.payload;
+            state.array.push(action.payload);
             state.key += 1;
         },
         empty: (state)=>{
