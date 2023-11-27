@@ -39,6 +39,7 @@ function Table(){
                 idCard = cardHelper.generateCasualCard();
                 i=0;
             }
+            return idCard;
         }
         
         // const dispatcha = (numero: number) => dispatch(addCard(numero));
