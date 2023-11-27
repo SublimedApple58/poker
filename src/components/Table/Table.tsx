@@ -1,18 +1,17 @@
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import { ReactElement } from "react";
 import Card from "../Cards/Card";
 import cardHelper from "../../helper/cardHelper";
-import { addCard } from "../../state/releasedCards/releasedSlice";
+// import { addCard } from "../../state/releasedCards/releasedSlice";
 
 function Table(){
 
-    const dispatch = useDispatch()
-
     const carteUscite = useSelector((state: RootState)=> state.carteUscite.mazzo)
     const numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer);
+    // const dispatch = useDispatch();
 
     /* 
     algoritmo per scelta posizioni deve:
@@ -28,6 +27,7 @@ function Table(){
       posizioneGiocatori[tableSide].push(<Player key = {i}/>);
     }
 
+
     function renderPlayer(side: number){
         return posizioneGiocatori[side].map((player) => player)
     }
@@ -41,7 +41,9 @@ function Table(){
             }
         }
         
-        dispatch(addCard(idCard));
+        // const dispatcha = (numero: number) => dispatch(addCard(numero));
+
+        // dispatcha(idCard)
 
         return idCard;
     }
