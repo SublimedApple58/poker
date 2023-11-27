@@ -1,18 +1,23 @@
 import './cards.css'
 import cardHelper from '../../helper/cardHelper';
-import { addCard } from '../../state/releasedCards/releasedSlice';
-import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { giveCard } from '../../state/releasedCards/releasedSlice';
+import { RootState } from '../../state/store';
 
-function Card(props: {number: number}){
+function Card(){
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const carteDate = useSelector((state: RootState)=> state.carteUscite.carteUscite);
+    const index = useSelector((state: RootState)=> state.carteUscite.length);
 
-    useEffect(() => {
-        dispatch(addCard(props.number))
+    useEffect(()=>{
+        dispatch(giveCard());
     }, [])
 
-    let cartaEsatta = cardHelper.converNumberToCard(props.number);
+    const numeroCarta = carteDate[index-1];
+
+    let cartaEsatta = cardHelper.converNumberToCard(numeroCarta);
     
     const backgroundCard = {
         backgroundImage: `url(${cartaEsatta.src})`,

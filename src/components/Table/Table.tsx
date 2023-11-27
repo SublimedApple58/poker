@@ -4,14 +4,13 @@ import Player from "../Player/Player";
 import './Table.css'
 import { ReactElement } from "react";
 import Card from "../Cards/Card";
-import cardHelper from "../../helper/cardHelper";
-// import { addCard } from "../../state/releasedCards/releasedSlice";
+// import cardHelper from "../../helper/cardHelper";
+
 
 function Table(){
 
-    const carteUscite = useSelector((state: RootState)=> state.carteUscite.mazzo)
+    // const carteUscite = useSelector((state: RootState)=> state.carteUscite.mazzo) 
     const numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer);
-    // const dispatch = useDispatch();
 
     /* 
     algoritmo per scelta posizioni deve:
@@ -32,23 +31,6 @@ function Table(){
         return posizioneGiocatori[side].map((player) => player)
     }
 
-    function verifiedCard(){
-        let idCard = cardHelper.generateCasualCard();
-        for(let i=0; i<carteUscite.length; i++){
-            if(idCard == carteUscite[i]){
-                idCard = cardHelper.generateCasualCard();
-                i=0;
-            }
-            return idCard;
-        }
-        
-        // const dispatcha = (numero: number) => dispatch(addCard(numero));
-
-        // dispatcha(idCard)
-
-        return idCard;
-    }
-
     function renderCard(side: number){
 
         const posizioneCarte: ReactElement<typeof Card>[][] = [[], [], [], []]
@@ -56,8 +38,8 @@ function Table(){
         let keys = 0;
         
         for(let i =0; i<posizioneGiocatori[side].length; i+=1){
-            posizioneCarte[side].push(<Card number={verifiedCard()} key={keys}/>);
-            posizioneCarte[side].push(<Card number={verifiedCard()} key={keys+1}/>);
+            posizioneCarte[side].push(<Card  key={keys}/>);
+            posizioneCarte[side].push(<Card  key={keys+1}/>);
             keys+=2;
         }
 
