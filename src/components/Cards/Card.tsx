@@ -2,8 +2,8 @@ import './cards.css'
 import cardHelper from '../../helper/cardHelper';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { addCard } from '../../state/releasedCards/releasedSlice';
 import { RootState } from '../../state/store';
+import { addCard } from '../../state/releasedCards/releasedSlice';
 
 function Card(props: {number: number}){
 
@@ -15,12 +15,12 @@ function Card(props: {number: number}){
 
     useEffect(()=>{
         dispatch(addCard(props.number))
-    }, [])
+    }, [...carteUscite])
 
     const cartaEsatta = cardHelper.converNumberToCard(props.number);
     
     const backgroundCard = {
-        backgroundImage: `url(${cartaEsatta.src})`,
+        backgroundImage: `url(${cartaEsatta.src})`
     }
 
     return(
