@@ -20,7 +20,7 @@
     animation-fill-mode: forwards;
 } 
 
-.bottomPlayer, .topPlayer, .leftPlayer, .rightPlayer{
+.bottomPlayer, .topPlayer, .leftPlayer, .rightPlayer, .center{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,6 +45,10 @@
 }
 .rightPlayer{
     grid-area: r;
+}
+.center{
+    grid-area: c;
+    flex-wrap: wrap
 }
 
 @keyframes apparizione{

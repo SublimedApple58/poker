@@ -55,7 +55,7 @@ class cardHelper{
 
         static generateCasualCard(playersNum: number): number[]{
             const
-                cardsToGive = (playersNum * 2),
+                cardsToGive = (playersNum * 2)+ 5,
                 deckOfCards = Array.from({length: 52}, (_, i) => i + 1),
                 drawnCards  = [];
 

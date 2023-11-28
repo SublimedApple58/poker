@@ -71,28 +71,26 @@ function Table(){
             
         }
 
-        // if(side == 4){
-        //     for(let i =0; i<posizioneGiocatori[side].length; i+=1){
-        //         if(i==0){
-        //             posizioneCarte[side].push(<Card isVisible={true} numero={carteUscite[keys]} key={keys}/>);
-        //             posizioneCarte[side].push(<Card isVisible={true} numero={carteUscite[keys+1]} key={keys+1}/>);
-        //             keys+=2;
-        //         } else {
-        //             posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys]} key={keys}/>);
-        //             posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys+1]} key={keys+1}/>);
-        //             keys+=2;
-        //         }
-        //     }
-        // } else {
-        //     for(let i =0; i<posizioneGiocatori[side].length; i+=1){
-        //         posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys]} key={keys}/>);
-        //         posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys+1]} key={keys+1}/>);
-        //         keys+=2;
-        //     }
-        // }
-
         return posizioneCarte[side].map((carte) => carte)
 
+    }
+
+    function renderCenterCard(){
+
+        const carteCentrali: ReactElement[] = [];
+
+        for(let i = 0; i<5; i++){
+            if(i == 0 || i == 1){
+                carteCentrali.push(<Card isVisible={true} numero={carteUscite[keys]} key={i}/>);
+                keys += 1;
+            } else {
+                carteCentrali.push(<Card isVisible={false} numero={carteUscite[keys]} key={i}/>);
+                keys += 1;
+            }
+            
+        }
+
+        return carteCentrali.map(carte=>carte);
     }
 
     return(
@@ -102,6 +100,7 @@ function Table(){
                     <div className="leftPlayer">{renderCard(1)}</div>
                     <div className="topPlayer">{renderCard(0)}</div>
                     <div className="rightPlayer">{renderCard(3)}</div>
+                    <div className="center">{renderCenterCard()}</div>
              </div>
               <div className='bottom'>{renderPlayer(2)}</div>
               <div className='left'>{renderPlayer(1)}</div>
