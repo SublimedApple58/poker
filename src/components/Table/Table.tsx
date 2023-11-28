@@ -34,7 +34,11 @@ function Table(){
               integerTableSide = Math.trunc(i/4),
               tableSide = 3 - (i - (integerTableSide * 4));
 
-        posizioneGiocatori[tableSide].push(<Player key = {i}/>);
+        if(i==1){
+            posizioneGiocatori[tableSide].push(<Player isUser={true} key = {i}/>);
+        } else {
+            posizioneGiocatori[tableSide].push(<Player isUser={false} key = {i}/>);
+        }
       }
 
 

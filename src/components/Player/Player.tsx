@@ -1,9 +1,16 @@
+import { useEffect} from 'react';
 import './Player.css'
 
-function Player(){
+function Player(props:{isUser: boolean}){
+
+    useEffect(()=>{
+    }, [])
+
+    const stylePlayer = props.isUser ? 'user' : 'player';
+
     return (
         <>
-                <div className="player"></div>
+                <div className={stylePlayer}></div>
         </>
     )
 }
