@@ -21,6 +21,7 @@
     /* background: rgb(193, 22, 22); */
     /* background-image: url('../../../cartePng/10_of_clubs.png'); */
     background-size: cover;
+    background-position: center;
     height: 100%;
     width: 100%;
     border-radius: 7px;

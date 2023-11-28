@@ -1,13 +1,11 @@
 import './cards.css'
 import cardHelper from '../../helper/cardHelper';
 
-function Card(props: {numero: number}){
+function Card(props: {numero: number, isVisible: boolean}){
 
     const 
         cartaEsatta = cardHelper.converNumberToCard(props.numero),
-        backgroundCard = {
-            backgroundImage: `url(${cartaEsatta.src})`,
-        }
+        backgroundCard = props.isVisible ? {backgroundImage: `url(${cartaEsatta.src})`} : {backgroundImage: `url(../..//../icon/poker.png)`}
 
     return(
         <>  

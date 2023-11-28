@@ -53,10 +53,43 @@ function Table(){
         const posizioneCarte: ReactElement<typeof Card>[][] = [[], [], [], []]
 
         for(let i =0; i<posizioneGiocatori[side].length; i+=1){
-            posizioneCarte[side].push(<Card numero={carteUscite[keys]} key={keys}/>);
-            posizioneCarte[side].push(<Card numero={carteUscite[keys+1]} key={keys+1}/>);
-            keys+=2;
+            if(side == 2){
+                if(i==0){
+                    posizioneCarte[side].push(<Card isVisible={true} numero={carteUscite[keys]} key={keys}/>);
+                    posizioneCarte[side].push(<Card isVisible={true} numero={carteUscite[keys+1]} key={keys+1}/>);
+                    keys+=2;
+                } else {
+                    posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys]} key={keys}/>);
+                    posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys+1]} key={keys+1}/>);
+                    keys+=2;
+                }
+            } else {
+                posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys]} key={keys}/>);
+                posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys+1]} key={keys+1}/>);
+                keys+=2;
+            }
+            
         }
+
+        // if(side == 4){
+        //     for(let i =0; i<posizioneGiocatori[side].length; i+=1){
+        //         if(i==0){
+        //             posizioneCarte[side].push(<Card isVisible={true} numero={carteUscite[keys]} key={keys}/>);
+        //             posizioneCarte[side].push(<Card isVisible={true} numero={carteUscite[keys+1]} key={keys+1}/>);
+        //             keys+=2;
+        //         } else {
+        //             posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys]} key={keys}/>);
+        //             posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys+1]} key={keys+1}/>);
+        //             keys+=2;
+        //         }
+        //     }
+        // } else {
+        //     for(let i =0; i<posizioneGiocatori[side].length; i+=1){
+        //         posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys]} key={keys}/>);
+        //         posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys+1]} key={keys+1}/>);
+        //         keys+=2;
+        //     }
+        // }
 
         return posizioneCarte[side].map((carte) => carte)
 
