@@ -1,5 +1,4 @@
 
-
 interface cardProperties{
     seme: string,
     numero: string,
@@ -54,9 +53,21 @@ class cardHelper{
             return {seme, numero, valore, src}
         }
 
-        static generateCasualCard(){
-            return Math.floor(Math.random() * 52) + 1;
+        static generateCasualCard(playersNum: number): number[]{
+            const
+                cardsToGive = (playersNum * 2),
+                deckOfCards = Array.from({length: 52}, (_, i) => i + 1),
+                drawnCards  = [];
+
+            for (let i = 0; i < cardsToGive; i++) {
+                const indexDrawnCard = Math.random() * deckOfCards.length;
+                const drawnCard = deckOfCards.splice(indexDrawnCard, 1)[0];
+                drawnCards.push(drawnCard);
+            }
+
+            return drawnCards;
         }
+
     }
 
     export default cardHelper;
