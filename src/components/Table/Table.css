@@ -48,7 +48,7 @@
 }
 .center{
     grid-area: c;
-    flex-wrap: wrap
+    flex-wrap: no-wrap
 }
 
 @keyframes apparizione{
@@ -104,3 +104,9 @@
 }
 
 
+@media(max-width: 1749px){
+    .center{
+        grid-area: c;
+        flex-wrap: wrap
+    }
+}
