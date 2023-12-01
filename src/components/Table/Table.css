@@ -48,7 +48,8 @@
 }
 .center{
     grid-area: c;
-    flex-wrap: no-wrap
+    flex-wrap: no-wrap;
+    align-content: center;
 }
 
 @keyframes apparizione{

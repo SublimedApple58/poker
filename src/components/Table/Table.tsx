@@ -2,6 +2,7 @@ import {useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
+import CardContainer from "../CardContainer/CardContainer";
 import { ReactElement, useEffect } from "react";
 import Card from "../Cards/Card";
 import cardHelper from "../../helper/cardHelper";
@@ -48,30 +49,25 @@ function Table(){
 
         let keys = 0;
 
-    function renderCard(side: number){
+    function renderContainer(side: number){
 
-        const posizioneCarte: ReactElement<typeof Card>[][] = [[], [], [], []]
+        const posizioneContainer: ReactElement<typeof Card>[][] = [[], [], [], []]
 
         for(let i =0; i<posizioneGiocatori[side].length; i+=1){
             if(side == 2){
                 if(i==0){
-                    posizioneCarte[side].push(<Card isVisible={true} numero={carteUscite[keys]} key={keys}/>);
-                    posizioneCarte[side].push(<Card isVisible={true} numero={carteUscite[keys+1]} key={keys+1}/>);
-                    keys+=2;
+                    posizioneContainer[side].push(<CardContainer isVisible={true} value={keys} key={keys}/>)
                 } else {
-                    posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys]} key={keys}/>);
-                    posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys+1]} key={keys+1}/>);
-                    keys+=2;
+                    posizioneContainer[side].push(<CardContainer isVisible={false} value={keys} key={keys}/>)
                 }
             } else {
-                posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys]} key={keys}/>);
-                posizioneCarte[side].push(<Card isVisible={false} numero={carteUscite[keys+1]} key={keys+1}/>);
-                keys+=2;
+                posizioneContainer[side].push(<CardContainer isVisible={false} value={keys} key={keys}/>)
             }
+            keys+=2;
             
         }
 
-        return posizioneCarte[side].map((carte) => carte)
+        return posizioneContainer[side].map(div => div);
 
     }
 
@@ -96,10 +92,10 @@ function Table(){
     return(
         <>
              <div className='tavolo'>
-                    <div className="bottomPlayer">{renderCard(2)}</div>
-                    <div className="leftPlayer">{renderCard(1)}</div>
-                    <div className="topPlayer">{renderCard(0)}</div>
-                    <div className="rightPlayer">{renderCard(3)}</div>
+                    <div className="bottomPlayer">{renderContainer(2)}</div>
+                    <div className="leftPlayer">{renderContainer(1)}</div>
+                    <div className="topPlayer">{renderContainer(0)}</div>
+                    <div className="rightPlayer">{renderContainer(3)}</div>
                     <div className="center">{renderCenterCard()}</div>
              </div>
               <div className='bottom'>{renderPlayer(2)}</div>
