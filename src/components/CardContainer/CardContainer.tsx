@@ -1,11 +1,11 @@
 import Card from "../Cards/Card";
 
-function CardContainer(props: {isVisible: boolean, value: number}){
+function CardContainer(props: {isVisible: boolean, value: number, numero: number[]}){
     return(
         <>
             <div className="card-container">
-                <Card numero={5} isVisible={props.isVisible} key={props.value}/>
-                <Card numero={6} isVisible={props.isVisible} key={props.value+1}/>
+                <Card numero={props.numero[props.value]} isVisible={props.isVisible} key={props.value}/>
+                <Card numero={props.numero[props.value+1]} isVisible={props.isVisible} key={props.value+1}/>
             </div>
         </>
     );

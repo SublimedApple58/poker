@@ -56,12 +56,12 @@ function Table(){
         for(let i =0; i<posizioneGiocatori[side].length; i+=1){
             if(side == 2){
                 if(i==0){
-                    posizioneContainer[side].push(<CardContainer isVisible={true} value={keys} key={keys}/>)
+                    posizioneContainer[side].push(<CardContainer isVisible={true} numero={carteUscite} value={keys} key={keys}/>)
                 } else {
-                    posizioneContainer[side].push(<CardContainer isVisible={false} value={keys} key={keys}/>)
+                    posizioneContainer[side].push(<CardContainer isVisible={false} numero={carteUscite} value={keys} key={keys}/>)
                 }
             } else {
-                posizioneContainer[side].push(<CardContainer isVisible={false} value={keys} key={keys}/>)
+                posizioneContainer[side].push(<CardContainer isVisible={false} numero={carteUscite} value={keys} key={keys}/>)
             }
             keys+=2;
             
