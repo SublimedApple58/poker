@@ -1,0 +1,13 @@
+.card-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 100%;
+    margin: 0 10px;
+}
+
+.leftPlayer .card-container, .rightPlayer .card-container{
+    transform: rotate(90deg);
+    height: initial;
+}

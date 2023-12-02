@@ -8,14 +8,6 @@
     align-items: center;
 }
 
-.leftPlayer .card{
-    transform: rotate(90deg)
-}
-
-.rightPlayer .card{
-    transform: rotate(90deg)
-}
-
 
 .figura{
     /* background: rgb(193, 22, 22); */
