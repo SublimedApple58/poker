@@ -4,7 +4,7 @@
     justify-content: center;
     gap: 10px;
     height: 100%;
-    margin: 0 10px;
+    margin: 0 20px;
 }
 
 .leftPlayer .card-container, .rightPlayer .card-container{
