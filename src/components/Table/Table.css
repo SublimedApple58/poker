@@ -30,8 +30,7 @@
 
 .leftPlayer, .rightPlayer{
     flex-direction: column;
-    
-    gap: 0;
+    gap: 80px;
 }
 
 .bottomPlayer{
@@ -48,8 +47,6 @@
 }
 .center{
     grid-area: c;
-    flex-wrap: no-wrap;
-    align-content: center;
 }
 
 @keyframes apparizione{
@@ -104,10 +101,3 @@
     gap: 30px;
 }
 
-
-@media(max-width: 1749px){
-    .center{
-        grid-area: c;
-        flex-wrap: wrap
-    }
-}
