@@ -12,6 +12,7 @@
     animation-timing-function: ease-out;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
+    position: relative;
 }
 
 .user{
@@ -36,4 +37,48 @@
 
 .bottom .player, .bottom .user{
     margin-top: 5%;
+}
+
+.chips{
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    background-image: url(../../../icon/poker-chip.png);
+    background-size: cover;
+}
+
+.chips p{
+    position: relative;
+    transition: all .3s ease-out;
+}
+
+.bottom .chips p, .left .chips p{
+    top: -20px
+}
+
+.top .chips p, .right .chips p{
+    bottom: -40px
+}
+
+.bottom .chips{
+    top: -10px;
+    left: -10px;
+}
+
+.left .chips{
+    top: -5px;
+    right: -5px;
+}
+
+.right .chips{
+    bottom: -5px;
+    left: -5px;
+}
+
+.top .chips{
+    bottom: -5px;
+    right: -5px;
 }

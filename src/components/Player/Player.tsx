@@ -6,11 +6,16 @@ function Player(props:{isUser: boolean}){
     useEffect(()=>{
     }, [])
 
+    const chips: number = 100; 
     const stylePlayer = props.isUser ? 'user' : 'player';
 
     return (
         <>
-                <div className={stylePlayer}></div>
+                <div className={stylePlayer}>
+                    <div className="chips">
+                        <p>{chips}</p>
+                    </div>
+                </div>
         </>
     )
 }
