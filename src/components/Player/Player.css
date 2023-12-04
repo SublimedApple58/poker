@@ -4,9 +4,6 @@
     width: 100px;
     border: 2px solid white;
     margin: 0 20px;
-    /* left: 50%;
-    bottom: 45px;
-    transform: translateX(-50%) */
     animation-name: apparizione;
     animation-duration: 3s;
     animation-timing-function: ease-out;
@@ -69,16 +66,16 @@
 }
 
 .left .chips{
-    top: -5px;
-    right: -5px;
+    top: -10px;
+    right: -10px;
 }
 
 .right .chips{
-    bottom: -5px;
-    left: -5px;
+    bottom: -10px;
+    left: -10px;
 }
 
 .top .chips{
-    bottom: -5px;
-    right: -5px;
+    bottom: -10px;
+    right: -10px;
 }
