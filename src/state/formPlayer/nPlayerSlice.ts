@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface numberPlayer{
-    nplayer: number
+    nplayer: number,
+    players: any[],
 }
 
 const initialState: numberPlayer = {
-    nplayer: 0
+    nplayer: 0,
+    players: []
 };
 
 const playerSlice = createSlice({
@@ -14,7 +16,10 @@ const playerSlice = createSlice({
     reducers: {
         choise: (state, action: {payload: number}) => {
             state.nplayer = action.payload;
-        }   
+        },
+        addPlayer: (state, action: {payload: any}) => {
+            state.players.push(action.payload);
+        }
     }
 })
 
