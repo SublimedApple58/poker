@@ -4,7 +4,6 @@ import { RootState } from './state/store';
 import './App.css'
 import Form from './components/Form/Form';
 import Table from './components/Table/Table';
-// import Form from './components/Form/Form'; 
 
 function App() {
 
@@ -14,7 +13,7 @@ function App() {
     <>  
           <div className="contenitore">       
               {numberPlayer <= 2 && <Form />}
-              {numberPlayer >= 3 && <Table />}              
+              {numberPlayer >= 3 && <Table />}
           </div>
     </>
   )

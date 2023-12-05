@@ -7,7 +7,7 @@ interface numberPlayer{
 
 const initialState: numberPlayer = {
     nplayer: 0,
-    players: []
+    players: [],
 };
 
 const playerSlice = createSlice({
@@ -15,13 +15,17 @@ const playerSlice = createSlice({
     initialState,
     reducers: {
         choise: (state, action: {payload: number}) => {
-            state.nplayer = action.payload;
+            return Object.assign({}, state, {
+                nplayer: action.payload,
+            })
         },
         addPlayer: (state, action: {payload: any}) => {
-            state.players.push(action.payload);
-        }
+            return Object.assign({}, state, {
+                players: [...state.players, action.payload]
+            })
+        },
     }
 })
 
 export default playerSlice.reducer;
-export const {choise} = playerSlice.actions;
+export const {choise, addPlayer} = playerSlice.actions;

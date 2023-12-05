@@ -3,25 +3,22 @@ import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import CardContainer from "../CardContainer/CardContainer";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect} from "react";
 import Card from "../Cards/Card";
 import cardHelper from "../../helper/cardHelper";
 import { setCards } from "../../state/releasedCards/releasedSlice";
-// import cardHelper from "../../helper/cardHelper";
-
 
 function Table(){
 
+    const
+    players = useSelector((state: RootState) => state.giocatori.players),
+    numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer),
+    carteUscite = cardHelper.generateCasualCard(numberPlayer);
+    const dispatch = useDispatch();
 
-    useEffect(()=>{
+    useEffect(()=> {
         dispatch(setCards(carteUscite))
     }, [])
-
-    // const carteUscite = useSelector((state: RootState)=> state.carteUscite.mazzo)
-    const
-        numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer),
-        carteUscite = cardHelper.generateCasualCard(numberPlayer),
-        dispatch = useDispatch();
 
     /*
     algoritmo per scelta posizioni deve:
@@ -36,17 +33,14 @@ function Table(){
               tableSide = 3 - (i - (integerTableSide * 4));
 
         if(i==1){
-            posizioneGiocatori[tableSide].push(<Player isUser={true} key = {i}/>);
+            posizioneGiocatori[tableSide].push(<Player isUser={true} key = {i} nPlayer={players.length+1}/>);
         } else {
-            posizioneGiocatori[tableSide].push(<Player isUser={false} key = {i}/>);
+            posizioneGiocatori[tableSide].push(<Player isUser={false} key = {i} nPlayer={players.length}/>);
         }
+
+
       }
-
-
-    function renderPlayer(side: number){
-        return posizioneGiocatori[side].map((player) => player)
-    }
-
+      
         let keys = 0;
         let giocatore = 1;
 
@@ -88,7 +82,7 @@ function Table(){
             
         }
 
-        return carteCentrali.map(carte=>carte);
+        return carteCentrali;
     }
 
     return(
@@ -100,10 +94,10 @@ function Table(){
                     <div className="rightPlayer">{renderContainer(3)}</div>
                     <div className="center">{renderCenterCard()}</div>
              </div>
-              <div className='bottom'>{renderPlayer(2)}</div>
-              <div className='left'>{renderPlayer(1)}</div>
-              <div className='top'>{renderPlayer(0)}</div>
-              <div className='right'>{renderPlayer(3)}</div>
+              <div className='bottom'>{posizioneGiocatori[2]}</div>
+              <div className='left'>{posizioneGiocatori[1]}</div>
+              <div className='top'>{posizioneGiocatori[0]}</div>
+              <div className='right'>{posizioneGiocatori[3]}</div>
         </>
     )
 }
