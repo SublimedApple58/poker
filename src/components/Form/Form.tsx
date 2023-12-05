@@ -1,7 +1,10 @@
 import './Form.css'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addPlayer, choise } from '../../state/formPlayer/nPlayerSlice';
-import { useRef } from 'react'
+import { useRef } from 'react';
+import { setCards } from '../../state/releasedCards/releasedSlice';
+import cardHelper from '../../helper/cardHelper';
+import { RootState } from '../../state/store';
 
 function Form(){
 
@@ -19,8 +22,14 @@ function Form(){
               }
           }
         }
-          dispatch(choise(riferimento.current?.valueAsNumber ?? 0))
+          dispatch(choise(riferimento.current?.valueAsNumber ?? 0));
+          const nPlayers = useSelector((state:RootState)=> state.giocatori.nplayer)
+          console.log(nPlayers);
         }
+
+      function rendCards(){
+        
+      }
 
     return(
         <>

@@ -1,24 +1,17 @@
-import {useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import CardContainer from "../CardContainer/CardContainer";
-import { ReactElement, useEffect} from "react";
+import { ReactElement} from "react";
 import Card from "../Cards/Card";
-import cardHelper from "../../helper/cardHelper";
-import { setCards } from "../../state/releasedCards/releasedSlice";
 
 function Table(){
 
     const
-    players = useSelector((state: RootState) => state.giocatori.players),
-    numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer),
-    carteUscite = cardHelper.generateCasualCard(numberPlayer);
-    const dispatch = useDispatch();
-
-    useEffect(()=> {
-        dispatch(setCards(carteUscite))
-    }, [])
+        players = useSelector((state: RootState) => state.giocatori.players),
+        numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer),
+        carteUscite = useSelector((state: RootState) => state.carteUscite);
 
     /*
     algoritmo per scelta posizioni deve:
@@ -70,14 +63,15 @@ function Table(){
     function renderCenterCard(){
 
         const carteCentrali: ReactElement[] = [];
+        let contatore = carteUscite.length-1;
 
         for(let i = 0; i<5; i++){
             if(i == 0 || i == 1){
-                carteCentrali.push(<Card isVisible={true} numero={carteUscite[keys]} key={i}/>);
-                keys += 1;
+                carteCentrali.push(<Card isVisible={true} numero={carteUscite[contatore]} key={i}/>);
+                contatore -= 1;
             } else {
-                carteCentrali.push(<Card isVisible={false} numero={carteUscite[keys]} key={i}/>);
-                keys += 1;
+                carteCentrali.push(<Card isVisible={false} numero={carteUscite[contatore]} key={i}/>);
+                contatore -= 1;
             }
             
         }

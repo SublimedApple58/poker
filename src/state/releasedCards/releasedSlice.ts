@@ -6,8 +6,8 @@ const releaseSlice = createSlice({
     name: "carteUscite",
     initialState,
     reducers: {
-        setCards:(_state, actions) => {
-            return [...actions.payload]
+        setCards:(state, action: {payload: number[]}) => {
+            return [...action.payload]
         }   
     }
 })
