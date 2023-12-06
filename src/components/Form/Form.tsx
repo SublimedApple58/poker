@@ -10,7 +10,8 @@ function Form(){
 
     const 
       riferimento = useRef<HTMLInputElement | null>(null),
-      dispatch = useDispatch();
+      dispatch = useDispatch(),
+      numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer);
 
       function setPlayers(){
           if((riferimento.current?.valueAsNumber ?? 0)>2){
@@ -23,20 +24,20 @@ function Form(){
           }
         }
           dispatch(choise(riferimento.current?.valueAsNumber ?? 0));
-          const nPlayers = useSelector((state:RootState)=> state.giocatori.nplayer)
-          console.log(nPlayers);
         }
 
-      function rendCards(){
-        
-      }
+        // lo state non si aggiorna subito, solo alla fine della vita del componente
+
+        function video(){
+          console.log(numberPlayer);
+        }
 
     return(
         <>
           <div className="form">
             <h2>Choise n. of player</h2>
             <input type="number" inputMode='numeric' ref={riferimento} className='nPlayer'/>
-            <button className='submit' onClick={()=>setPlayers()}>Send number</button>
+            <button className='submit' onClick={()=>{setPlayers(); video()}}>Send number</button>
           </div>
         </>
     )
