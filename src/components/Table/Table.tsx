@@ -13,7 +13,6 @@ function Table(){
         numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer),
         carteUscite = useSelector((state: RootState) => state.carteUscite);
 
-        console.log(numberPlayer)
     /*
     algoritmo per scelta posizioni deve:
     mettere il primo giocatore alla posizione bottom [0], secondo posizione left [1], terzo posizione top [2], quarto posizione right [3] etc...
