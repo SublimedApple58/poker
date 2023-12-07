@@ -24,11 +24,11 @@ function Form(){
 
           if(nPlayers>2){
             for(let i = 1; i<=nPlayers; i++){
-              if(i==1){
-                  dispatch(addPlayer({name: `Player${i}`, chips: 100, isVisible: true}))
-              } else {
-                  dispatch(addPlayer({name: `Player${i}`, chips: 100, isVisible: false}))
-              }
+                if(i==1){
+                    dispatch(addPlayer({name: i, chips: 100, isVisible: true}))
+                } else {
+                    dispatch(addPlayer({name: i, chips: 100, isVisible: false}))
+                }
           }
         }
           dispatch(setCards(cardHelper.generateCasualCard(nPlayers)))

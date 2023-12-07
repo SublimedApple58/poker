@@ -9,7 +9,6 @@ import Card from "../Cards/Card";
 function Table(){
 
     const
-        players = useSelector((state: RootState) => state.giocatori.players),
         numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer),
         carteUscite = useSelector((state: RootState) => state.carteUscite);
 
@@ -18,6 +17,7 @@ function Table(){
     mettere il primo giocatore alla posizione bottom [0], secondo posizione left [1], terzo posizione top [2], quarto posizione right [3] etc...
     */
     const posizioneGiocatori: ReactElement<typeof Player>[][] = [[], [], [], []];
+    let nPlayer: number = 0;
 
 
     for(let i = 1; i<=numberPlayer; i++){
@@ -26,11 +26,11 @@ function Table(){
               tableSide = 3 - (i - (integerTableSide * 4));
 
         if(i==1){
-            posizioneGiocatori[tableSide].push(<Player isUser={true} key = {i} nPlayer={players.length+1}/>);
+            posizioneGiocatori[tableSide].push(<Player isUser={true} key={i} player={nPlayer}/>);
         } else {
-            posizioneGiocatori[tableSide].push(<Player isUser={false} key = {i} nPlayer={players.length}/>);
+            posizioneGiocatori[tableSide].push(<Player isUser={false} key={i} player={nPlayer}/>);
         }
-
+        nPlayer++;
 
       }
       
