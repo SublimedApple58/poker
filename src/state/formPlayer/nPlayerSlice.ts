@@ -1,31 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface numberPlayer{
-    nplayer: number,
-    players: any[],
-}
 
-const initialState: numberPlayer = {
-    nplayer: 0,
-    players: [],
-};
+const initialState: any[] = []
 
 const playerSlice = createSlice({
-    name: "numberPlayer",
+    name: "players",
     initialState,
     reducers: {
-        choise: (state, action: {payload: number}) => {
-            return Object.assign({}, state, {
-                nplayer: action.payload,
-            })
-        },
         addPlayer: (state, action: {payload: any}) => {
-            return Object.assign({}, state, {
-                players: [...state.players, action.payload]
-            })
+            return [...state, action.payload]
         },
     }
 })
 
 export default playerSlice.reducer;
-export const {choise, addPlayer} = playerSlice.actions;
+export const {addPlayer} = playerSlice.actions;

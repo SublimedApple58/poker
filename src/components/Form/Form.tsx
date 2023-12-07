@@ -1,6 +1,6 @@
 import './Form.css'
 import { useDispatch } from 'react-redux';
-import { addPlayer, choise } from '../../state/formPlayer/nPlayerSlice';
+import { addPlayer } from '../../state/formPlayer/nPlayerSlice';
 import { useRef } from 'react';
 import { setCards } from '../../state/releasedCards/releasedSlice';
 import cardHelper from '../../helper/cardHelper';
@@ -32,7 +32,6 @@ function Form(){
           }
         }
           dispatch(setCards(cardHelper.generateCasualCard(nPlayers)))
-          dispatch(choise(nPlayers));
         }
 
         // lo state non si aggiorna subito, solo alla fine della vita del componente

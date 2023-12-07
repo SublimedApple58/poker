@@ -7,7 +7,7 @@ function Player(props:{isUser: boolean, player: number}){
 
     useEffect(()=>{}, [])
 
-    const chips = useSelector((state: RootState)=> state.giocatori.players[props.player].chips);
+    const chips = useSelector((state: RootState)=> state.giocatori[props.player].chips);
     const stylePlayer = props.isUser ? 'user' : 'player';
 
     return (
