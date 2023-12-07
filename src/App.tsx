@@ -7,7 +7,7 @@ import Table from './components/Table/Table';
 
 function App() {
 
-    const numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer);
+    const numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length);
 
   return (
     <>  

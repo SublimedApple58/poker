@@ -9,7 +9,7 @@ import Card from "../Cards/Card";
 function Table(){
 
     const
-        numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer),
+        numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length),
         carteUscite = useSelector((state: RootState) => state.carteUscite);
 
     /*
