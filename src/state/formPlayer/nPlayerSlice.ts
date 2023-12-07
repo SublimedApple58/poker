@@ -1,21 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface numberPlayer{
-    players: any[],
-}
 
-const initialState: numberPlayer = {
-    players: [],
-};
+const initialState: any[] = []
 
 const playerSlice = createSlice({
-    name: "numberPlayer",
+    name: "players",
     initialState,
     reducers: {
         addPlayer: (state, action: {payload: any}) => {
-            return Object.assign({}, state, {
-                players: [...state.players, action.payload]
-            })
+            return [...state, action.payload]
         },
     }
 })
