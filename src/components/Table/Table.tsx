@@ -1,33 +1,23 @@
-import {useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import CardContainer from "../CardContainer/CardContainer";
-import { ReactElement, useEffect } from "react";
+import { ReactElement} from "react";
 import Card from "../Cards/Card";
-import cardHelper from "../../helper/cardHelper";
-import { setCards } from "../../state/releasedCards/releasedSlice";
-// import cardHelper from "../../helper/cardHelper";
-
 
 function Table(){
 
-
-    useEffect(()=>{
-        dispatch(setCards(carteUscite))
-    }, [])
-
-    // const carteUscite = useSelector((state: RootState)=> state.carteUscite.mazzo)
     const
         numberPlayer = useSelector((state: RootState)=> state.giocatori.nplayer),
-        carteUscite = cardHelper.generateCasualCard(numberPlayer),
-        dispatch = useDispatch();
+        carteUscite = useSelector((state: RootState) => state.carteUscite);
 
     /*
     algoritmo per scelta posizioni deve:
     mettere il primo giocatore alla posizione bottom [0], secondo posizione left [1], terzo posizione top [2], quarto posizione right [3] etc...
     */
     const posizioneGiocatori: ReactElement<typeof Player>[][] = [[], [], [], []];
+    let nPlayer: number = 0;
 
 
     for(let i = 1; i<=numberPlayer; i++){
@@ -36,17 +26,14 @@ function Table(){
               tableSide = 3 - (i - (integerTableSide * 4));
 
         if(i==1){
-            posizioneGiocatori[tableSide].push(<Player isUser={true} key = {i}/>);
+            posizioneGiocatori[tableSide].push(<Player isUser={true} key={i} player={nPlayer}/>);
         } else {
-            posizioneGiocatori[tableSide].push(<Player isUser={false} key = {i}/>);
+            posizioneGiocatori[tableSide].push(<Player isUser={false} key={i} player={nPlayer}/>);
         }
+        nPlayer++;
+
       }
-
-
-    function renderPlayer(side: number){
-        return posizioneGiocatori[side].map((player) => player)
-    }
-
+      
         let keys = 0;
         let giocatore = 1;
 
@@ -76,19 +63,20 @@ function Table(){
     function renderCenterCard(){
 
         const carteCentrali: ReactElement[] = [];
+        let contatore = carteUscite.length-1;
 
         for(let i = 0; i<5; i++){
             if(i == 0 || i == 1){
-                carteCentrali.push(<Card isVisible={true} numero={carteUscite[keys]} key={i}/>);
-                keys += 1;
+                carteCentrali.push(<Card isVisible={true} numero={carteUscite[contatore]} key={i}/>);
+                contatore -= 1;
             } else {
-                carteCentrali.push(<Card isVisible={false} numero={carteUscite[keys]} key={i}/>);
-                keys += 1;
+                carteCentrali.push(<Card isVisible={false} numero={carteUscite[contatore]} key={i}/>);
+                contatore -= 1;
             }
             
         }
 
-        return carteCentrali.map(carte=>carte);
+        return carteCentrali;
     }
 
     return(
@@ -100,10 +88,10 @@ function Table(){
                     <div className="rightPlayer">{renderContainer(3)}</div>
                     <div className="center">{renderCenterCard()}</div>
              </div>
-              <div className='bottom'>{renderPlayer(2)}</div>
-              <div className='left'>{renderPlayer(1)}</div>
-              <div className='top'>{renderPlayer(0)}</div>
-              <div className='right'>{renderPlayer(3)}</div>
+              <div className='bottom'>{posizioneGiocatori[2]}</div>
+              <div className='left'>{posizioneGiocatori[1]}</div>
+              <div className='top'>{posizioneGiocatori[0]}</div>
+              <div className='right'>{posizioneGiocatori[3]}</div>
         </>
     )
 }

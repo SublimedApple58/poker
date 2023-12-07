@@ -1,18 +1,14 @@
 import { useEffect} from 'react';
 import './Player.css';
-// import { addChips, removeChips } from '../../state/Chips/ChipsSlice';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
-// import { useDispatch } from 'react-redux';
 
-function Player(props:{isUser: boolean}){
+function Player(props:{isUser: boolean, player: number}){
 
-    useEffect(()=>{
-    }, [])
+    useEffect(()=>{}, [])
 
-    const chips = useSelector((state: RootState)=> state.chips.chips) 
+    const chips = useSelector((state: RootState)=> state.giocatori.players[props.player].chips);
     const stylePlayer = props.isUser ? 'user' : 'player';
-    // const dispatch = useDispatch();
 
     return (
         <>
@@ -20,6 +16,7 @@ function Player(props:{isUser: boolean}){
                     <div className="chips">
                         <p>{chips}</p>
                     </div>
+                    {/* <p>{`Giocatore${props.player+1}`}</p> */}
                 </div>
         </>
     )
