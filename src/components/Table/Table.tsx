@@ -17,7 +17,7 @@ function Table(){
         button = useRef<HTMLInputElement | null>(null);
 
         function increment() {
-            dispatch(removeChips({ref:(player.current?.valueAsNumber ?? 0), chips:(button.current?.valueAsNumber ?? 0)}))
+            dispatch(addChips({ref:(player.current?.valueAsNumber ?? 0), chips:(button.current?.valueAsNumber ?? 0)}))
         }
     
     /*
