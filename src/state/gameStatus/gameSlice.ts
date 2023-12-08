@@ -9,7 +9,7 @@ const initialState: game = {
 };
 
 const gameSlice = createSlice({
-    name: 'gameStatus',
+    name: 'game',
     initialState, 
     reducers: {
         nextRound: (state) => {

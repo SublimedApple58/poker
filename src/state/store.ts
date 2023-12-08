@@ -7,7 +7,7 @@ const store = configureStore({
     reducer: {
         giocatori: playerSlice,
         carteUscite: releasedSlice,
-        partita: gameSlice
+        game: gameSlice
     }
 })
 
