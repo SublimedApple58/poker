@@ -1,24 +1,16 @@
-import {useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import CardContainer from "../CardContainer/CardContainer";
-import { ReactElement, useRef} from "react";
+import { ReactElement} from "react";
 import Card from "../Cards/Card";
-import { addChips, removeChips } from "../../state/formPlayer/nPlayerSlice";
 
 
 function Table(){
     const
         numberPlayer = useSelector((state: RootState)=> state.giocatori.length),
-        carteUscite = useSelector((state: RootState) => state.carteUscite),
-        dispatch = useDispatch(),
-        player = useRef<HTMLInputElement | null>(null),
-        button = useRef<HTMLInputElement | null>(null);
-
-        function increment() {
-            dispatch(addChips({ref:(player.current?.valueAsNumber ?? 0), chips:(button.current?.valueAsNumber ?? 0)}))
-        }
+        carteUscite = useSelector((state: RootState) => state.carteUscite);
     
     /*
     algoritmo per scelta posizioni deve:
@@ -100,9 +92,6 @@ function Table(){
               <div className='left'>{posizioneGiocatori[1]}</div>
               <div className='top'>{posizioneGiocatori[0]}</div>
               <div className='right'>{posizioneGiocatori[3]}</div>
-              <input type="number" style={{color: "black"}} ref={player}/>
-              <input type="number" style={{color: "black"}} ref={button} />
-              <input type="button" placeholder="manda" style={{color: "black"}} onClick={increment}/>
         </>
     )
 }
