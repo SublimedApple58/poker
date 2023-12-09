@@ -1,17 +1,18 @@
-import { useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import CardContainer from "../CardContainer/CardContainer";
 import { ReactElement} from "react";
 import Card from "../Cards/Card";
+import Commands from "../Commands/Commands";
 
 
 function Table(){
     const
-        numberPlayer = useSelector((state: RootState)=> state.giocatori.length),
-        carteUscite = useSelector((state: RootState) => state.carteUscite);
-    
+        numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length),
+        carteUscite = useSelector((state: RootState) => state.carteUscite),
+        centralChips = useSelector((state: RootState) => state.giocatori.centralChips);
     /*
     algoritmo per scelta posizioni deve:
     mettere il primo giocatore alla posizione bottom [0], secondo posizione left [1], terzo posizione top [2], quarto posizione right [3] etc...
@@ -86,12 +87,13 @@ function Table(){
                     <div className="leftPlayer">{renderContainer(1)}</div>
                     <div className="topPlayer">{renderContainer(0)}</div>
                     <div className="rightPlayer">{renderContainer(3)}</div>
-                    <div className="center">{renderCenterCard()}</div>
+                    <div className="center">{renderCenterCard()} <div className="chips centrali"><p>{centralChips}</p></div></div>
              </div>
               <div className='bottom'>{posizioneGiocatori[2]}</div>
               <div className='left'>{posizioneGiocatori[1]}</div>
               <div className='top'>{posizioneGiocatori[0]}</div>
               <div className='right'>{posizioneGiocatori[3]}</div>
+              <Commands/>
         </>
     )
 }

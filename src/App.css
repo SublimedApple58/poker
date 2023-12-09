@@ -18,11 +18,11 @@ body{
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
-                        'l t t t r'
+                        'e t t t p'
                         'l c c c r'
                         'l c c c r'
                         'l c c c r'
-                        'l b b b r';
+                        'w b b b q';
 }
 
 

@@ -5,7 +5,7 @@ interface game {
 }
 
 const initialState: game = {
-    round: 0
+    round: 1
 };
 
 const gameSlice = createSlice({
