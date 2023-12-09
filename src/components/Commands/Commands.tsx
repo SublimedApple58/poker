@@ -23,12 +23,15 @@ function Commands(){
         // } else {
         //     setStyle(invisible)
         // }
+        console.log(amountInput.current?.valueAsNumber)
+        if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
+            amountInput.current.value = '0';
+        }
 
-        if(amountInput.current?.valueAsNumber != 0){
-            dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}))
-            if(amountInput.current != null){
-                amountInput.current.value = '0';
-            }
+        dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}))
+
+        if(amountInput.current != null){
+            amountInput.current.value = '0';
         }
     }
 
