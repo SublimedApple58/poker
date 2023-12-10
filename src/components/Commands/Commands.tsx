@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeChips} from '../../state/formPlayer/nPlayerSlice';
@@ -9,9 +9,9 @@ function Commands(){
 
     const 
         amountInput = useRef<HTMLInputElement | null>(null),
-        // invisible = {
-        //     opacity: '0'
-        // },
+        invisible = {
+            opacity: '0'
+        },
         visible = {
             opacity: '1'
         },
@@ -19,13 +19,16 @@ function Commands(){
         minimum = useSelector((state: RootState)=> state.game.lastBet),
         players = useSelector((state: RootState)=> state.giocatori.players.length),
         turn = useSelector((state: RootState)=> state.game.turn)
-    // let [style, setStyle] = useState(invisible); 
+    let [style, setStyle] = useState(visible); 
 
     useEffect(()=> {
         if(turn!=1){
+            setStyle(invisible);
             setTimeout(()=>{
                 action(turn)
             }, 2000)
+        } else {
+            setStyle(visible);
         }
     }, [turn])
 
@@ -65,13 +68,13 @@ function Commands(){
 
     return (
         <>
-            <div className="commands">
+            <div className="commands" style={style}>
                 <button>fold</button>
                 <button>check</button>
                 <button onClick={amounting}>call</button>
                 <button>raise</button>
             </div>
-            <div className="amount" style={visible} >
+            <div className="amount" style={style} >
                 <input type="number" placeholder='Insert amount' ref={amountInput}/>
             </div>
         </>
