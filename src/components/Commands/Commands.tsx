@@ -23,8 +23,10 @@ function Commands(){
 
     useEffect(()=> {
         if(turn!=1){
-            dispatch(removeChips({ref: turn, chips: minimum}));
-            dispatch(nextTurn(players));
+            setTimeout(()=>{
+                dispatch(removeChips({ref: turn, chips: minimum}));
+                dispatch(nextTurn(players));
+            }, 2000)
         }
     }, [turn])
 
@@ -61,8 +63,8 @@ function Commands(){
             <div className="commands">
                 <button>fold</button>
                 <button>check</button>
-                <button>bet</button>
-                <button onClick={()=>{amounting(); dispatch(nextTurn(players))}}>raise</button>
+                <button onClick={()=>{amounting(); dispatch(nextTurn(players))}}>call</button>
+                <button>raise</button>
             </div>
             <div className="amount" style={visible} >
                 <input type="number" placeholder='Insert amount' ref={amountInput}/>
