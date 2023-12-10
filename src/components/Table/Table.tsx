@@ -3,7 +3,7 @@ import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
 import CardContainer from "../CardContainer/CardContainer";
-import { ReactElement, useEffect} from "react";
+import { ReactElement} from "react";
 import Card from "../Cards/Card";
 import Commands from "../Commands/Commands";
 
@@ -12,14 +12,10 @@ function Table(){
     const
         numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length),
         carteUscite = useSelector((state: RootState) => state.carteUscite),
-        centralChips = useSelector((state: RootState) => state.giocatori.centralChips),
-        turn = useSelector((state: RootState)=> state.game.turn),
-        playerMove = useSelector((state:  RootState)=> state.game.playerMove)
+        centralChips = useSelector((state: RootState) => state.giocatori.centralChips)
+        // playerMove = useSelector((state:  RootState)=> state.game.playerMove),
+        // dispatch = useDispatch();
 
-
-    useEffect(()=> {
-        
-    }, [])
 
     /*
     algoritmo per scelta posizioni deve:

@@ -1,7 +1,7 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeChips } from '../../state/formPlayer/nPlayerSlice';
+import { removeChips} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
 
@@ -20,6 +20,13 @@ function Commands(){
         players = useSelector((state: RootState)=> state.giocatori.players.length),
         turn = useSelector((state: RootState)=> state.game.turn)
     // let [style, setStyle] = useState(invisible); 
+
+    useEffect(()=> {
+        if(turn!=1){
+            dispatch(removeChips({ref: turn, chips: minimum}));
+            dispatch(nextTurn(players));
+        }
+    }, [turn])
 
     function amounting(){
         // if(style==invisible){
@@ -52,10 +59,10 @@ function Commands(){
     return (
         <>
             <div className="commands">
-                <button onClick={()=>dispatch(nextTurn(players))}>fold</button>
+                <button>fold</button>
                 <button>check</button>
                 <button>bet</button>
-                <button onClick={()=>amounting()}>raise</button>
+                <button onClick={()=>{amounting(); dispatch(nextTurn(players))}}>raise</button>
             </div>
             <div className="amount" style={visible} >
                 <input type="number" placeholder='Insert amount' ref={amountInput}/>
