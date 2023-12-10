@@ -24,11 +24,15 @@ function Commands(){
     useEffect(()=> {
         if(turn!=1){
             setTimeout(()=>{
-                dispatch(removeChips({ref: turn, chips: minimum}));
-                dispatch(nextTurn(players));
+                action(turn)
             }, 2000)
         }
     }, [turn])
+
+    function action(turnof: number){
+        dispatch(removeChips({ref: turnof, chips: minimum}));
+        dispatch(nextTurn(players))
+    }
 
     function amounting(){
         // if(style==invisible){
@@ -46,6 +50,7 @@ function Commands(){
                     dispatch(updateMin(amountInput.current.valueAsNumber))
                     dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
                     amountInput.current.value = '0';
+                    dispatch(nextTurn(players));
                 }
             }
         } else {
@@ -63,7 +68,7 @@ function Commands(){
             <div className="commands">
                 <button>fold</button>
                 <button>check</button>
-                <button onClick={()=>{amounting(); dispatch(nextTurn(players))}}>call</button>
+                <button onClick={amounting}>call</button>
                 <button>raise</button>
             </div>
             <div className="amount" style={visible} >
