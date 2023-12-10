@@ -20,18 +20,20 @@ function Form(){
       function setPlayers(){
 
         const nPlayers = riferimento.current?.valueAsNumber ?? 0;
-
+        const carte = cardHelper.generateCasualCard(nPlayers);
+        let contatore = 0;
 
           if(nPlayers>2){
             for(let i = 1; i<=nPlayers; i++){
                 if(i==1){
-                    dispatch(addPlayer({name: i, chips: 100, isVisible: true}))
+                    dispatch(addPlayer({name: i, chips: 100, isVisible: true, carte: [carte[contatore], carte[contatore+1]]}))
                 } else {
-                    dispatch(addPlayer({name: i, chips: 100, isVisible: false}))
+                    dispatch(addPlayer({name: i, chips: 100, isVisible: false, carte: [carte[contatore], carte[contatore+1]]}))
                 }
+                contatore+=2;
+            }
+            dispatch(setCards(carte));
           }
-        }
-          dispatch(setCards(cardHelper.generateCasualCard(nPlayers)))
         }
 
         // lo state non si aggiorna subito, solo alla fine della vita del componente

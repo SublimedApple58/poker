@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface players{
     players: any[],
-    centralChips: number
+    centralChips: number,
+    centralCards: number[]
 }
 
 const initialState: players ={
     players: [],
-    centralChips: 0
+    centralChips: 0,
+    centralCards: []
 }
 
 interface scommessa{
@@ -52,9 +54,14 @@ const playerSlice = createSlice({
                 }),
                 centralChips: 0,
             })
+        },
+        setCentralCars: (state, action: {payload: number[]}) => {
+            return Object.assign({}, state, {
+                centralCards: Array.from(action.payload)
+            })
         }
     }
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, win, removeChips} = playerSlice.actions;
+export const {addPlayer, win, removeChips, setCentralCars} = playerSlice.actions;

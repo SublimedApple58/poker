@@ -4,14 +4,12 @@ interface game {
     round: number,
     turn: number,
     lastBet: number,
-    playerMove: boolean
 }
 
 const initialState: game = {
     round: 1,
     turn: 1,
     lastBet: 5,
-    playerMove: false
 };
 
 const gameSlice = createSlice({
@@ -42,11 +40,6 @@ const gameSlice = createSlice({
                 lastBet: action.payload
             })
         },
-        done: (state) => {
-            return Object.assign({}, state, {
-                playerMove: true
-            })
-        }
     }
 })
 

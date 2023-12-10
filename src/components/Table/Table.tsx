@@ -1,4 +1,4 @@
-import {useSelector } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
 import './Table.css'
@@ -6,6 +6,7 @@ import CardContainer from "../CardContainer/CardContainer";
 import { ReactElement} from "react";
 import Card from "../Cards/Card";
 import Commands from "../Commands/Commands";
+import { setCentralCars } from "../../state/formPlayer/nPlayerSlice";
 
 
 function Table(){
@@ -13,9 +14,9 @@ function Table(){
         numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length),
         carteUscite = useSelector((state: RootState) => state.carteUscite),
         centralChips = useSelector((state: RootState) => state.giocatori.centralChips),
-        turn = useSelector((state: RootState) => state.game.turn)
+        turn = useSelector((state: RootState) => state.game.turn),
         // playerMove = useSelector((state:  RootState)=> state.game.playerMove),
-        // dispatch = useDispatch();
+        dispatch = useDispatch();
 
 
     /*
@@ -70,8 +71,10 @@ function Table(){
 
         const carteCentrali: ReactElement[] = [];
         let contatore = carteUscite.length-1;
+        const carteStato: number[] = [];
 
         for(let i = 0; i<5; i++){
+            carteStato.push(carteUscite[contatore])
             if(i == 0 || i == 1){
                 carteCentrali.push(<Card isVisible={true} numero={carteUscite[contatore]} key={i}/>);
                 contatore -= 1;
@@ -81,7 +84,8 @@ function Table(){
             }
             
         }
-
+        
+        dispatch(setCentralCars(carteStato))
         return carteCentrali;
     }
 
