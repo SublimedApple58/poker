@@ -4,6 +4,7 @@ import { addPlayer } from '../../state/formPlayer/nPlayerSlice';
 import { useRef } from 'react';
 import { setCards } from '../../state/releasedCards/releasedSlice';
 import cardHelper from '../../helper/cardHelper';
+import { setTurn } from '../../state/gameStatus/gameSlice';
 
 function Form(){
 
@@ -12,15 +13,12 @@ function Form(){
   riferimento = useRef<HTMLInputElement | null>(null),
   dispatch = useDispatch();
 
-  // useEffect(()=>{
-  //   console.log(numberPlayer)
-  // }, [numberPlayer])
-
-
       function setPlayers(){
 
-        const nPlayers = riferimento.current?.valueAsNumber ?? 0;
-        const carte = cardHelper.generateCasualCard(nPlayers);
+        const 
+          nPlayers = riferimento.current?.valueAsNumber ?? 0,
+          carte = cardHelper.generateCasualCard(nPlayers);
+
         let contatore = 0;
 
           if(nPlayers>2){
@@ -33,6 +31,7 @@ function Form(){
                 contatore+=2;
             }
             dispatch(setCards(carte));
+            dispatch(setTurn(cardHelper.casualPlayerTurn(nPlayers)))
           }
         }
 

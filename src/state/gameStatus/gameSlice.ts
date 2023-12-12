@@ -9,7 +9,7 @@ interface game {
 
 const initialState: game = {
     round: 1,
-    playerTurn: 3,
+    playerTurn: 1,
     turns: 1,
     lastBet: 5,
 };
@@ -18,6 +18,11 @@ const gameSlice = createSlice({
     name: 'game',
     initialState, 
     reducers: {
+        setTurn: (state, action: {payload: number}) =>{
+            return Object.assign({}, state, {
+                playerTurn: action.payload
+            })
+        },
         nextRound: (state) => {
             return Object.assign({}, state, {
                 round: state.round+1,
@@ -64,4 +69,4 @@ const gameSlice = createSlice({
 })
 
 export default gameSlice.reducer;
-export const { nextRound, updateMin, nextTurn} = gameSlice.actions
+export const { nextRound, updateMin, nextTurn, setTurn} = gameSlice.actions
