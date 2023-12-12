@@ -18,19 +18,21 @@ function Commands(){
         dispatch = useDispatch(),
         minimum = useSelector((state: RootState)=> state.game.lastBet),
         players = useSelector((state: RootState)=> state.giocatori.players.length),
-        turn = useSelector((state: RootState)=> state.game.turn)
+        // turns = useSelector((state: RootState)=> state.game.turns),
+        playerTurn = useSelector((state: RootState)=> state.game.playerTurn)
+
     let [style, setStyle] = useState(visible); 
 
     useEffect(()=> {
-        if(turn!=1){
+        if(playerTurn!=1){
             setStyle(invisible);
             setTimeout(()=>{
-                action(turn)
+                action(playerTurn)
             }, 2000)
         } else {
             setStyle(visible);
         }
-    }, [turn])
+    }, [playerTurn])
 
     function action(turnof: number){
         dispatch(removeChips({ref: turnof, chips: minimum}));
@@ -43,7 +45,7 @@ function Commands(){
         // } else {
         //     setStyle(invisible)
         // }
-        if(turn ==  1){ 
+        if(playerTurn ==  1){ 
             if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
                 amountInput.current.value = '0';
             } else {

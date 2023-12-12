@@ -2,13 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface game {
     round: number,
-    turn: number,
+    playerTurn: number,
+    turns: number,
     lastBet: number,
 }
 
 const initialState: game = {
     round: 1,
-    turn: 1,
+    playerTurn: 3,
+    turns: 1,
     lastBet: 5,
 };
 
@@ -20,19 +22,37 @@ const gameSlice = createSlice({
             return Object.assign({}, state, {
                 round: state.round+1,
                 lastBet: 5,
-                playerMove: false
             });
         },
         nextTurn: (state, action: {payload: number}) => {
-            if(state.turn == action.payload){
-                return Object.assign({}, state, {
-                    turn: 1,
-                    round: state.round + 1
-                })
+            if(state.playerTurn >= action.payload){
+                if(state.turns >= action.payload){
+                    return Object.assign({}, state, {
+                        turns: 1,
+                        playerTurn: 1,
+                        round: state.round+1,
+                        lastBet: 5,
+                    })
+                } else {
+                    return Object.assign({}, state, {
+                        turns: state.turns + 1,
+                        playerTurn: 1
+                    })
+                }
             } else {
-                return Object.assign({}, state, {
-                    turn: state.turn+1
-                })
+                if(state.turns >= action.payload){
+                    return Object.assign({}, state, {
+                        turns: 1,
+                        playerTurn: state.playerTurn+1,
+                        round: state.round+1,
+                        lastBet: 5,
+                    })
+                } else {
+                    return Object.assign({}, state, {
+                        turns: state.turns + 1,
+                        playerTurn: state.playerTurn+1
+                    })
+                }
             }
         },
         updateMin: (state, action: {payload: number}) => {

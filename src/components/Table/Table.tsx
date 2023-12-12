@@ -14,7 +14,7 @@ function Table(){
         numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length),
         carteUscite = useSelector((state: RootState) => state.carteUscite),
         centralChips = useSelector((state: RootState) => state.giocatori.centralChips),
-        turn = useSelector((state: RootState) => state.game.turn),
+        playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         // playerMove = useSelector((state:  RootState)=> state.game.playerMove),
         dispatch = useDispatch();
 
@@ -104,7 +104,7 @@ function Table(){
               <div className='top'>{posizioneGiocatori[0]}</div>
               <div className='right'>{posizioneGiocatori[3]}</div>
               <div className="turno">
-                <h1>Turno: giocatore {turn}</h1>
+                <h1>Turno: giocatore {playerTurn}</h1>
               </div>
               <Commands/>
         </>

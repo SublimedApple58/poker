@@ -13,7 +13,7 @@ function App() {
     <>  
           <div className="contenitore">       
               {numberPlayer <= 2 && <Form />}
-              {numberPlayer >= 3 && <Table />}
+              {numberPlayer >= 3 && numberPlayer <=8  && <Table />}
           </div>
     </>
   )
