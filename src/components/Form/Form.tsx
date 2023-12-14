@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import cardHelper from '../../helper/cardHelper';
 import { setTurn } from '../../state/gameStatus/gameSlice';
 import { setCentralCards } from "../../state/formPlayer/nPlayerSlice";
+import gameHelper from '../../helper/gameHelper';
 
 function Form() {
   const 
@@ -27,7 +28,7 @@ function Form() {
           contatore+=2;
         }
 
-        dispatch(setTurn(cardHelper.casualPlayerTurn(nPlayers)))
+        dispatch(setTurn(gameHelper.casualPlayerTurn(nPlayers)))
         dispatch(setCentralCards(carte.slice(contatore)))
       }
     }
