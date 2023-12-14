@@ -2,44 +2,41 @@ import './Form.css'
 import { useDispatch } from 'react-redux';
 import { addPlayer } from '../../state/formPlayer/nPlayerSlice';
 import { useRef } from 'react';
-import { setCards } from '../../state/releasedCards/releasedSlice';
 import cardHelper from '../../helper/cardHelper';
 import { setTurn } from '../../state/gameStatus/gameSlice';
+import { setCentralCards } from "../../state/formPlayer/nPlayerSlice";
 
-function Form(){
-
-
+function Form() {
   const 
-  riferimento = useRef<HTMLInputElement | null>(null),
-  dispatch = useDispatch();
+    riferimento = useRef<HTMLInputElement | null>(null),
+    dispatch = useDispatch();
 
-      function setPlayers(){
+  function setPlayers(){
+    const 
+      nPlayers = riferimento.current?.valueAsNumber ?? 0,
+      carte = cardHelper.generateCasualCard(nPlayers);
 
-        const 
-          nPlayers = riferimento.current?.valueAsNumber ?? 0,
-          carte = cardHelper.generateCasualCard(nPlayers);
+    let contatore = 0;
 
-        let contatore = 0;
-
-          if(nPlayers>2){
-            for(let i = 1; i<=nPlayers; i++){
-                if(i==1){
-                    dispatch(addPlayer({name: i, chips: 100, isVisible: true, carte: [carte[contatore], carte[contatore+1]]}))
-                } else {
-                    dispatch(addPlayer({name: i, chips: 100, isVisible: false, carte: [carte[contatore], carte[contatore+1]]}))
-                }
-                contatore+=2;
-            }
-            dispatch(setCards(carte));
-            dispatch(setTurn(cardHelper.casualPlayerTurn(nPlayers)))
-          }
+      if(nPlayers>2){
+        for(let i = 1; i<=nPlayers; i++){
+          const
+                  integerTableSide = Math.trunc(i/4),
+                  tableSide = 3 - (i - (integerTableSide * 4));
+          dispatch(addPlayer({name: i, chips: 100, isVisible: i==1, side: tableSide, carte: [carte[contatore], carte[contatore+1]]}))
+          contatore+=2;
         }
 
-        // lo state non si aggiorna subito, solo alla fine della vita del componente
+        dispatch(setTurn(cardHelper.casualPlayerTurn(nPlayers)))
+        dispatch(setCentralCards(carte.slice(contatore)))
+      }
+    }
 
-        // function video(){
-        //   console.log(numberPlayer);
-        // }
+    // lo state non si aggiorna subito, solo alla fine della vita del componente
+
+    // function video(){
+    //   console.log(numberPlayer);
+    // }
 
     return(
         <>

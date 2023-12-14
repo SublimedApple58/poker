@@ -1,92 +1,30 @@
-import {useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import Player from "../Player/Player";
-import './Table.css'
 import CardContainer from "../CardContainer/CardContainer";
 import { ReactElement} from "react";
 import Card from "../Cards/Card";
 import Commands from "../Commands/Commands";
-import { setCentralCars } from "../../state/formPlayer/nPlayerSlice";
-
+import './Table.css';
 
 function Table(){
     const
-        numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length),
-        carteUscite = useSelector((state: RootState) => state.carteUscite),
+        players = useSelector((state: RootState)=> state.giocatori.players),
         centralChips = useSelector((state: RootState) => state.giocatori.centralChips),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         round = useSelector((state: RootState)=> state.game.round),
-        dispatch = useDispatch();
+        centralCards = useSelector((state: RootState)=> state.giocatori.centralCards)
 
-
-    /*
-    algoritmo per scelta posizioni deve:
-    mettere il primo giocatore alla posizione bottom [0], secondo posizione left [1], terzo posizione top [2], quarto posizione right [3] etc...
-    */
-    const posizioneGiocatori: ReactElement<typeof Player>[][] = [[], [], [], []];
-    let nPlayer: number = 0;
-
-
-    for(let i = 1; i<=numberPlayer; i++){
-        const
-              integerTableSide = Math.trunc(i/4),
-              tableSide = 3 - (i - (integerTableSide * 4));
-
-        if(i==1){
-            posizioneGiocatori[tableSide].push(<Player isUser={true} key={i} player={nPlayer}/>);
-        } else {
-            posizioneGiocatori[tableSide].push(<Player isUser={false} key={i} player={nPlayer}/>);
-        }
-        nPlayer++;
-
-      }
-      
-        let keys = 0;
-        let giocatore = 1;
-
-    function renderContainer(side: number){
-
-        const posizioneContainer: ReactElement<typeof Card>[][] = [[], [], [], []]
-
-        for(let i =0; i<posizioneGiocatori[side].length; i+=1){
-            if(side == 2){
-                if(i==0){
-                    posizioneContainer[side].push(<CardContainer isVisible={true} numero={carteUscite} value={keys} player={`player${giocatore}`} key={keys}/>)
-                } else {
-                    posizioneContainer[side].push(<CardContainer isVisible={false} numero={carteUscite} value={keys} player={`player${giocatore}`} key={keys}/>)
-                }
-            } else {
-                posizioneContainer[side].push(<CardContainer isVisible={false} numero={carteUscite} value={keys} player={`player${giocatore}`} key={keys}/>)
-            }
-            keys+=2;
-            giocatore++;
-            
-        }
-
-        return posizioneContainer[side].map(div => div);
-
+    function renderPlayer(side: number) : ReactElement[] {
+        return players.filter(player => player.side === side).map((player, i) => <Player isUser={player.isVisible} key={i} player={i}/>);
     }
 
-    function renderCenterCard(){
+    function renderContainer(side: number) : ReactElement[] {
+        return players.filter(player => player.side === side).map((player, i) => <CardContainer isVisible={player.isVisible} numero={player.carte} key={i}/>);
+    }
 
-        const carteCentrali: ReactElement[] = [];
-        let contatore = carteUscite.length-1;
-        const carteStato: number[] = [];
-
-        for(let i = 0; i<5; i++){
-            carteStato.push(carteUscite[contatore])
-            if(i == 0 || i == 1){
-                carteCentrali.push(<Card isVisible={true} numero={carteUscite[contatore]} key={i}/>);
-                contatore -= 1;
-            } else {
-                carteCentrali.push(<Card isVisible={false} numero={carteUscite[contatore]} key={i}/>);
-                contatore -= 1;
-            }
-            
-        }
-        
-        dispatch(setCentralCars(carteStato))
-        return carteCentrali;
+    function renderCenterCard() : ReactElement[] {
+        return centralCards.map((carta, i) => <Card isVisible={i < 2} numero={carta} key={i}/>);
     }
 
 
@@ -99,10 +37,10 @@ function Table(){
                     <div className="rightPlayer">{renderContainer(3)}</div>
                     <div className="center">{renderCenterCard()} <div className="chips centrali"><p>{centralChips}</p></div></div>
              </div>
-              <div className='bottom'>{posizioneGiocatori[2]}</div>
-              <div className='left'>{posizioneGiocatori[1]}</div>
-              <div className='top'>{posizioneGiocatori[0]}</div>
-              <div className='right'>{posizioneGiocatori[3]}</div>
+              <div className='bottom'>{renderPlayer(2)}</div>
+              <div className='left'>{renderPlayer(1)}</div>
+              <div className='top'>{renderPlayer(0)}</div>
+              <div className='right'>{renderPlayer(3)}</div>
               <div className="turno">
                 <h1>Turno: giocatore {playerTurn}</h1>
                 <h1>Round {round}</h1>

@@ -55,7 +55,7 @@ const playerSlice = createSlice({
                 centralChips: 0,
             })
         },
-        setCentralCars: (state, action: {payload: number[]}) => {
+        setCentralCards: (state, action: {payload: number[]}) => {
             return Object.assign({}, state, {
                 centralCards: Array.from(action.payload)
             })
@@ -64,4 +64,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, win, removeChips, setCentralCars} = playerSlice.actions;
+export const {addPlayer, win, removeChips, setCentralCards} = playerSlice.actions;

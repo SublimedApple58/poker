@@ -18,7 +18,6 @@ function Commands(){
         dispatch = useDispatch(),
         minimum = useSelector((state: RootState)=> state.game.lastBet),
         players = useSelector((state: RootState)=> state.giocatori.players.length),
-        // turns = useSelector((state: RootState)=> state.game.turns),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn)
 
     let [style, setStyle] = useState(visible); 
@@ -35,16 +34,11 @@ function Commands(){
     }, [playerTurn])
 
     function action(turnof: number){
-        dispatch(removeChips({ref: turnof, chips: minimum}));
+        // dispatch(removeChips({ref: turnof, chips: minimum}));
         dispatch(nextTurn(players))
     }
 
     function amounting(){
-        // if(style==invisible){
-        //     setStyle(visible)
-        // } else {
-        //     setStyle(invisible)
-        // }
         if(playerTurn ==  1){ 
             if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
                 amountInput.current.value = '0';
@@ -53,7 +47,7 @@ function Commands(){
                     alert(`your bet must be a minimum of ${minimum}`)
                 } else if(amountInput.current != null){
                     dispatch(updateMin(amountInput.current.valueAsNumber))
-                    dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
+                    // dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
                     amountInput.current.value = '0';
                     dispatch(nextTurn(players));
                 }
