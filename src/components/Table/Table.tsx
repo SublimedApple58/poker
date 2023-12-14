@@ -16,7 +16,7 @@ function Table(){
         centralCards = useSelector((state: RootState)=> state.giocatori.centralCards)
 
     function renderPlayer(side: number) : ReactElement[] {
-        return players.filter(player => player.side === side).map((player, i) => <Player isUser={player.isVisible} key={i} player={i}/>);
+        return players.filter(player => player.side === side).map((player, i) => <Player isUser={player.isVisible} key={i} chips={player.chips}/>);
     }
 
     function renderContainer(side: number) : ReactElement[] {

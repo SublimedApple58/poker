@@ -34,7 +34,7 @@ function Commands(){
     }, [playerTurn])
 
     function action(turnof: number){
-        // dispatch(removeChips({ref: turnof, chips: minimum}));
+        dispatch(removeChips({ref: turnof, chips: minimum}));
         dispatch(nextTurn(players))
     }
 
@@ -47,7 +47,7 @@ function Commands(){
                     alert(`your bet must be a minimum of ${minimum}`)
                 } else if(amountInput.current != null){
                     dispatch(updateMin(amountInput.current.valueAsNumber))
-                    // dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
+                    dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
                     amountInput.current.value = '0';
                     dispatch(nextTurn(players));
                 }

@@ -1,7 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface player{
+    name: number,
+    chips: number,
+    isVisible: boolean,
+    side: number,
+    carte: number[]
+}
+
 interface players{
-    players: any[],
+    players: player[],
     centralChips: number,
     centralCards: number[]
 }
@@ -27,7 +35,6 @@ const playerSlice = createSlice({
             })
         },
         removeChips: (state, action: {payload: scommessa}) => {
-
             return Object.assign({}, state, {
                 players: state.players.map(giocatore => {
                     if(giocatore.name == action.payload.ref){
