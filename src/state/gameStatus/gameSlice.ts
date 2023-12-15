@@ -5,6 +5,7 @@ interface game {
     playerTurn: number,
     turns: number,
     lastBet: number,
+    difficulty: string
 }
 
 const initialState: game = {
@@ -12,6 +13,7 @@ const initialState: game = {
     playerTurn: 1,
     turns: 1,
     lastBet: 5,
+    difficulty: ''
 };
 
 const gameSlice = createSlice({
@@ -65,8 +67,13 @@ const gameSlice = createSlice({
                 lastBet: action.payload
             })
         },
+        setDifficulty: (state, action: {payload: string}) => {
+            return Object.assign({}, state, {
+                difficulty: action.payload
+            })
+        }
     }
 })
 
 export default gameSlice.reducer;
-export const { nextRound, updateMin, nextTurn, setTurn} = gameSlice.actions
+export const { nextRound, updateMin, nextTurn, setTurn, setDifficulty} = gameSlice.actions

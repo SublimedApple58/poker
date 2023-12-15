@@ -18,7 +18,8 @@ function Commands(){
         dispatch = useDispatch(),
         minimum = useSelector((state: RootState)=> state.game.lastBet),
         players = useSelector((state: RootState)=> state.giocatori.players.length),
-        playerTurn = useSelector((state: RootState)=> state.game.playerTurn)
+        playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
+        difficulty = useSelector((state: RootState) => state.game.difficulty)
 
     let [style, setStyle] = useState(visible); 
 
@@ -27,16 +28,36 @@ function Commands(){
             setStyle(invisible);
             setTimeout(()=>{
                 action(playerTurn)
-            }, 2000)
+            }, 1000)
         } else {
             setStyle(visible);
         }
     }, [playerTurn])
 
     function action(turnof: number){
-        dispatch(removeChips({ref: turnof, chips: minimum}));
+        switch(difficulty) {
+            case 'easy':
+                dispatch(removeChips({ref: turnof, chips: minimum}));
+                break;
+            case 'medium':
+                dispatch(removeChips({ref: turnof, chips: minimum + 2}));
+                break;
+            case 'hard':
+                dispatch(removeChips({ref: turnof, chips: minimum + 5}));
+        }
         dispatch(nextTurn(players))
     }
+
+
+
+
+                // SISTEMARE IMMEDIATAMENTE IL SETTAGGIO DEL MINIMO PER OGNI SCOMMESSA DELLA CPU
+
+
+
+
+
+
 
     function amounting(){
         if(playerTurn ==  1){ 
