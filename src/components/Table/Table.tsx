@@ -27,7 +27,6 @@ function Table(){
         return centralCards.map((carta, i) => <Card isVisible={i < 2} numero={carta} key={i}/>);
     }
 
-
     return(
         <>
              <div className='tavolo'>

@@ -20,6 +20,7 @@ function Form() {
     [level, setLevel] = useState(''),
     dispatch = useDispatch();
   
+  console.log(gameHelper.calcScore([3, 3], [2, 1, 3, 4, 4]))
 
   function setShadow(emoji: string) {
       setEasy(noShadow);

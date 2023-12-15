@@ -37,27 +37,31 @@ function Commands(){
     function action(turnof: number){
         switch(difficulty) {
             case 'easy':
-                dispatch(removeChips({ref: turnof, chips: minimum}));
+                easy(turnof);
                 break;
             case 'medium':
-                dispatch(removeChips({ref: turnof, chips: minimum + 2}));
+                medium(turnof);
                 break;
             case 'hard':
-                dispatch(removeChips({ref: turnof, chips: minimum + 5}));
+                hard(turnof);
         }
         dispatch(nextTurn(players))
     }
 
+    function easy(turnof: number) {
+        let bet = minimum;
+        dispatch(removeChips({ref: turnof, chips: bet}));
+    }
 
+    function medium(turnof: number) {
+        let bet = minimum + 2;
+        dispatch(removeChips({ref: turnof, chips: bet}));
+    }
 
-
-                // SISTEMARE IMMEDIATAMENTE IL SETTAGGIO DEL MINIMO PER OGNI SCOMMESSA DELLA CPU
-
-
-
-
-
-
+    function hard(turnof: number) {
+        let bet = minimum + 5;
+        dispatch(removeChips({ref: turnof, chips: bet}));
+    }
 
     function amounting(){
         if(playerTurn ==  1){ 
