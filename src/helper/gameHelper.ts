@@ -4,9 +4,28 @@ class gameHelper{
         return turno;
     }
     
+    static verifica(array: number[], numero: number){
+        array.sort();
+        let maxSequence: number = 2;
+        let currentSequence: number = 1;
+        for(let i = 0; i<array.length; i++){
+            if(i>0){
+                array[i] == array[i-1] ? currentSequence++ : currentSequence = 1;
+                currentSequence > maxSequence ? maxSequence = currentSequence : maxSequence;
+            }
+        }
+        return maxSequence>=numero;
+    }
+
     static calcScore(playerCards: number[], tableCard?: number[]){
+        const
+         coppia: number = 1,
+         doppiaCoppia: number = 2,
+         tris: number = 3,
+         full: number = 6,
+         poker: number = 7;
+
         let score: number = 0; 
-        // const cartaAlta = Math.max(...playerCards);
         const allCards: number[] = [];
 
         playerCards.map(carta => allCards.push(carta));
@@ -30,27 +49,43 @@ class gameHelper{
             lastCard = allCards[i];
         }
         switch(numeriUguali.length) {
+            //niente
+            case 0:
+                break;
             // coppia
             case 2:
-                score += 1
+                score += coppia
                 break;
             // tris
             case 3: 
-                score += 3
+                score += tris
                 break;
             // doppia coppia o poker
             case 4:
-                let condizione: boolean = true;
-                for(let i = 0; i<numeriUguali.length; i++){
-                    if(i>0){
-                        numeriUguali[i] != numeriUguali[i-1] ? condizione = false : condizione;
-                    }
-                }
-                condizione ? score += 7 : score += 2;
+                let condizione: boolean = this.verifica(numeriUguali, 4)
+                condizione ? score += poker : score += doppiaCoppia;
                 break;
             // full
             case 5: 
-                score += 6;
+                score += full;
+                break;
+            // poker o full o doppia coppia
+            case 6: 
+                if(this.verifica(numeriUguali, 4)){
+                    score += poker;
+                } else if(this.verifica(numeriUguali, 3)){
+                    score += full;
+                } else {
+                    score += doppiaCoppia;
+                }
+                break; 
+            // poker o full 
+            case 7: 
+                if(this.verifica(numeriUguali, 4)){
+                    score += poker;
+                } else {
+                    score += full;
+                }
                 break;
         }
 
