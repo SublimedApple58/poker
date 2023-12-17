@@ -1,7 +1,8 @@
 
 interface cardProperties{
     seme: string,
-    numero: string,
+    nome: string,
+    numero: number,
     valore: number,
     src: string
 }
@@ -9,48 +10,56 @@ interface cardProperties{
 class cardHelper{
     static converNumberToCard (number: number): cardProperties {
 
-            let numero: string;
-            let seme: string;
-            let valore: number;
-            let src: string
+            let 
+                nome: string,
+                numero: number,
+                seme: string,
+                valore: number,
+                src: string;
 
             if(number<=13){
                 seme = 'hearts';
                 valore = number;
-                numero = valore.toString();
+                nome = valore.toString();
+                numero = valore;
             } else if(number<=26){
                 seme = 'spades';
                 valore = number - 13;
-                numero = valore.toString();
+                nome = valore.toString();
+                numero = valore;
             } else if(number<=39){
                 seme = 'clubs';
                 valore = number - 26;
-                numero = valore.toString();
+                nome = valore.toString();
+                numero = valore;
             } else{
                 seme = 'diamonds';
                 valore = number - 39;
-                numero = valore.toString();
+                nome = valore.toString();
+                numero = valore;
             }
 
-            switch (parseInt(numero)) {
+            switch (parseInt(nome)) {
                 case 1:
-                    numero = 'ace';
+                    nome = 'ace';
                     valore = 14;
                     break;
                 case 11: 
-                    numero = 'jack';
+                    nome = 'jack';
                     break;
                 case 12: 
-                    numero = 'queen';
+                    nome = 'queen';
                     break;
                 case 13:
-                    numero = 'king';
+                    nome = 'king';
                     break;
             }
 
-            src = `../../cartePng/${numero}_of_${seme}.png`;
+            numero = 0;
 
-            return {seme, numero, valore, src}
+            src = `../../cartePng/${nome}_of_${seme}.png`;
+
+            return {seme, nome, numero, valore, src}
         }
 
         static generateCasualCard(playersNum: number): number[]{
