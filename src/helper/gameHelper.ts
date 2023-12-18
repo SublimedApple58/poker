@@ -164,6 +164,8 @@ class gameHelper{
                 return a < b ? -1 : 1;
             }
         });
+
+        const x = this.ugualianze(uguali);
         switch(uguali.length) {
             //niente
             case 0:
@@ -178,7 +180,7 @@ class gameHelper{
                 break;
             // doppia coppia o poker
             case 4: //fixare
-                this.ugualianze(uguali) == 4 ? score = poker : score = doppiaCoppia;
+                x == 4 ? score = poker : score = doppiaCoppia;
                 break;
             // full
             case 5: 
@@ -186,17 +188,14 @@ class gameHelper{
                 break;
             // poker o full o doppia coppia
             case 6: //fixare
-                if(this.verifica1(allNumbers, false)){
-                    score = poker;
-                } else if(this.verifica1(allNumbers, false)){
-                    score = full;
-                } else {
-                    score = doppiaCoppia;
-                }
+                x == 4 ? score = poker : score;
+                x == 3 ? score = full : score;
+                x == 2 ? score = doppiaCoppia : score;
                 break; 
             // poker o full 
             case 7: // fixare
-                score = full;
+                x == 4 ? score = poker : score;
+                x == 3 ? score = full : score;
                 break;
         }
 
