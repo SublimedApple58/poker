@@ -104,6 +104,56 @@ class gameHelper{
 
     }
 
+    static checkScalaReale(array: cardProperties[]){
+            let 
+             semi: string[] = [],
+             condizione: boolean = true;
+
+            for(let i = 0; i<array.length; i++){
+                if(i>0){
+                    if(array[i].seme != array[i-1].seme && !semi.includes(array[i].seme)){
+                        semi.push(array[i].seme)
+                    }
+                } else {
+                    semi.push(array[i].seme)
+                }
+            }
+            for(let i = 0; i<semi.length; i++){
+                condizione = true;
+                let arraySeme = [];
+                for(let j = 0; j<array.length; j++){
+                    if(array[j].seme == semi[i]){
+                        arraySeme.push(array[j].numero);
+                    }
+                }
+                arraySeme.sort(function(a, b) {
+                    if(a === b){
+                        return 0;
+                    } else {
+                        return a < b ? -1 : 1;
+                    }
+                });
+
+                if(arraySeme.includes(11)){
+                    for(let j = 0; j<arraySeme.length; j++){
+                        if(arraySeme[j] == 11){
+                            for(let n = j; n<arraySeme.length; n++){
+                                if(arraySeme[n] != arraySeme[n-1]+1){
+                                    condizione = false;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    condizione = false;
+                }
+                if(condizione){
+                    break;
+                }
+            }
+            return condizione;
+    }
+
     static ugualianze(array: number[]) {
         let diversi: number[] = [];
     
@@ -141,8 +191,8 @@ class gameHelper{
          colore: number = 5,
          full: number = 6,
          poker: number = 7,
-         scalaColore: number = 8
-        //  scalaReale: number = 9;
+         scalaColore: number = 8,
+         scalaReale: number = 9;
 
         let score: number = 0; 
         const 
@@ -199,21 +249,25 @@ class gameHelper{
                 break;
         }
 
-        // scala colore
-
-        if(this.verifica2(allCards, true)){
-            score = scalaColore;
+        // scala reale
+        if(this.checkScalaReale(allCards)){
+            score = scalaReale;
         } else {
-            // colore
-            if(this.verifica2(allCards, false)){
-                score < colore ? score = colore : score;
+            // scala colore
+            if(this.verifica2(allCards, true)){
+                score = scalaColore;
             } else {
-                // scala
-                if(this.verifica1(allCards.map(numero => numero.numero), true).length >= 5){  // verifica che ci siano almeno 5 carte di numeri consecutivi
-                    score < scala ? score = scala : score;
+                // colore
+                if(this.verifica2(allCards, false)){
+                    score < colore ? score = colore : score;
+                } else {
+                    // scala
+                    if(this.verifica1(allCards.map(numero => numero.numero), true).length >= 5){  // verifica che ci siano almeno 5 carte di numeri consecutivi
+                        score < scala ? score = scala : score;
+                    }
                 }
             }
-        }
+        }   
 
         return score;
     }
