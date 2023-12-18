@@ -104,6 +104,33 @@ class gameHelper{
 
     }
 
+    static ugualianze(array: number[]) {
+        let diversi: number[] = [];
+    
+        for(let i = 0; i < array.length; i++) {
+            if(i > 0){
+                !diversi.includes(array[i]) ? diversi.push(array[i]) : null;
+            } else {
+                diversi.push(array[i]);
+            }
+        }
+    
+        let maxContatore: number = 0;
+    
+        for(let i = 0; i < diversi.length; i++) {
+            let contatore: number = 0;
+    
+            for(let j = 0; j < array.length; j++) {
+                if (diversi[i] === array[j]) {
+                    contatore++;
+                }
+            }
+    
+            maxContatore < contatore ? maxContatore = contatore : maxContatore;
+        }
+    
+        return maxContatore;
+    }
 
     static calcScore(playerCards: cardProperties[], tableCard?: cardProperties[]){
         const
@@ -151,26 +178,7 @@ class gameHelper{
                 break;
             // doppia coppia o poker
             case 4: //fixare
-                let diversi: number[] = [];
-                for(let i = 0; uguali.length; i++){
-                    if(i>0){
-                        !diversi.includes(uguali[i]) ? diversi.push(uguali[i]) : diversi;
-                    } else {
-                        diversi.push(uguali[i]);
-                    }
-                }
-                let 
-                 contatore: number = 0,
-                 max: number = 0,
-                 numero: number = 0;
-
-                for(let i = 0; i<diversi.length; i++){
-                    for(let j = 0; j<uguali.length; j++){
-                        diversi[numero] == uguali[i] ? contatore++ : contatore;
-                    }
-                    max < contatore ? max = contatore : max;
-                }
-                max > 2 ? score = poker : score = doppiaCoppia;
+                this.ugualianze(uguali) == 4 ? score = poker : score = doppiaCoppia;
                 break;
             // full
             case 5: 
