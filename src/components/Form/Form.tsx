@@ -19,8 +19,25 @@ function Form() {
     [hard, setHard] = useState(noShadow),
     [level, setLevel] = useState(''),
     dispatch = useDispatch();
+
+    const array1 = [
+      {numero: 1, valore: 14, src: 'ciao', nome: '9', seme: 'hearts'},
+      {numero: 2, valore: 2, src: 'ciao', nome: '7', seme: 'spades'},
+      {numero: 3, valore: 6, src: 'ciao', nome: '6', seme: 'diamonds'},
+      {numero: 2, valore: 5, src: 'ciao', nome: '5', seme: 'hearts'},
+      {numero: 3, valore: 8, src: 'ciao', nome: '8', seme: 'clubs'},
+    ]
+
+        //  coppia: number = 1,
+        //  doppiaCoppia: number = 2,
+        //  tris: number = 3,
+        //  scala: number = 4,
+        //  colore: number = 5,
+        //  full: number = 6,
+        //  poker: number = 7,
+        //  scalaColore: number = 8
   
-  console.log(gameHelper.calcScore([{numero: 4, valore: 4, src: 'ciao', nome: '4', seme: 'diamonds'}, {numero: 4, valore: 4, src: 'ciao', nome: '4', seme: 'diamonds'}]))
+  console.log(gameHelper.calcScore(array1))
 
   function setShadow(emoji: string) {
       setEasy(noShadow);
