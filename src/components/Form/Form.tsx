@@ -21,13 +21,13 @@ function Form() {
     dispatch = useDispatch();
 
     const array1 = [
-      {numero: 8, valore: 1, src: 'ciao', nome: '1', seme: 'diamonds'},
-      {numero: 5, valore: 2, src: 'ciao', nome: '2', seme: 'hearts'},
-      {numero: 10, valore: 4, src: 'ciao', nome: '4', seme: 'clubs'},
-      {numero: 11, valore: 5, src: 'ciao', nome: '5', seme: 'clubs'},
-      {numero: 12, valore: 3, src: 'ciao', nome: '3', seme: 'clubs'},
-      {numero: 13, valore: 3, src: 'ciao', nome: '3', seme: 'clubs'},
-      {numero: 14, valore: 3, src: 'ciao', nome: '3', seme: 'clubs'},
+      {numero: 1, valore: 1, src: 'ciao', nome: '1', seme: 'hearts'},
+      {numero: 13, valore: 2, src: 'ciao', nome: '2', seme: 'hearts'},
+      {numero: 12, valore: 4, src: 'ciao', nome: '4', seme: 'hearts'},
+      {numero: 11, valore: 5, src: 'ciao', nome: '5', seme: 'hearts'},
+      {numero: 10, valore: 3, src: 'ciao', nome: '3', seme: 'hearts'},
+      {numero: 8, valore: 3, src: 'ciao', nome: '3', seme: 'clubs'},
+      {numero: 7, valore: 3, src: 'ciao', nome: '3', seme: 'diamonds'},
     ]
 
         //  coppia: number = 1,

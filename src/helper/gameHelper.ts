@@ -28,21 +28,23 @@ class gameHelper{
         for(let i = 0; i<array.length; i++){
             if(i>0){
                 if(scala){
-                    if(array[i] == array[i-1]+1){
-                        if(i>1){
-                            if(array[i] == array[i-2]+2){
-                                sequence.push(array[i]);
-                            } else {
-                                sequence.push(array[i-1], array[i]);
+                    if(array[i] == 13 && array.includes(1)){
+                        array[i] == array[i-1]+1 ? sequence.push(array[i]): sequence = [13];
+                        sequence.push(1);
+                        let numero = 2;
+                        for(let j = 0; j<array.length; j++){
+                            if(array[j] == numero){
+                                sequence.push(numero);
+                                numero++;
                             }
-                        } else {
-                            sequence.push(array[i-1], array[i]);
                         }
+                    } else {
+                        array[i] == array[i-1]+1 ? sequence.push(array[i]): sequence;
                     }
                 } else {
                     if(array[i] == array[i-1]){
                         if(i>1){
-                            array[i] == array[i-2] ? numeriUguali.push(array[i]) : numeriUguali.push(array[i-1], array[i]);
+                            numeriUguali.includes(array[i-1]) ? numeriUguali.push(array[i]) : numeriUguali.push(array[i-1], array[i]);
                         } else {
                             numeriUguali.push(array[i-1], array[i]);
                         }
@@ -64,7 +66,7 @@ class gameHelper{
              condizione: boolean = false;
             for(let i = 0; i<array.length; i++){
                 if(i>0){
-                    if(array[i].seme != array[i-1].seme && !semi.includes(array[i].seme)){
+                    if(!semi.includes(array[i].seme)){
                         semi.push(array[i].seme)
                     }
                 } else {
@@ -91,13 +93,28 @@ class gameHelper{
                     max = 0;
                     for(let j = 0; j<arraySeme.length; j++){
                         if(j>0){
-                            arraySeme[j] == arraySeme[j-1]+1 ? current++ : current = 1;
+                            if(arraySeme[j] == 13 && arraySeme.includes(1)){
+                                arraySeme[j] == arraySeme[j-1]+1 ? current++ : current = 1;
+                                current+=1;
+                                let numero = 2;
+                                for(let k = 0; k<arraySeme.length; k++){
+                                    if(arraySeme[k] == numero){
+                                        current++;
+                                        numero++;
+                                    }
+                                }
+                            } else {
+                                arraySeme[j] == arraySeme[j-1]+1 ? current++ : current = 1;
+                            }
                             max < current ? max = current : max;
                         }
                     }
                     max >= 5 ? condizione = true : condizione;
                 } else {
-                    condizione = arraySeme.length >= 5;
+                    condizione = arraySeme.length > 4;
+                }
+                if(condizione){
+                    break;
                 }
             }
             return condizione;
@@ -138,8 +155,14 @@ class gameHelper{
                     for(let j = 0; j<arraySeme.length; j++){
                         if(arraySeme[j] == 11){
                             for(let n = j; n<arraySeme.length; n++){
-                                if(arraySeme[n] != arraySeme[n-1]+1){
-                                    condizione = false;
+                                if(arraySeme[n] == 13){
+                                    if(arraySeme.includes(1)){
+                                        arraySeme[n] != arraySeme[n-1]+1? condizione = false : condizione;
+                                    } else {
+                                        condizione = false;
+                                    }
+                                } else {
+                                    arraySeme[n] != arraySeme[n-1]+1 ? condizione = false : condizione;
                                 }
                             }
                         }
@@ -222,11 +245,11 @@ class gameHelper{
                 break;
             // coppia
             case 2:
-                score = coppia
+                score < coppia ? score = coppia : score;
                 break;
             // tris
             case 3: 
-                score = tris
+                score < tris ? score = tris : score;
                 break;
             // doppia coppia o poker
             case 4: //fixare
