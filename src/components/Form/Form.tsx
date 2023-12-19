@@ -54,8 +54,9 @@ function Form() {
       if(nPlayers>2 && nPlayers<=8){
         for(let i = 1; i<=nPlayers; i++){
           const
-                  integerTableSide = Math.trunc(i/4),
-                  tableSide = 3 - (i - (integerTableSide * 4));
+                integerTableSide = Math.trunc(i/4),
+                tableSide = 3 - (i - (integerTableSide * 4));
+                
           dispatch(addPlayer({name: i, chips: 100, isVisible: i==1, side: tableSide, carte: [carte[contatore], carte[contatore+1]]}))
           contatore+=2;
         }

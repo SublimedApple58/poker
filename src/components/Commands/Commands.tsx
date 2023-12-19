@@ -56,27 +56,38 @@ function Commands(){
     function medium(turnof: number) {
         let bet = minimum + 2;
         dispatch(removeChips({ref: turnof, chips: bet}));
+        dispatch(updateMin(bet));
     }
 
     function hard(turnof: number) {
         let bet = minimum + 5;
         dispatch(removeChips({ref: turnof, chips: bet}));
+        dispatch(updateMin(bet));
     }
 
-    function amounting(){
-        if(playerTurn ==  1){ 
-            if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
+    function call(){
+        dispatch(removeChips({ref: 1, chips: minimum}));
+        dispatch(nextTurn(players));
+    }
+
+    function raise(){
+        if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
+            amountInput.current.value = '0';
+        } else {
+            if((amountInput.current?.valueAsNumber ?? 0)<minimum){
+                alert(`your bet must be a minimum of ${minimum}`)
+            } else if(amountInput.current != null){
+                dispatch(updateMin(amountInput.current.valueAsNumber))
+                dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
                 amountInput.current.value = '0';
-            } else {
-                if((amountInput.current?.valueAsNumber ?? 0)<minimum){
-                    alert(`your bet must be a minimum of ${minimum}`)
-                } else if(amountInput.current != null){
-                    dispatch(updateMin(amountInput.current.valueAsNumber))
-                    dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
-                    amountInput.current.value = '0';
-                    dispatch(nextTurn(players));
-                }
+                dispatch(nextTurn(players));
             }
+        }
+    }
+
+    function azione(comando: Function){
+        if(playerTurn == 1){
+            comando();
         } else {
             alert("It's not your turn")
             if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
@@ -92,8 +103,8 @@ function Commands(){
             <div className="commands" style={style}>
                 <button>fold</button>
                 <button>check</button>
-                <button onClick={amounting}>call</button>
-                <button>raise</button>
+                <button onClick={() => azione(call)}>call</button>
+                <button onClick={() => azione(raise)}>raise</button>
             </div>
             <div className="amount" style={style} >
                 <input type="number" placeholder='Insert amount' ref={amountInput}/>
