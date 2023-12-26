@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeChips} from '../../state/formPlayer/nPlayerSlice';
+import { removeChips, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
+import { nextRound, nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
 
 function Commands(){
 
@@ -19,11 +19,16 @@ function Commands(){
         minimum = useSelector((state: RootState)=> state.game.lastBet),
         players = useSelector((state: RootState)=> state.giocatori.players.length),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
-        difficulty = useSelector((state: RootState) => state.game.difficulty)
+        difficulty = useSelector((state: RootState) => state.game.difficulty),
+        turns = useSelector((state: RootState) => state.game.turns)
 
     let [style, setStyle] = useState(visible); 
 
     useEffect(()=> {
+        if(turns == 1){
+            dispatch(win(1));
+            dispatch(nextRound());
+        }
         if(playerTurn!=1){
             setStyle(invisible);
             setTimeout(()=>{
@@ -54,13 +59,13 @@ function Commands(){
     }
 
     function medium(turnof: number) {
-        let bet = minimum + 2;
+        let bet = minimum;
         dispatch(removeChips({ref: turnof, chips: bet}));
         dispatch(updateMin(bet));
     }
 
     function hard(turnof: number) {
-        let bet = minimum + 5;
+        let bet = minimum;
         dispatch(removeChips({ref: turnof, chips: bet}));
         dispatch(updateMin(bet));
     }

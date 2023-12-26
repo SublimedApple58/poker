@@ -5,15 +5,17 @@ interface game {
     playerTurn: number,
     turns: number,
     lastBet: number,
-    difficulty: string
+    difficulty: string,
+    manche: number
 }
 
 const initialState: game = {
-    round: 1,
+    round: 0,
     playerTurn: 1,
     turns: 1,
     lastBet: 5,
-    difficulty: ''
+    difficulty: '',
+    manche: 1
 };
 
 const gameSlice = createSlice({
@@ -36,9 +38,7 @@ const gameSlice = createSlice({
                 if(state.turns >= action.payload){
                     return Object.assign({}, state, {
                         turns: 1,
-                        playerTurn: 1,
-                        round: state.round+1,
-                        lastBet: 5,
+                        playerTurn: 1
                     })
                 } else {
                     return Object.assign({}, state, {
@@ -50,9 +50,7 @@ const gameSlice = createSlice({
                 if(state.turns >= action.payload){
                     return Object.assign({}, state, {
                         turns: 1,
-                        playerTurn: state.playerTurn+1,
-                        round: state.round+1,
-                        lastBet: 5,
+                        playerTurn: state.playerTurn+1
                     })
                 } else {
                     return Object.assign({}, state, {

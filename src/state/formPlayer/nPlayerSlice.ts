@@ -50,9 +50,9 @@ const playerSlice = createSlice({
         },
         win: (state, action: {payload: number}) => {
             return Object.assign({}, state, {
-                players: state.players.map(giocatore => {
+                players: state.players.map((giocatore, i) => {
                     if(giocatore.name == action.payload){
-                        return Object.assign({}, state, {
+                        return Object.assign({}, state.players[i], {
                             chips: giocatore.chips + state.centralChips
                         })
                     } else {
