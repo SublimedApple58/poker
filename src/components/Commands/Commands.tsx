@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeChips, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextRound, nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
+import gameHelper from '../../helper/gameHelper';
+import cardHelper from '../../helper/cardHelper';
 
 function Commands(){
 
@@ -17,7 +19,8 @@ function Commands(){
         },
         dispatch = useDispatch(),
         minimum = useSelector((state: RootState)=> state.game.lastBet),
-        players = useSelector((state: RootState)=> state.giocatori.players.length),
+        nPlayers = useSelector((state: RootState)=> state.giocatori.players.length),
+        players = useSelector((state: RootState)=> state.giocatori.players),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         difficulty = useSelector((state: RootState) => state.game.difficulty),
         turns = useSelector((state: RootState) => state.game.turns)
@@ -26,8 +29,7 @@ function Commands(){
 
     useEffect(()=> {
         if(turns == 1){
-            dispatch(win(1));
-            dispatch(nextRound());
+            assignFish();
         }
         if(playerTurn!=1){
             setStyle(invisible);
@@ -50,7 +52,7 @@ function Commands(){
             case 'hard':
                 hard(turnof);
         }
-        dispatch(nextTurn(players))
+        dispatch(nextTurn(nPlayers))
     }
 
     function easy(turnof: number) {
@@ -72,7 +74,51 @@ function Commands(){
 
     function call(){
         dispatch(removeChips({ref: 1, chips: minimum}));
-        dispatch(nextTurn(players));
+        dispatch(nextTurn(nPlayers));
+    }
+
+    function assignFish(){
+        function indexOfMax(arr: number[]) {
+        
+            let max = arr[0];
+            let maxIndex = 0;
+        
+            for (let i = 1; i < arr.length; i++) {
+                if (arr[i] > max) {
+                    maxIndex = i;
+                    max = arr[i];
+                }
+            }
+        
+            return maxIndex;
+        }
+
+        const numeriGiocatori: any[] = [];
+        for(let i = 0; i<nPlayers; i++){
+            numeriGiocatori.push([players[i].carte[0], players[i].carte[1]])
+        }
+
+        const carteGiocatori: any[] = []  // da fare refactory
+        for(let i = 0; i<nPlayers; i++){
+            carteGiocatori.push([cardHelper.converNumberToCard(players[i].carte[0]), cardHelper.converNumberToCard(players[i].carte[1])]);
+        }
+
+        const punteggi: number[] = [];
+        for(let i = 0; i<carteGiocatori.length; i++){
+            punteggi.push(gameHelper.calcScore(carteGiocatori[i]))
+        }
+
+        const maxIndex: number = indexOfMax(punteggi);
+        for(let i = 0; i<nPlayers; i++){
+            const compareArrays = (a: number[], b: number[]) => {
+                return JSON.stringify(a) === JSON.stringify(b);
+              };
+            if(compareArrays(players[i].carte, numeriGiocatori[maxIndex])){
+                dispatch(win(players[i].name));
+                dispatch(nextRound());
+            }
+        }
+
     }
 
     function raise(){
@@ -85,7 +131,7 @@ function Commands(){
                 dispatch(updateMin(amountInput.current.valueAsNumber))
                 dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
                 amountInput.current.value = '0';
-                dispatch(nextTurn(players));
+                dispatch(nextTurn(nPlayers));
             }
         }
     }

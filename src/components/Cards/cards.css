@@ -21,10 +21,10 @@
     transition: all .2s ease-out;
 }
 
-.card:hover{
+/* .card:hover{
     height: 101px;
     width: 71px;
-}
+} */
 
 /* .card:hover .figura{
     animation: rotazione 1s ease-out .2s

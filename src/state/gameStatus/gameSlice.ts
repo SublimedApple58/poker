@@ -10,7 +10,7 @@ interface game {
 }
 
 const initialState: game = {
-    round: 0,
+    round: 1,
     playerTurn: 1,
     turns: 1,
     lastBet: 5,

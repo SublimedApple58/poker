@@ -39,7 +39,6 @@ function Form() {
       }
     }
 
-
   function setPlayers(){
     if(level != ''){
       const 

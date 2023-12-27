@@ -55,7 +55,6 @@ class cardHelper{
                     break;
             }
 
-            numero = 0;
 
             src = `../../cartePng/${nome}_of_${seme}.png`;
 

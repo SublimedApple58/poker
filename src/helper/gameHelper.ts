@@ -1,5 +1,5 @@
 
-interface cardProperties{
+export interface cardProperties{
     seme: string,
     nome: string,
     numero: number,
