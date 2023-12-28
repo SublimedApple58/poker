@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeChips, setCentralCardVisible, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextManche, nextRound, nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
+import { nextManche, nextRound, nextTurn, updateLastManche, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
 
@@ -25,32 +25,64 @@ function Commands(){
         difficulty = useSelector((state: RootState) => state.game.difficulty),
         turns = useSelector((state: RootState) => state.game.turns),
         round = useSelector((state: RootState) => state.game.round),
-        centralCards = useSelector((state: RootState) => state.giocatori.centralCards);
+        centralCards = useSelector((state: RootState) => state.giocatori.centralCards),
+        manche = useSelector((state: RootState) => state.game.manche),
+        lastManche = useSelector((state: RootState) => state.game.lastManche);
 
-    let [style, setStyle] = useState(visible); 
+    let [style, setStyle] = useState(visible);
 
     useEffect(()=> {
+        if(manche != lastManche){
+            newManche();
+            setTimeout(()=>{
+                if(playerTurn!=1){
+                    setStyle(invisible);
+                    setTimeout(()=>{
+                        action(playerTurn)
+                    }, 1000)
+                } else {
+                    setStyle(visible);
+                }
+                if(round == 5){
+                    assignFish();
+                }
+                if(round>1 && round<5){
+                    dispatch(setCentralCardVisible(round))
+                }
+            }, 3000);
+            dispatch(updateLastManche());
+        } else {
+            if(playerTurn!=1){
+                setStyle(invisible);
+                setTimeout(()=>{
+                    action(playerTurn)
+                }, 1000)
+            } else {
+                setStyle(visible);
+            }
+            if(round == 5){
+                assignFish();
+            }
+            if(round>1 && round<5){
+                dispatch(setCentralCardVisible(round))
+            }
+        }      
+    }, [playerTurn, round, manche])
+
+    useEffect(()=>{
         if(turns == 1){
             dispatch(nextRound());
         }
-        if(playerTurn!=1){
-            setStyle(invisible);
-            setTimeout(()=>{
-                action(playerTurn)
-            }, 1000)
-        } else {
-            setStyle(visible);
-        }
     }, [playerTurn])
 
-    useEffect(()=>{
+    useEffect(() => {
         if(round == 5){
-            assignFish();
-        }
-        if(round>1 && round<5){
-            dispatch(setCentralCardVisible(round))
+            dispatch(nextManche())
         }
     }, [round])
+    // useEffect(()=>{
+    //     newManche()
+    // }, [manche])
 
     function action(turnof: number){
         switch(difficulty) {
@@ -104,7 +136,7 @@ function Commands(){
             return maxIndex;
         }
 
-        const numeriGiocatori: any[] = [];
+        const numeriGiocatori: any[] = []; // da fare refactory
         for(let i = 0; i<nPlayers; i++){
             numeriGiocatori.push([players[i].carte[0], players[i].carte[1]])
         }
@@ -142,12 +174,24 @@ function Commands(){
                 dispatch(win(players[i].name));
             }
         }
-        dispatch(nextManche());
     }
 
     function newManche(){
         // creare nuova manche, azzerando carte e ricoprendole tutte quante
-        //         dispatch(nextManche());
+        dispatch(resetCards());
+        const carte = cardHelper.generateCasualCard(nPlayers);
+        let contatore = 0;
+        for(let i = 0; i<=nPlayers; i++){            
+            dispatch(setPlayerCards({index: i, carte: [carte[contatore], carte[contatore+1]]}))
+            contatore+=2;
+        }
+        const carteConvertiteCentrali: carteCentrali[] = carte.slice(contatore-2).map(carta => {
+            return {
+              numero: carta,
+              isVisible: false
+            }
+          });
+        dispatch(setCentralCards(carteConvertiteCentrali));
     }
 
     function raise(){

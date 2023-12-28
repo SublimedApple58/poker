@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface carteCentrali{
-    numero: number,
-    isVisible: boolean
+interface cardsToAdd{
+    carte: number[],
+    index: number
 }
 
 interface player{
@@ -17,6 +17,11 @@ interface players{
     players: player[],
     centralChips: number,
     centralCards: carteCentrali[]
+}
+
+export interface carteCentrali{
+    numero: number,
+    isVisible: boolean
 }
 
 const initialState: players ={
@@ -72,13 +77,36 @@ const playerSlice = createSlice({
                 centralCards: Array.from(action.payload)
             })
         },
+        setPlayerCards: (state, action: {payload: cardsToAdd}) => {
+            return Object.assign({}, state, {
+                players: state.players.map((player, i) => {
+                    if(i == action.payload.index){
+                        return Object.assign({}, player, {
+                            carte: action.payload.carte
+                        });
+                    } else {
+                        return player
+                    }
+                })
+            })
+        },
         setCentralCardVisible: (state, action: {payload: number}) => {
             return Object.assign({}, state, {
                 centralCards: state.centralCards.map((carta, i) => i<action.payload+1 ? Object.assign({}, carta, {isVisible: true}) : Object.assign({}, carta, {isVisible: false}))
+            })
+        },
+        resetCards: (state) => {
+            return Object.assign({}, state, {
+                centralCards: [],
+                players: state.players.map(player => {
+                    return Object.assign({}, player, {
+                        carte: []
+                    });
+                })
             })
         }
     }
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, win, removeChips, setCentralCards, setCentralCardVisible} = playerSlice.actions;
+export const {addPlayer, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards} = playerSlice.actions;
