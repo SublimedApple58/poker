@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeChips, win} from '../../state/formPlayer/nPlayerSlice';
+import { removeChips, setVisible, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextRound, nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -42,6 +42,12 @@ function Commands(){
             setStyle(visible);
         }
     }, [playerTurn])
+
+    useEffect(()=>{
+        if(round>1 && round<5){
+            dispatch(setVisible(round))
+        }
+    }, [round])
 
     function action(turnof: number){
         switch(difficulty) {
@@ -107,13 +113,22 @@ function Commands(){
 
         const punteggi: number[] = [];
         for(let i = 0; i<carteGiocatori.length; i++){
-            if(round>1){
+            if(round>1 && round<4){
                 let carteCentraliScoperte: cardProperties[] = [];
-                for(let i = 0; i<round; i++){
-                    carteCentraliScoperte.push(cardHelper.converNumberToCard(centralCards[i]))
+                for(let i = 0; i<round+1; i++){
+                    carteCentraliScoperte.push(cardHelper.converNumberToCard(centralCards[i].numero))
                 }
                 punteggi.push(gameHelper.calcScore(carteGiocatori[i], carteCentraliScoperte));
-            }
+            } else if(round>4){
+                let carteCentraliScoperte: cardProperties[] = [];
+                for(let i = 0; i<5; i++){
+                    carteCentraliScoperte.push(cardHelper.converNumberToCard(centralCards[i].numero))
+                }
+                punteggi.push(gameHelper.calcScore(carteGiocatori[i], carteCentraliScoperte));
+            } else {
+                punteggi.push(gameHelper.calcScore(carteGiocatori[i]));
+            }    
+            
         }
 
         for(let i = 0; i<nPlayers; i++){

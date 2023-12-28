@@ -1,6 +1,6 @@
 import './Form.css'
 import { useDispatch } from 'react-redux';
-import { addPlayer } from '../../state/formPlayer/nPlayerSlice';
+import { addPlayer, carteCentrali } from '../../state/formPlayer/nPlayerSlice';
 import { useRef, useState } from 'react';
 import cardHelper from '../../helper/cardHelper';
 import { setDifficulty, setTurn } from '../../state/gameStatus/gameSlice';
@@ -59,8 +59,14 @@ function Form() {
           dispatch(addPlayer({name: i, chips: 100, isVisible: i==1, side: tableSide, carte: [carte[contatore], carte[contatore+1]]}))
           contatore+=2;
         }
-
-        dispatch(setCentralCards(carte.slice(contatore)));
+        const carteCentrali = carte.slice(contatore);
+        const carteConvertiteCentrali: carteCentrali[] = carteCentrali.map(carta => {
+          return {
+            numero: carta,
+            isVisible: false
+          }
+        });
+        dispatch(setCentralCards(carteConvertiteCentrali));
 
       }
     } else {

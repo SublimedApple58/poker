@@ -25,7 +25,7 @@ function Table(){
     }
 
     function renderCenterCard() : ReactElement[] {
-        return centralCards.map((carta, i) => <Card isVisible={i < 2} numero={carta} key={i}/>);
+        return centralCards.map((carta, i) => <Card isVisible={carta.isVisible} numero={carta.numero} key={i}/>);
     }
 
     return(

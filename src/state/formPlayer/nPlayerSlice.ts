@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export interface carteCentrali{
+    numero: number,
+    isVisible: boolean
+}
+
 interface player{
     name: number,
     chips: number,
@@ -11,7 +16,7 @@ interface player{
 interface players{
     players: player[],
     centralChips: number,
-    centralCards: number[]
+    centralCards: carteCentrali[]
 }
 
 const initialState: players ={
@@ -62,13 +67,18 @@ const playerSlice = createSlice({
                 centralChips: 0,
             })
         },
-        setCentralCards: (state, action: {payload: number[]}) => {
+        setCentralCards: (state, action: {payload: carteCentrali[]}) => {
             return Object.assign({}, state, {
                 centralCards: Array.from(action.payload)
+            })
+        },
+        setVisible: (state, action: {payload: number}) => {
+            return Object.assign({}, state, {
+                centralCards: state.centralCards.map((carta, i) => i<action.payload+1 ? Object.assign({}, carta, {isVisible: true}) : Object.assign({}, carta, {isVisible: false}))
             })
         }
     }
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, win, removeChips, setCentralCards} = playerSlice.actions;
+export const {addPlayer, win, removeChips, setCentralCards, setVisible} = playerSlice.actions;
