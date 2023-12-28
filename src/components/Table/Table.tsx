@@ -13,6 +13,7 @@ function Table(){
         centralChips = useSelector((state: RootState) => state.giocatori.centralChips),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         round = useSelector((state: RootState)=> state.game.round),
+        manche = useSelector((state: RootState)=> state.game.manche),
         centralCards = useSelector((state: RootState)=> state.giocatori.centralCards),
         turns = useSelector((state: RootState)=> state.game.turns)
 
@@ -45,6 +46,7 @@ function Table(){
                 <h1>Turno: giocatore {playerTurn}</h1>
                 <h1>Round {round}</h1>
                 <h1>Turns: {turns}</h1>
+                <h1>manche: {manche}</h1>
               </div>
               <Commands/>
         </>

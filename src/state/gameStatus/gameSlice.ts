@@ -29,9 +29,13 @@ const gameSlice = createSlice({
         },
         nextRound: (state) => {
             return Object.assign({}, state, {
-                round: state.round+1,
-                lastBet: 5,
+                round: state.round+1
             });
+        },
+        restartRound: (state) => {
+            return Object.assign({}, state, {
+                round: 1
+            })
         },
         nextTurn: (state, action: {payload: number}) => {
             if(state.playerTurn >= action.payload){
@@ -60,6 +64,12 @@ const gameSlice = createSlice({
                 }
             }
         },
+        nextManche: (state) => {
+            return Object.assign({}, state, {
+                manche: state.manche + 1,
+                lastBet: 5
+            })
+        },
         updateMin: (state, action: {payload: number}) => {
             return Object.assign({}, state, {
                 lastBet: action.payload
@@ -69,9 +79,10 @@ const gameSlice = createSlice({
             return Object.assign({}, state, {
                 difficulty: action.payload
             })
-        }
+        },
+
     }
 })
 
 export default gameSlice.reducer;
-export const { nextRound, updateMin, nextTurn, setTurn, setDifficulty} = gameSlice.actions
+export const { nextRound, restartRound, updateMin, nextTurn, setTurn, setDifficulty, nextManche} = gameSlice.actions

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeChips, setVisible, win} from '../../state/formPlayer/nPlayerSlice';
+import { removeChips, setCentralCardVisible, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextRound, nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
+import { nextManche, nextRound, nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
 
@@ -31,7 +31,7 @@ function Commands(){
 
     useEffect(()=> {
         if(turns == 1){
-            assignFish();
+            dispatch(nextRound());
         }
         if(playerTurn!=1){
             setStyle(invisible);
@@ -44,8 +44,11 @@ function Commands(){
     }, [playerTurn])
 
     useEffect(()=>{
+        if(round == 5){
+            assignFish();
+        }
         if(round>1 && round<5){
-            dispatch(setVisible(round))
+            dispatch(setCentralCardVisible(round))
         }
     }, [round])
 
@@ -137,10 +140,14 @@ function Commands(){
               };
             if(compareArrays(players[i].carte, numeriGiocatori[indexOfMax(punteggi)])){
                 dispatch(win(players[i].name));
-                dispatch(nextRound());
             }
         }
+        dispatch(nextManche());
+    }
 
+    function newManche(){
+        // creare nuova manche, azzerando carte e ricoprendole tutte quante
+        //         dispatch(nextManche());
     }
 
     function raise(){

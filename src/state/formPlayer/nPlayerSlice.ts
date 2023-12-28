@@ -72,7 +72,7 @@ const playerSlice = createSlice({
                 centralCards: Array.from(action.payload)
             })
         },
-        setVisible: (state, action: {payload: number}) => {
+        setCentralCardVisible: (state, action: {payload: number}) => {
             return Object.assign({}, state, {
                 centralCards: state.centralCards.map((carta, i) => i<action.payload+1 ? Object.assign({}, carta, {isVisible: true}) : Object.assign({}, carta, {isVisible: false}))
             })
@@ -81,4 +81,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, win, removeChips, setCentralCards, setVisible} = playerSlice.actions;
+export const {addPlayer, win, removeChips, setCentralCards, setCentralCardVisible} = playerSlice.actions;
