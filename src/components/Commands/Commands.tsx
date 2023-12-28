@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeChips, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextRound, nextTurn, updateMin } from '../../state/gameStatus/gameSlice';
-import gameHelper from '../../helper/gameHelper';
+import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
 
 function Commands(){
@@ -23,7 +23,9 @@ function Commands(){
         players = useSelector((state: RootState)=> state.giocatori.players),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         difficulty = useSelector((state: RootState) => state.game.difficulty),
-        turns = useSelector((state: RootState) => state.game.turns)
+        turns = useSelector((state: RootState) => state.game.turns),
+        round = useSelector((state: RootState) => state.game.round),
+        centralCards = useSelector((state: RootState) => state.giocatori.centralCards);
 
     let [style, setStyle] = useState(visible); 
 
@@ -105,15 +107,20 @@ function Commands(){
 
         const punteggi: number[] = [];
         for(let i = 0; i<carteGiocatori.length; i++){
-            punteggi.push(gameHelper.calcScore(carteGiocatori[i]))
+            if(round>1){
+                let carteCentraliScoperte: cardProperties[] = [];
+                for(let i = 0; i<round; i++){
+                    carteCentraliScoperte.push(cardHelper.converNumberToCard(centralCards[i]))
+                }
+                punteggi.push(gameHelper.calcScore(carteGiocatori[i], carteCentraliScoperte));
+            }
         }
 
-        const maxIndex: number = indexOfMax(punteggi);
         for(let i = 0; i<nPlayers; i++){
             const compareArrays = (a: number[], b: number[]) => {
                 return JSON.stringify(a) === JSON.stringify(b);
               };
-            if(compareArrays(players[i].carte, numeriGiocatori[maxIndex])){
+            if(compareArrays(players[i].carte, numeriGiocatori[indexOfMax(punteggi)])){
                 dispatch(win(players[i].name));
                 dispatch(nextRound());
             }
