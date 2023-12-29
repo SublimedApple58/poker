@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, updateLastManche, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -31,55 +31,72 @@ function Commands(){
 
     let [style, setStyle] = useState(visible);
 
-    useEffect(()=> {
-        if(manche != lastManche){
-            newManche();
-            setTimeout(()=>{
-                if(playerTurn!=1){
-                    setStyle(invisible);
-                    setTimeout(()=>{
-                        action(playerTurn)
-                    }, 1000)
-                } else {
-                    setStyle(visible);
-                }
-                if(round == 5){
-                    assignFish();
-                }
-                if(round>1 && round<5){
-                    dispatch(setCentralCardVisible(round))
-                }
-            }, 3000);
-            dispatch(updateLastManche());
-        } else {
-            if(playerTurn!=1){
-                setStyle(invisible);
-                setTimeout(()=>{
-                    action(playerTurn)
-                }, 1000)
-            } else {
-                setStyle(visible);
-            }
-            if(round == 5){
-                assignFish();
-            }
-            if(round>1 && round<5){
-                dispatch(setCentralCardVisible(round))
-            }
-        }      
-    }, [playerTurn, round, manche])
+    // useEffect(()=> {
+    //     if(manche != lastManche){
+    //         setTimeout(()=>{
+    //             if(playerTurn!=1){
+    //                 setStyle(invisible);
+    //                 setTimeout(()=>{
+    //                     action(playerTurn)
+    //                 }, 1000)
+    //             } else {
+    //                 setStyle(visible);
+    //             }
+    //             if(round == 5){
+    //                 assignFish();
+    //                 dispatch(nextManche());
+    //                 newManche();
+    //             }
+    //             if(round>1 && round<5){
+    //                 dispatch(setCentralCardVisible(round))
+    //             }
+    //         }, 10000);
+    //         dispatch(updateLastManche());
+    //     } else {
+            // if(playerTurn!=1){
+            //     setStyle(invisible);
+            //     setTimeout(()=>{
+            //         action(playerTurn)
+            //     }, 1000)
+            // } else {
+            //     setStyle(visible);
+            // }
+            // if(round == 5){
+            //     assignFish();
+            //     dispatch(nextManche());
+            //     newManche();
+            // }
+            // if(round>1 && round<5){
+            //     dispatch(setCentralCardVisible(round))
+            // }
+    //     }      
+    // }, [playerTurn])
 
     useEffect(()=>{
-        if(turns == 1){
-            dispatch(nextRound());
+        if(playerTurn!=1){
+            setStyle(invisible);
+            setTimeout(()=>{
+                action(playerTurn)
+            }, 1000)
+        } else {
+            setStyle(visible);
+        }
+        if(round == 5){
+            assignFish();
+            dispatch(nextManche());
+            newManche();
+        }
+        if(round>1 && round<5){
+            dispatch(setCentralCardVisible(round))
         }
     }, [playerTurn])
 
-    useEffect(() => {
-        if(round == 5){
-            dispatch(nextManche())
-        }
-    }, [round])
+
+
+    useEffect(()=>{
+
+    }, [manche])
+
     // useEffect(()=>{
     //     newManche()
     // }, [manche])
@@ -178,6 +195,7 @@ function Commands(){
 
     function newManche(){
         // creare nuova manche, azzerando carte e ricoprendole tutte quante
+        // dispatch(showAll())
         dispatch(resetCards());
         const carte = cardHelper.generateCasualCard(nPlayers);
         let contatore = 0;

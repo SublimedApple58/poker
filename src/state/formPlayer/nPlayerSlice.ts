@@ -104,9 +104,18 @@ const playerSlice = createSlice({
                     });
                 })
             })
-        }
+        },
+        showAll: (state) => {
+            return Object.assign({}, state, {
+                players: state.players.map(player => {
+                    return Object.assign({}, player, {
+                        isVisible: true
+                    })
+                })
+            })
+        }   
     }
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards} = playerSlice.actions;
+export const {addPlayer, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll} = playerSlice.actions;
