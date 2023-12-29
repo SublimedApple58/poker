@@ -3,7 +3,7 @@ import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { carteCentrali, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextManche, nextRound, nextTurn, updateLastManche, updateMin } from '../../state/gameStatus/gameSlice';
+import { nextManche, nextRound, nextTurn, resetMin, updateLastManche, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
 
@@ -31,46 +31,17 @@ function Commands(){
 
     let [style, setStyle] = useState(visible);
 
-    // useEffect(()=> {
-    //     if(manche != lastManche){
-    //         setTimeout(()=>{
-    //             if(playerTurn!=1){
-    //                 setStyle(invisible);
-    //                 setTimeout(()=>{
-    //                     action(playerTurn)
-    //                 }, 1000)
-    //             } else {
-    //                 setStyle(visible);
-    //             }
-    //             if(round == 5){
-    //                 assignFish();
-    //                 dispatch(nextManche());
-    //                 newManche();
-    //             }
-    //             if(round>1 && round<5){
-    //                 dispatch(setCentralCardVisible(round))
-    //             }
-    //         }, 10000);
-    //         dispatch(updateLastManche());
-    //     } else {
-            // if(playerTurn!=1){
-            //     setStyle(invisible);
-            //     setTimeout(()=>{
-            //         action(playerTurn)
-            //     }, 1000)
-            // } else {
-            //     setStyle(visible);
-            // }
-            // if(round == 5){
-            //     assignFish();
-            //     dispatch(nextManche());
-            //     newManche();
-            // }
-            // if(round>1 && round<5){
-            //     dispatch(setCentralCardVisible(round))
-            // }
-    //     }      
-    // }, [playerTurn])
+    useEffect(()=>{
+        if(round == 5){
+            assignFish();
+            dispatch(nextManche());
+            dispatch(resetMin())
+            // dispatch(showAll());
+            newManche();
+        } else if(round>1 && round<5){
+            dispatch(setCentralCardVisible(round))
+        }
+    }, [round])
 
     useEffect(()=>{
         if(playerTurn!=1){
@@ -81,25 +52,10 @@ function Commands(){
         } else {
             setStyle(visible);
         }
-        if(round == 5){
-            assignFish();
-            dispatch(nextManche());
-            newManche();
-        }
-        if(round>1 && round<5){
-            dispatch(setCentralCardVisible(round))
+        if(turns == 1){
+           dispatch(nextRound())       
         }
     }, [playerTurn])
-
-
-
-    useEffect(()=>{
-
-    }, [manche])
-
-    // useEffect(()=>{
-    //     newManche()
-    // }, [manche])
 
     function action(turnof: number){
         switch(difficulty) {
@@ -117,19 +73,17 @@ function Commands(){
 
     function easy(turnof: number) {
         let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: bet}));
+        dispatch(removeChips({ref: turnof, chips: minimum}));
     }
 
     function medium(turnof: number) {
         let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: bet}));
-        dispatch(updateMin(bet));
+        dispatch(removeChips({ref: turnof, chips: minimum}));
     }
 
     function hard(turnof: number) {
         let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: bet}));
-        dispatch(updateMin(bet));
+        dispatch(removeChips({ref: turnof, chips: minimum}));
     }
 
     function call(){
