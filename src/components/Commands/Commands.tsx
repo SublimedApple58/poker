@@ -19,7 +19,7 @@ function Commands(){
         },
         dispatch = useDispatch(),
         minimum = useSelector((state: RootState)=> state.game.lastBet),
-        nPlayers = useSelector((state: RootState)=> state.giocatori.players.length),
+        nPlayers = useSelector((state: RootState)=> state.giocatori.players.length), // bug orrendo
         players = useSelector((state: RootState)=> state.giocatori.players),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         difficulty = useSelector((state: RootState) => state.game.difficulty),
