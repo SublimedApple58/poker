@@ -35,7 +35,7 @@ function Commands(){
         if(round == 5){
             assignFish();
             dispatch(nextManche());
-            dispatch(resetMin())
+            dispatch(resetMin());
             // dispatch(showAll());
             newManche();
         } else if(round>1 && round<5){
