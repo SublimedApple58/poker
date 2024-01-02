@@ -3,7 +3,7 @@ import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { carteCentrali, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextManche, nextRound, nextTurn, resetMin, updateLastManche, updateMin } from '../../state/gameStatus/gameSlice';
+import { nextManche, nextRound, nextTurn, resetMin, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
 
@@ -25,35 +25,44 @@ function Commands(){
         difficulty = useSelector((state: RootState) => state.game.difficulty),
         turns = useSelector((state: RootState) => state.game.turns),
         round = useSelector((state: RootState) => state.game.round),
-        centralCards = useSelector((state: RootState) => state.giocatori.centralCards),
-        manche = useSelector((state: RootState) => state.game.manche),
-        lastManche = useSelector((state: RootState) => state.game.lastManche);
+        centralCards = useSelector((state: RootState) => state.giocatori.centralCards)
 
     let [style, setStyle] = useState(visible);
 
     useEffect(()=>{
-        if(round == 5){
+        if (round == 5) {
             assignFish();
             dispatch(nextManche());
             dispatch(resetMin());
             // dispatch(showAll());
             newManche();
-        } else if(round>1 && round<5){
+        }
+        else if(round != 0) {
+            if(playerTurn!=1){
+                setStyle(invisible);
+                setTimeout(() => {
+                    action(playerTurn)
+                }, 1000)
+            } else {
+                setStyle(visible);
+            }
+            if(round>1 && round<5) {
             dispatch(setCentralCardVisible(round))
+            }
         }
     }, [round])
 
     useEffect(()=>{
-        if(playerTurn!=1){
+        if(turns == 1){
+            dispatch(nextRound())       
+         }
+        else if(playerTurn!=1){
             setStyle(invisible);
-            setTimeout(()=>{
+            setTimeout(() => {
                 action(playerTurn)
             }, 1000)
         } else {
             setStyle(visible);
-        }
-        if(turns == 1){
-           dispatch(nextRound())       
         }
     }, [playerTurn])
 
@@ -73,17 +82,17 @@ function Commands(){
 
     function easy(turnof: number) {
         let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: minimum}));
+        dispatch(removeChips({ref: turnof, chips: bet}));
     }
 
     function medium(turnof: number) {
         let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: minimum}));
+        dispatch(removeChips({ref: turnof, chips: bet}));
     }
 
     function hard(turnof: number) {
         let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: minimum}));
+        dispatch(removeChips({ref: turnof, chips: bet}));
     }
 
     function call(){

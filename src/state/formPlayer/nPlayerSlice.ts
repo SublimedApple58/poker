@@ -90,7 +90,7 @@ const playerSlice = createSlice({
                 })
             })
         },
-        setCentralCardVisible: (state, action: {payload: number}) => {
+        setCentralCardVisible: (state, action: {payload: number}) => { // da fare refactory
             return Object.assign({}, state, {
                 centralCards: state.centralCards.map((carta, i) => i<action.payload+1 ? Object.assign({}, carta, {isVisible: true}) : Object.assign({}, carta, {isVisible: false}))
             })
