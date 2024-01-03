@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, resetMin, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -31,11 +31,14 @@ function Commands(){
 
     useEffect(()=>{
         if (round == 5) {
-            assignFish();
-            dispatch(nextManche());
-            dispatch(resetMin());
-            // dispatch(showAll());
-            newManche();
+            dispatch(showAll());
+            setTimeout(()=>{
+                dispatch(hideAll());
+                assignFish();
+                dispatch(nextManche());
+                dispatch(resetMin());
+                newManche();
+            }, 2000);
         }
         else if(round != 0) {
             if(playerTurn!=1){

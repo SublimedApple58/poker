@@ -8,6 +8,7 @@ interface cardsToAdd{
 interface player{
     name: number,
     chips: number,
+    isUser: boolean
     isVisible: boolean,
     side: number,
     carte: number[]
@@ -92,7 +93,7 @@ const playerSlice = createSlice({
         },
         setCentralCardVisible: (state, action: {payload: number}) => { // da fare refactory
             return Object.assign({}, state, {
-                centralCards: state.centralCards.map((carta, i) => i<action.payload+1 ? Object.assign({}, carta, {isVisible: true}) : Object.assign({}, carta, {isVisible: false}))
+                centralCards: state.centralCards.map((carta, i) => Object.assign({}, carta, {isVisible: i<action.payload+1}))
             })
         },
         resetCards: (state) => {
@@ -107,15 +108,16 @@ const playerSlice = createSlice({
         },
         showAll: (state) => {
             return Object.assign({}, state, {
-                players: state.players.map(player => {
-                    return Object.assign({}, player, {
-                        isVisible: true
-                    })
-                })
+                players: state.players.map(player => Object.assign({}, player, { isVisible: true}))
             })
-        }   
+        }, 
+        hideAll: (state) => {
+            return Object.assign({}, state, {
+                players: state.players.map(player => Object.assign({}, player, { isVisible: player.isUser}))
+            })
+        }
     }
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll} = playerSlice.actions;
+export const {addPlayer, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;

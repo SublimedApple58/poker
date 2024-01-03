@@ -18,7 +18,7 @@ function Table(){
         turns = useSelector((state: RootState)=> state.game.turns)
 
     function renderPlayer(side: number) : ReactElement[] {
-        return players.filter(player => player.side === side).map((player, i) => <Player isUser={player.isVisible} key={i} chips={player.chips}/>);
+        return players.filter(player => player.side === side).map((player, i) => <Player isUser={player.isUser} key={i} chips={player.chips}/>);
     }
 
     function renderContainer(side: number) : ReactElement[] {
