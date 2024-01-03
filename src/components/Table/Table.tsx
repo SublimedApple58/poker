@@ -15,7 +15,8 @@ function Table(){
         round = useSelector((state: RootState)=> state.game.round),
         manche = useSelector((state: RootState)=> state.game.manche),
         centralCards = useSelector((state: RootState)=> state.giocatori.centralCards),
-        turns = useSelector((state: RootState)=> state.game.turns)
+        turns = useSelector((state: RootState)=> state.game.turns),
+        playersBetting = useSelector((state: RootState) => state.giocatori.playersBetting)
 
     function renderPlayer(side: number) : ReactElement[] {
         return players.filter(player => player.side === side).map((player, i) => <Player isUser={player.isUser} key={i} chips={player.chips}/>);
@@ -47,6 +48,7 @@ function Table(){
                 <h1>Round {round}</h1>
                 <h1>Turns: {turns}</h1>
                 <h1>manche: {manche}</h1>
+                <h1>PB: {playersBetting}</h1>
               </div>
               <Commands/>
         </>

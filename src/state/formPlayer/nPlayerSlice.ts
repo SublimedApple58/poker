@@ -17,7 +17,10 @@ interface player{
 interface players{
     players: player[],
     centralChips: number,
-    centralCards: carteCentrali[]
+    centralCards: carteCentrali[],
+    playersInManche: number[],
+    playersInGame: number[],
+    playersBetting: number[]
 }
 
 export interface carteCentrali{
@@ -27,8 +30,11 @@ export interface carteCentrali{
 
 const initialState: players ={
     players: [],
+    playersInManche: [],
+    playersInGame: [],
     centralChips: 0,
-    centralCards: []
+    centralCards: [],
+    playersBetting: []
 }
 
 interface scommessa{
@@ -42,9 +48,20 @@ const playerSlice = createSlice({
     reducers: {
         addPlayer: (state, action: {payload: any}) => {
             return Object.assign({}, state, {
-                players: [...state.players, action.payload]
+                players: [...state.players, action.payload],
+                playersInManche: [...state.playersInManche, action.payload.name],
+                playersBetting: [...state.playersInManche, action.payload.name],
+                playersInGame: [...state.playersInManche, action.payload.name]
             })
         },
+        outOfManche: (state, action: {payload: number}) =>{
+            const arrayProvvisorio = [...state.playersInManche];
+            arrayProvvisorio.splice(arrayProvvisorio.indexOf(action.payload), 1)
+            return Object.assign({}, state, {
+                playersInManche: arrayProvvisorio
+            })
+        },
+        updatePlayersBetting: (state) => {return Object.assign({}, state, {playersBetting: [...state.playersInManche]})},
         removeChips: (state, action: {payload: scommessa}) => {
             return Object.assign({}, state, {
                 players: state.players.map(giocatore => {
@@ -120,4 +137,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const {addPlayer, outOfManche, updatePlayersBetting, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;

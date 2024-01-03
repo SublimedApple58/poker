@@ -7,7 +7,7 @@ interface game {
     lastBet: number,
     difficulty: string,
     manche: number,
-    lastManche: number
+    lastManche: number,
 }
 
 const initialState: game = {
@@ -39,29 +39,29 @@ const gameSlice = createSlice({
                 round: 1
             })
         },
-        nextTurn: (state, action: {payload: number}) => {
-            if(state.playerTurn >= action.payload){
-                if(state.turns >= action.payload){
+        nextTurn: (state, action: {payload: number[]}) => {
+            if(state.playerTurn >= action.payload.length){
+                if(state.turns >= action.payload.length){
                     return Object.assign({}, state, {
                         turns: 1,
-                        playerTurn: 1
+                        playerTurn: action.payload[0]
                     })
                 } else {
                     return Object.assign({}, state, {
                         turns: state.turns + 1,
-                        playerTurn: 1
+                        playerTurn: action.payload[0]
                     })
                 }
             } else {
-                if(state.turns >= action.payload){
+                if(state.turns >= action.payload.length){
                     return Object.assign({}, state, {
                         turns: 1,
-                        playerTurn: state.playerTurn+1
+                        playerTurn: action.payload[action.payload.indexOf(state.playerTurn)+1]
                     })
                 } else {
                     return Object.assign({}, state, {
                         turns: state.turns + 1,
-                        playerTurn: state.playerTurn+1
+                        playerTurn: action.payload[action.payload.indexOf(state.playerTurn)+1]
                     })
                 }
             }
@@ -86,14 +86,9 @@ const gameSlice = createSlice({
             return Object.assign({}, state, {
                 difficulty: action.payload
             })
-        },
-        updateLastManche: (state) => {
-            return Object.assign({}, state, {
-                lastManche: state.manche
-            })
         }
     }
 })
 
 export default gameSlice.reducer;
-export const { nextRound, restartRound, updateMin, resetMin, nextTurn, setTurn, setDifficulty, nextManche, updateLastManche} = gameSlice.actions
+export const { nextRound, restartRound, updateMin, resetMin, nextTurn, setTurn, setDifficulty, nextManche} = gameSlice.actions
