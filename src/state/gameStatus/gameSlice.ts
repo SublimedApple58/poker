@@ -40,7 +40,7 @@ const gameSlice = createSlice({
             })
         },
         nextTurn: (state, action: {payload: number[]}) => {
-            if(state.playerTurn >= action.payload.length){
+            if(state.playerTurn >= action.payload[action.payload.length-1]){
                 if(state.turns >= action.payload.length){
                     return Object.assign({}, state, {
                         turns: 1,

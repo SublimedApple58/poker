@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, hideAll, outOfManche, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, updatePlayersBetting, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, outOfManche, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, resetMin, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -37,6 +37,7 @@ function Commands(){
                 dispatch(hideAll());
                 assignFish();
                 dispatch(nextManche());
+                dispatch(updatePlayersInManche())
                 dispatch(resetMin());
                 newManche();
             }, 2000);

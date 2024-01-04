@@ -62,6 +62,7 @@ const playerSlice = createSlice({
             })
         },
         updatePlayersBetting: (state) => {return Object.assign({}, state, {playersBetting: [...state.playersInManche]})},
+        updatePlayersInManche: (state) => {return Object.assign({}, state, {playersInManche: [...state.playersInGame]})},
         removeChips: (state, action: {payload: scommessa}) => {
             return Object.assign({}, state, {
                 players: state.players.map(giocatore => {
@@ -137,4 +138,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, outOfManche, updatePlayersBetting, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const {addPlayer, outOfManche, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
