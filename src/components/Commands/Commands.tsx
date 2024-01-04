@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,10 +35,10 @@ function Commands(){
         if (round == 5) {
             dispatch(showAll());
             setTimeout(()=>{
-                dispatch(hideAll());
                 assignFish();
+                dispatch(updatePlayersInManche());
+                dispatch(hideAll());
                 dispatch(nextManche());
-                dispatch(updatePlayersInManche())
                 dispatch(resetMin());
                 newManche();
             }, 2000);
@@ -61,8 +62,17 @@ function Commands(){
         if(turns == 1){
             dispatch(nextRound());
             dispatch(updatePlayersBetting());
-         }
-        else if(playerTurn!=1){
+         } else if(playersInManche.length == 1) {
+            dispatch(showAll());
+            setTimeout(()=>{
+                assignFish();
+                dispatch(updatePlayersInManche());
+                dispatch(hideAll());
+                dispatch(nextManche());
+                dispatch(resetMin());
+                newManche();
+            }, 2000);
+         } else if(playerTurn!=1){
             setStyle(invisible);
             setTimeout(() => {
                 action(playerTurn)
@@ -128,12 +138,12 @@ function Commands(){
 
         const numeriGiocatori: any[] = []; // da fare refactory
         for(let i = 0; i<playersInManche.length; i++){
-            numeriGiocatori.push([players[i].carte[0], players[i].carte[1]])
+            numeriGiocatori.push([players[playersInManche[i]-1].carte[0], players[playersInManche[i]-1].carte[1]])
         }
 
         const carteGiocatori: any[] = []  // da fare refactory
         for(let i = 0; i<playersInManche.length; i++){
-            carteGiocatori.push([cardHelper.converNumberToCard(players[i].carte[0]), cardHelper.converNumberToCard(players[i].carte[1])]);
+            carteGiocatori.push([cardHelper.converNumberToCard(players[playersInManche[i]-1].carte[0]), cardHelper.converNumberToCard(players[playersInManche[i]-1].carte[1])]);
         }
 
         const punteggi: number[] = [];
@@ -160,8 +170,8 @@ function Commands(){
             const compareArrays = (a: number[], b: number[]) => {
                 return JSON.stringify(a) === JSON.stringify(b);
               };
-            if(compareArrays(players[i].carte, numeriGiocatori[indexOfMax(punteggi)])){
-                dispatch(win(players[i].name));
+            if(compareArrays(players[playersInManche[i]-1].carte, numeriGiocatori[indexOfMax(punteggi)])){
+                dispatch(win(players[playersInManche[i]-1].name));
             }
         }
     }
