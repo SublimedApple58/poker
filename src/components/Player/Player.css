@@ -4,12 +4,8 @@
     width: 100px;
     border: 2px solid white;
     margin: 0 20px;
-    animation-name: apparizione;
-    animation-duration: 3s;
-    animation-timing-function: ease-out;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
     position: relative;
+    transition: all .4s ease-out;
 }
 
 .user{

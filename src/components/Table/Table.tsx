@@ -19,7 +19,7 @@ function Table(){
         playersBetting = useSelector((state: RootState) => state.giocatori.playersBetting)
 
     function renderPlayer(side: number) : ReactElement[] {
-        return players.filter(player => player.side === side).map((player, i) => <Player isUser={player.isUser} key={i} chips={player.chips}/>);
+        return players.filter(player => player.side === side).map((player, i) => <Player name={player.name} isUser={player.isUser} key={i} chips={player.chips}/>);
     }
 
     function renderContainer(side: number) : ReactElement[] {
