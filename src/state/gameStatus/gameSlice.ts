@@ -10,6 +10,16 @@ interface game {
     lastManche: number,
 }
 
+interface player{
+    name: number,
+    chips: number,
+    isUser: boolean
+    isVisible: boolean,
+    side: number,
+    carte: number[],
+    done: boolean
+}
+
 const initialState: game = {
     round: 0, // momentaneo
     playerTurn: 1,
@@ -39,32 +49,64 @@ const gameSlice = createSlice({
                 round: 1
             })
         },
-        nextTurn: (state, action: {payload: number[]}) => {
-            if(state.playerTurn >= action.payload[action.payload.length-1]){
-                if(state.turns >= action.payload.length){
+        nextTurn: (state, action: {payload: {inManche: number[], players: player[]}}) => {
+            let allTrue: boolean = true;
+            for(let i = 0; i<action.payload.players.length; i++){
+                if(action.payload.players[i].name != state.playerTurn){
+                    !action.payload.players[i].done ? allTrue = false : allTrue;
+                }
+                if(!allTrue){break}
+            }
+            if(allTrue){
+                if(state.playerTurn == action.payload.inManche[action.payload.inManche.length-1]){
                     return Object.assign({}, state, {
                         turns: 1,
-                        playerTurn: action.payload[0]
+                        playerTurn:  action.payload.inManche[0]
                     })
                 } else {
                     return Object.assign({}, state, {
-                        turns: state.turns + 1,
-                        playerTurn: action.payload[0]
+                        turns: 1,
+                        playerTurn:  action.payload.inManche[action.payload.inManche.indexOf(state.playerTurn)+1]
                     })
                 }
             } else {
-                if(state.turns >= action.payload.length){
+                if(state.playerTurn == action.payload.inManche[action.payload.inManche.length-1]){
                     return Object.assign({}, state, {
-                        turns: 1,
-                        playerTurn: action.payload[action.payload.indexOf(state.playerTurn)+1]
+                        turns: state.turns+1,
+                        playerTurn:  action.payload.inManche[0]
                     })
                 } else {
                     return Object.assign({}, state, {
-                        turns: state.turns + 1,
-                        playerTurn: action.payload[action.payload.indexOf(state.playerTurn)+1]
+                        turns: state.turns+1,
+                        playerTurn:  action.payload.inManche[action.payload.inManche.indexOf(state.playerTurn)+1]
                     })
                 }
             }
+            // if(state.playerTurn >= action.payload[action.payload.length-1]){
+            //     if(state.turns >= action.payload.length){
+            //         return Object.assign({}, state, {
+            //             turns: 1,
+            //             playerTurn: action.payload[0]
+            //         })
+            //     } else {
+            //         return Object.assign({}, state, {
+            //             turns: state.turns + 1,
+            //             playerTurn: action.payload[0]
+            //         })
+            //     }
+            // } else {
+            //     if(state.turns >= action.payload.length){
+            //         return Object.assign({}, state, {
+            //             turns: 1,
+            //             playerTurn: action.payload[action.payload.indexOf(state.playerTurn)+1]
+            //         })
+            //     } else {
+            //         return Object.assign({}, state, {
+            //             turns: state.turns + 1,
+            //             playerTurn: action.payload[action.payload.indexOf(state.playerTurn)+1]
+            //         })
+            //     }
+            // }
         },
         nextManche: (state) => {
             return Object.assign({}, state, {

@@ -15,6 +15,11 @@ interface player{
     done: boolean
 }
 
+export interface carteCentrali{
+    numero: number,
+    isVisible: boolean
+}
+
 interface players{
     players: player[],
     centralChips: number,
@@ -22,11 +27,6 @@ interface players{
     playersInManche: number[],
     playersInGame: number[],
     playersBetting: number[]
-}
-
-export interface carteCentrali{
-    numero: number,
-    isVisible: boolean
 }
 
 const initialState: players ={

@@ -99,9 +99,9 @@ function Commands(){
         }
         dispatch(moveDone(playerTurn));
         if(turns >= playersBetting.length){
-            dispatch(nextTurn(playersInManche))
+            dispatch(nextTurn({inManche: playersInManche, players: players}))
         } else {
-            dispatch(nextTurn(playersBetting))
+            dispatch(nextTurn({inManche: playersBetting, players: players}))
         }
     }
 
@@ -130,9 +130,9 @@ function Commands(){
         dispatch(moveDone(playerTurn));
         dispatch(removeChips({ref: 1, chips: minimum}));
         if(turns >= playersBetting.length){
-            dispatch(nextTurn(playersInManche))
+            dispatch(nextTurn({inManche: playersInManche, players: players}))
         } else {
-            dispatch(nextTurn(playersBetting))
+            dispatch(nextTurn({inManche: playersBetting, players: players}))
         }
     }
 
@@ -223,9 +223,9 @@ function Commands(){
                 amountInput.current.value = '0';
                 dispatch(moveDone(playerTurn));
                 if(turns >= playersBetting.length){
-                    dispatch(nextTurn(playersInManche))
+                    dispatch(nextTurn({inManche: playersInManche, players: players}))
                 } else {
-                    dispatch(nextTurn(playersBetting))
+                    dispatch(nextTurn({inManche: playersBetting, players: players}))
                 }
             }
         }
@@ -237,9 +237,9 @@ function Commands(){
         dispatch(removeChips({ref: playerTurn, chips: bet}));
         dispatch(moveDone(playerTurn));
         if(turns >= playersBetting.length){
-            dispatch(nextTurn(playersInManche));
+            dispatch(nextTurn({inManche: playersInManche, players: players}))
         } else {
-            dispatch(nextTurn(playersBetting));
+            dispatch(nextTurn({inManche: playersBetting, players: players}))
         }
     }
 
@@ -247,9 +247,9 @@ function Commands(){
         dispatch(moveDone(playerTurn));
         dispatch(outOfManche(playerTurn));
         if(turns >= playersBetting.length){
-            dispatch(nextTurn(playersInManche))
+            dispatch(nextTurn({inManche: playersInManche, players: players}))
         } else {
-            dispatch(nextTurn(playersBetting))
+            dispatch(nextTurn({inManche: playersBetting, players: players}))
         }
     }
 
@@ -257,9 +257,9 @@ function Commands(){
         if(minimum == 0){
             dispatch(moveDone(playerTurn));
             if(turns >= playersBetting.length){
-                dispatch(nextTurn(playersInManche))
+                dispatch(nextTurn({inManche: playersInManche, players: players}))
             } else {
-                dispatch(nextTurn(playersBetting))
+                dispatch(nextTurn({inManche: playersBetting, players: players}))
             }
         } else {
             alert("you can't check if there's a minimum bet required to keep playing");

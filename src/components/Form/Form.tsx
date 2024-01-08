@@ -47,8 +47,8 @@ function Form() {
 
       let contatore = 0;
 
-      // dispatch(setTurn(gameHelper.casualPlayerTurn(nPlayers)));
-      dispatch(setTurn(3));
+      dispatch(setTurn(gameHelper.casualPlayerTurn(nPlayers)));
+      // dispatch(setTurn(3));
       dispatch(setDifficulty(level));
 
       if(nPlayers>2 && nPlayers<=8){
