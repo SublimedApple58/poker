@@ -65,11 +65,24 @@ const playerSlice = createSlice({
         moveDone: (state, action: {payload: number}) => {
             return Object.assign({}, state, {players: state.players.map(giocatore => giocatore.name == action.payload ? Object.assign({}, giocatore, {done: true}) : giocatore)})
         },
-        resetDone: (state, action: {payload: number[]}) => {
+        raiseDone: (state, action: {payload: number}) => {
+            return Object.assign({}, state, {players: state.players.map(giocatore => {
+                if(giocatore.name != action.payload){
+                    let existent: boolean = false;
+                    for(let i = 0; i<state.playersInManche.length; i++){
+                        giocatore.name == state.playersInManche[i] ? existent = true : existent;
+                    }
+                    return Object.assign({}, giocatore, {done: false})
+                } else {
+                    return giocatore
+                }
+            })})
+        },
+        resetDone: (state) => {
             return Object.assign({}, state, {players: state.players.map(giocatore => {
                 let existent: boolean = false;
-                for(let i = 0; i<action.payload.length; i++){
-                    giocatore.name == action.payload[i] ? existent = true : existent;
+                for(let i = 0; i<state.playersInManche.length; i++){
+                    giocatore.name == state.playersInManche[i] ? existent = true : existent;
                 }
                 return Object.assign({}, giocatore, {done: !existent})
             })})
@@ -151,4 +164,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, outOfManche, moveDone, resetDone, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const {addPlayer, outOfManche, moveDone, resetDone, raiseDone, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;

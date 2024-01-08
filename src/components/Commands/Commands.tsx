@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, hideAll, moveDone, outOfManche, removeChips, resetCards, resetDone, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, moveDone, outOfManche, raiseDone, removeChips, resetCards, resetDone, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, resetMin, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -65,7 +65,7 @@ function Commands(){
             }
             dispatch(nextRound());
             dispatch(updatePlayersBetting());
-            dispatch(resetDone(playersInManche))
+            dispatch(resetDone())
          } else if(playersInManche.length == 1) {
             dispatch(showAll());
             setTimeout(()=>{
@@ -210,19 +210,36 @@ function Commands(){
         dispatch(setCentralCards(carteConvertiteCentrali));
     }
 
-    function raise(){
+    function raising(){
         if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
             amountInput.current.value = '0';
         } else {
             if((amountInput.current?.valueAsNumber ?? 0)<minimum){
                 alert(`your bet must be a minimum of ${minimum}`)
             } else if(amountInput.current != null){
-                dispatch(updateMin(amountInput.current.valueAsNumber))
+                dispatch(raiseDone(playerTurn));
+                dispatch(updateMin(amountInput.current.valueAsNumber));
                 dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
                 amountInput.current.value = '0';
                 dispatch(moveDone(playerTurn));
-                dispatch(nextTurn(playersBetting));
+                if(turns >= playersBetting.length){
+                    dispatch(nextTurn(playersInManche))
+                } else {
+                    dispatch(nextTurn(playersBetting))
+                }
             }
+        }
+    }
+
+    function raise(bet: number){
+        dispatch(raiseDone(playerTurn));
+        dispatch(updateMin(bet));
+        dispatch(removeChips({ref: playerTurn, chips: bet}));
+        dispatch(moveDone(playerTurn));
+        if(turns >= playersBetting.length){
+            dispatch(nextTurn(playersInManche));
+        } else {
+            dispatch(nextTurn(playersBetting));
         }
     }
 
@@ -268,7 +285,7 @@ function Commands(){
                 <button onClick={() => azione(fold)}>fold</button>
                 <button onClick={() => azione(check)}>check</button>
                 <button onClick={() => azione(call)}>call</button>
-                <button onClick={() => azione(raise)}>raise</button>
+                <button onClick={() => azione(raising)}>raise</button>
             </div>
             <div className="amount" style={style} >
                 <input type="number" placeholder='Insert amount' ref={amountInput}/>
