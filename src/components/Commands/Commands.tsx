@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, hideAll, outOfManche, removeChips, resetCards, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, moveDone, outOfManche, removeChips, resetCards, resetDone, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, resetMin, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -60,8 +60,12 @@ function Commands(){
 
     useEffect(()=>{
         if(turns == 1){
+            if(round >= 1){
+                dispatch(updateMin(0))
+            }
             dispatch(nextRound());
             dispatch(updatePlayersBetting());
+            dispatch(resetDone(playersInManche))
          } else if(playersInManche.length == 1) {
             dispatch(showAll());
             setTimeout(()=>{
@@ -93,6 +97,7 @@ function Commands(){
             case 'hard':
                 hard(turnof);
         }
+        dispatch(moveDone(playerTurn));
         if(turns >= playersBetting.length){
             dispatch(nextTurn(playersInManche))
         } else {
@@ -101,23 +106,34 @@ function Commands(){
     }
 
     function easy(turnof: number) {
-        let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: bet}));
+        if(minimum != 0){
+            let bet = minimum;
+            dispatch(removeChips({ref: turnof, chips: bet}));
+        }
     }
 
     function medium(turnof: number) {
-        let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: bet}));
+        if(minimum != 0){
+            let bet = minimum;
+            dispatch(removeChips({ref: turnof, chips: bet}));
+        }
     }
 
     function hard(turnof: number) {
-        let bet = minimum;
-        dispatch(removeChips({ref: turnof, chips: bet}));
+        if(minimum != 0){
+            let bet = minimum;
+            dispatch(removeChips({ref: turnof, chips: bet}));
+        }
     }
 
     function call(){
+        dispatch(moveDone(playerTurn));
         dispatch(removeChips({ref: 1, chips: minimum}));
-        dispatch(nextTurn(playersBetting));
+        if(turns >= playersBetting.length){
+            dispatch(nextTurn(playersInManche))
+        } else {
+            dispatch(nextTurn(playersBetting))
+        }
     }
 
     function assignFish(){
@@ -204,14 +220,33 @@ function Commands(){
                 dispatch(updateMin(amountInput.current.valueAsNumber))
                 dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
                 amountInput.current.value = '0';
+                dispatch(moveDone(playerTurn));
                 dispatch(nextTurn(playersBetting));
             }
         }
     }
 
-    function fold(ref: number){
-        dispatch(outOfManche(ref));
-        dispatch(nextTurn(playersBetting))
+    function fold(){
+        dispatch(moveDone(playerTurn));
+        dispatch(outOfManche(playerTurn));
+        if(turns >= playersBetting.length){
+            dispatch(nextTurn(playersInManche))
+        } else {
+            dispatch(nextTurn(playersBetting))
+        }
+    }
+
+    function check(){
+        if(minimum == 0){
+            dispatch(moveDone(playerTurn));
+            if(turns >= playersBetting.length){
+                dispatch(nextTurn(playersInManche))
+            } else {
+                dispatch(nextTurn(playersBetting))
+            }
+        } else {
+            alert("you can't check if there's a minimum bet required to keep playing");
+        }
     }
 
     function azione(comando: Function){
@@ -230,8 +265,8 @@ function Commands(){
     return (
         <>
             <div className="commands" style={style}>
-                <button onClick={() => fold(1)}>fold</button>
-                <button>check</button>
+                <button onClick={() => azione(fold)}>fold</button>
+                <button onClick={() => azione(check)}>check</button>
                 <button onClick={() => azione(call)}>call</button>
                 <button onClick={() => azione(raise)}>raise</button>
             </div>

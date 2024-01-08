@@ -11,7 +11,8 @@ interface player{
     isUser: boolean
     isVisible: boolean,
     side: number,
-    carte: number[]
+    carte: number[],
+    done: boolean
 }
 
 interface players{
@@ -60,6 +61,18 @@ const playerSlice = createSlice({
             return Object.assign({}, state, {
                 playersInManche: arrayProvvisorio
             })
+        },
+        moveDone: (state, action: {payload: number}) => {
+            return Object.assign({}, state, {players: state.players.map(giocatore => giocatore.name == action.payload ? Object.assign({}, giocatore, {done: true}) : giocatore)})
+        },
+        resetDone: (state, action: {payload: number[]}) => {
+            return Object.assign({}, state, {players: state.players.map(giocatore => {
+                let existent: boolean = false;
+                for(let i = 0; i<action.payload.length; i++){
+                    giocatore.name == action.payload[i] ? existent = true : existent;
+                }
+                return Object.assign({}, giocatore, {done: !existent})
+            })})
         },
         updatePlayersBetting: (state) => {return Object.assign({}, state, {playersBetting: [...state.playersInManche]})},
         updatePlayersInManche: (state) => {return Object.assign({}, state, {playersInManche: [...state.playersInGame]})},
@@ -138,4 +151,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, outOfManche, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const {addPlayer, outOfManche, moveDone, resetDone, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;

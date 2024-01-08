@@ -48,6 +48,7 @@ function Form() {
       let contatore = 0;
 
       dispatch(setTurn(gameHelper.casualPlayerTurn(nPlayers)));
+      // dispatch(setTurn(1));
       dispatch(setDifficulty(level));
 
       if(nPlayers>2 && nPlayers<=8){
@@ -56,7 +57,7 @@ function Form() {
                 integerTableSide = Math.trunc(i/4),
                 tableSide = 3 - (i - (integerTableSide * 4));
                 
-          dispatch(addPlayer({name: i, chips: 100, isVisible: i==1, isUser: i==1, side: tableSide, carte: [carte[contatore], carte[contatore+1]]}))
+          dispatch(addPlayer({name: i, chips: 100, isVisible: i==1, isUser: i==1, side: tableSide, done: false, carte: [carte[contatore], carte[contatore+1]]}))
           contatore+=2;
         }
         const carteCentrali = carte.slice(contatore);
