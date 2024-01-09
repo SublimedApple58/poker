@@ -74,14 +74,7 @@ function Commands(){
     }, [round])
 
     useEffect(()=>{
-        if(turns == 1){
-            if(round >= 1){
-                dispatch(updateMin(0))
-            }
-            dispatch(nextRound());
-            dispatch(updatePlayersBetting());
-            dispatch(resetDone())
-         } else if(playersInManche.length == 1) {
+        if(playersInManche.length == 1){
             dispatch(showAll());
             setTimeout(()=>{
                 assignFish();
@@ -91,6 +84,13 @@ function Commands(){
                 dispatch(resetMin());
                 newManche();
             }, 2000);
+         } else if(turns == 1) {
+            if(round >= 1){
+                dispatch(updateMin(0))
+            }
+            dispatch(nextRound());
+            dispatch(updatePlayersBetting());
+            dispatch(resetDone())
          } else if(playerTurn!=1){
             setStyle(invisible);
             setTimeout(() => {
@@ -146,7 +146,7 @@ function Commands(){
                 dispatch(nextTurn({inManche: playersBetting, players: players}))
             }
         } else {
-            check();
+            call();
         }
     }
 
@@ -161,7 +161,7 @@ function Commands(){
                 dispatch(nextTurn({inManche: playersBetting, players: players}))
             }
         } else {
-            check();
+            call();
         }
     }
 
