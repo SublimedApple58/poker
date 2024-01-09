@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, hideAll, moveDone, outOfManche, raiseDone, removeChips, resetCards, resetDone, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, moveDone, outOfGame, outOfManche, raiseDone, removeChips, resetCards, resetDone, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, resetMin, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -27,6 +27,7 @@ function Commands(){
         round = useSelector((state: RootState) => state.game.round),
         centralCards = useSelector((state: RootState) => state.giocatori.centralCards),
         playersInManche = useSelector((state: RootState) => state.giocatori.playersInManche),
+        playersInGame = useSelector((state: RootState) => state.giocatori.playersInGame),
         playersBetting = useSelector((state: RootState)  => state.giocatori.playersBetting)
 
     let [style, setStyle] = useState(visible);
@@ -79,13 +80,14 @@ function Commands(){
             setTimeout(()=>{
                 assignFish();
                 dispatch(updatePlayersInManche());
+                dispatch(updatePlayersBetting());
                 dispatch(hideAll());
                 dispatch(nextManche());
                 dispatch(resetMin());
                 newManche();
             }, 2000);
          } else if(turns == 1) {
-            if(round >= 1){
+            if(round == 1){
                 dispatch(updateMin(0))
             }
             dispatch(nextRound());
@@ -126,11 +128,6 @@ function Commands(){
                 dispatch(nextTurn({inManche: playersBetting, players: players}))
             }
         } else {
-            // if(round == 2 && playerTurn == 2 && turns == 1){
-            //     raise(20);
-            // } else {
-            //     call();
-            // }
             call();
         }
     }
@@ -203,6 +200,13 @@ function Commands(){
               };
             if(compareArrays(players[playersInManche[i]-1].carte, numeriGiocatori[indexOfMax(punteggi)])){
                 dispatch(win(players[playersInManche[i]-1].name));
+                // si occupa di cacciare dal gioco chi non ha piu' soldi
+                for(let j = 0; i<players.length; i++){
+                    if(players[j].chips == 0 && playersInGame.includes(players[j].name) && players[j].name != players[playersInManche[i]-1].name){
+                        dispatch(outOfManche(players[j].name));
+                        dispatch(outOfGame(players[j].name));
+                    }
+                }
             }
         }
     }
@@ -255,10 +259,10 @@ function Commands(){
             if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
                 amountInput.current.value = '0';
             } else {
-                if((amountInput.current?.valueAsNumber ?? 0)<minimum){
-                    alert(`your bet must be a minimum of ${minimum}`)
+                const playersName = players.map(giocatore => giocatore.name);
+                if((amountInput.current?.valueAsNumber ?? 0)>players[playersName.indexOf(playerTurn)].chips){
+                    alert(`hey!! You don't have that much money`)
                 } else if(amountInput.current != null){
-                    const playersName = players.map(giocatore => giocatore.name);
                     dispatch(removeChips({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + (amountInput.current?.valueAsNumber ?? 0)}));
                     dispatch(setPlayerBet({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + (amountInput.current?.valueAsNumber ?? 0)}));
                     amountInput.current.value = '0';

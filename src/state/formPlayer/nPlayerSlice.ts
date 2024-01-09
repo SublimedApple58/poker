@@ -63,6 +63,13 @@ const playerSlice = createSlice({
                 playersInManche: arrayProvvisorio
             })
         },
+        outOfGame: (state, action: {payload: number}) => {
+            const arrayProvvisorio = [...state.playersInGame];
+            arrayProvvisorio.splice(arrayProvvisorio.indexOf(action.payload), 1)
+            return Object.assign({}, state, {
+                playersInGame: arrayProvvisorio
+            })
+        },
         moveDone: (state, action: {payload: number}) => {
             return Object.assign({}, state, {players: state.players.map(giocatore => giocatore.name == action.payload ? Object.assign({}, giocatore, {done: true}) : giocatore)})
         },
@@ -179,4 +186,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, outOfManche, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const {addPlayer, outOfManche, outOfGame, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
