@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, hideAll, moveDone, outOfManche, raiseDone, removeChips, resetCards, resetDone, setCentralCardVisible, setCentralCards, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, moveDone, outOfManche, raiseDone, removeChips, resetCards, resetDone, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, resetMin, updateMin } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -31,6 +31,21 @@ function Commands(){
 
     let [style, setStyle] = useState(visible);
 
+    function indexOfMax(arr: number[]) {
+        
+        let max = arr[0];
+        let maxIndex = 0;
+    
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i] > max) {
+                maxIndex = i;
+                max = arr[i];
+            }
+        }
+    
+        return maxIndex;
+    }
+
     useEffect(()=>{
         if (round == 5) {
             dispatch(showAll());
@@ -47,13 +62,13 @@ function Commands(){
             if(playerTurn!=1){
                 setStyle(invisible);
                 setTimeout(() => {
-                    action(playerTurn)
+                    action()
                 }, 1000)
             } else {
                 setStyle(visible);
             }
             if(round>1 && round<5) {
-            dispatch(setCentralCardVisible(round))
+                dispatch(setCentralCardVisible(round))
             }
         }
     }, [round])
@@ -79,78 +94,78 @@ function Commands(){
          } else if(playerTurn!=1){
             setStyle(invisible);
             setTimeout(() => {
-                action(playerTurn)
+                action()
             }, 1000)
         } else {
             setStyle(visible);
         }
     }, [playerTurn])
 
-    function action(turnof: number){
+    function action(){
         switch(difficulty) {
             case 'easy':
-                easy(turnof);
+                easy();
                 break;
             case 'medium':
-                medium(turnof);
+                medium();
                 break;
             case 'hard':
-                hard(turnof);
+                hard();
         }
-        dispatch(moveDone(playerTurn));
-        if(turns >= playersBetting.length){
-            dispatch(nextTurn({inManche: playersInManche, players: players}))
+    }
+
+    function easy() {
+        if(minimum != 0){
+            let bet = minimum;
+            dispatch(removeChips({ref: playerTurn, chips: bet}));
+            dispatch(setPlayerBet({ref: playerTurn, chips: bet}));
+            dispatch(moveDone(playerTurn))
+            if(turns >= playersBetting.length){
+                dispatch(nextTurn({inManche: playersInManche, players: players}))
+            } else {
+                dispatch(nextTurn({inManche: playersBetting, players: players}))
+            }
         } else {
-            dispatch(nextTurn({inManche: playersBetting, players: players}))
+            // if(round == 2 && playerTurn == 2 && turns == 1){
+            //     raise(20);
+            // } else {
+            //     call();
+            // }
+            call();
         }
     }
 
-    function easy(turnof: number) {
+    function medium() {
         if(minimum != 0){
             let bet = minimum;
-            dispatch(removeChips({ref: turnof, chips: bet}));
-        }
-    }
-
-    function medium(turnof: number) {
-        if(minimum != 0){
-            let bet = minimum;
-            dispatch(removeChips({ref: turnof, chips: bet}));
-        }
-    }
-
-    function hard(turnof: number) {
-        if(minimum != 0){
-            let bet = minimum;
-            dispatch(removeChips({ref: turnof, chips: bet}));
-        }
-    }
-
-    function call(){
-        dispatch(moveDone(playerTurn));
-        dispatch(removeChips({ref: 1, chips: minimum}));
-        if(turns >= playersBetting.length){
-            dispatch(nextTurn({inManche: playersInManche, players: players}))
+            dispatch(removeChips({ref: playerTurn, chips: bet}));
+            dispatch(setPlayerBet({ref: playerTurn, chips: bet}));
+            if(turns >= playersBetting.length){
+                dispatch(nextTurn({inManche: playersInManche, players: players}))
+            } else {
+                dispatch(nextTurn({inManche: playersBetting, players: players}))
+            }
         } else {
-            dispatch(nextTurn({inManche: playersBetting, players: players}))
+            check();
+        }
+    }
+
+    function hard() {
+        if(minimum != 0){
+            let bet = minimum;
+            dispatch(removeChips({ref: playerTurn, chips: bet}));
+            dispatch(setPlayerBet({ref: playerTurn, chips: bet}));
+            if(turns >= playersBetting.length){
+                dispatch(nextTurn({inManche: playersInManche, players: players}))
+            } else {
+                dispatch(nextTurn({inManche: playersBetting, players: players}))
+            }
+        } else {
+            check();
         }
     }
 
     function assignFish(){
-        function indexOfMax(arr: number[]) {
-        
-            let max = arr[0];
-            let maxIndex = 0;
-        
-            for (let i = 1; i < arr.length; i++) {
-                if (arr[i] > max) {
-                    maxIndex = i;
-                    max = arr[i];
-                }
-            }
-        
-            return maxIndex;
-        }
 
         const numeriGiocatori: any[] = []; // da fare refactory
         for(let i = 0; i<playersInManche.length; i++){
@@ -210,32 +225,61 @@ function Commands(){
         dispatch(setCentralCards(carteConvertiteCentrali));
     }
 
-    function raising(){
-        if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
-            amountInput.current.value = '0';
+    function findHigherBet(){
+        const scommesse: number[] = players.map(giocatore => giocatore.bet);
+        const maxBet: number = players[indexOfMax(scommesse)].bet;
+        return maxBet;
+    }
+
+    function call(){
+        if(round == 1){
+            dispatch(removeChips({ref: playerTurn, chips: minimum}));
+            dispatch(setPlayerBet({ref: playerTurn, chips: minimum}));
         } else {
-            if((amountInput.current?.valueAsNumber ?? 0)<minimum){
-                alert(`your bet must be a minimum of ${minimum}`)
-            } else if(amountInput.current != null){
-                dispatch(raiseDone(playerTurn));
-                dispatch(updateMin(amountInput.current.valueAsNumber));
-                dispatch(removeChips({ref: 1, chips: (amountInput.current?.valueAsNumber ?? 0)}));
+            const playersName = players.map(giocatore => giocatore.name);
+            dispatch(removeChips({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet}))
+            dispatch(setPlayerBet({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet}));
+        }
+        dispatch(moveDone(playerTurn));
+        if(turns >= playersBetting.length){
+            dispatch(nextTurn({inManche: playersInManche, players: players}))
+        } else {
+            dispatch(nextTurn({inManche: playersBetting, players: players}))
+        }
+    }
+
+    function raising(){
+        if(round==1){
+            alert("At first round you can only call or fold")
+        } else {
+            if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
                 amountInput.current.value = '0';
-                dispatch(moveDone(playerTurn));
-                if(turns >= playersBetting.length){
-                    dispatch(nextTurn({inManche: playersInManche, players: players}))
-                } else {
-                    dispatch(nextTurn({inManche: playersBetting, players: players}))
+            } else {
+                if((amountInput.current?.valueAsNumber ?? 0)<minimum){
+                    alert(`your bet must be a minimum of ${minimum}`)
+                } else if(amountInput.current != null){
+                    const playersName = players.map(giocatore => giocatore.name);
+                    dispatch(removeChips({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + (amountInput.current?.valueAsNumber ?? 0)}));
+                    dispatch(setPlayerBet({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + (amountInput.current?.valueAsNumber ?? 0)}));
+                    amountInput.current.value = '0';
+                    dispatch(raiseDone(playerTurn));
+                    if(turns >= playersBetting.length){
+                        dispatch(nextTurn({inManche: playersInManche, players: players}))
+                    } else {
+                        dispatch(nextTurn({inManche: playersBetting, players: players}))
+                    }
                 }
             }
         }
     }
 
     function raise(bet: number){
+        const playersName = players.map(giocatore => giocatore.name);
+        dispatch(removeChips({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + bet}));
+        dispatch(setPlayerBet({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + bet}));
+
         dispatch(raiseDone(playerTurn));
-        dispatch(updateMin(bet));
-        dispatch(removeChips({ref: playerTurn, chips: bet}));
-        dispatch(moveDone(playerTurn));
+
         if(turns >= playersBetting.length){
             dispatch(nextTurn({inManche: playersInManche, players: players}))
         } else {
@@ -254,7 +298,8 @@ function Commands(){
     }
 
     function check(){
-        if(minimum == 0){
+        const playersName = players.map(giocatore => giocatore.name);
+        if(minimum == 0 && findHigherBet() - players[playersName.indexOf(playerTurn)].bet == 0){
             dispatch(moveDone(playerTurn));
             if(turns >= playersBetting.length){
                 dispatch(nextTurn({inManche: playersInManche, players: players}))

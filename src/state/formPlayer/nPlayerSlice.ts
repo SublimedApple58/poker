@@ -12,7 +12,8 @@ interface player{
     isVisible: boolean,
     side: number,
     carte: number[],
-    done: boolean
+    done: boolean,
+    bet: number
 }
 
 export interface carteCentrali{
@@ -47,7 +48,7 @@ const playerSlice = createSlice({
     name: "players",
     initialState,
     reducers: {
-        addPlayer: (state, action: {payload: any}) => {
+        addPlayer: (state, action: {payload: player}) => {
             return Object.assign({}, state, {
                 players: [...state.players, action.payload],
                 playersInManche: [...state.playersInManche, action.payload.name],
@@ -85,6 +86,20 @@ const playerSlice = createSlice({
                     giocatore.name == state.playersInManche[i] ? existent = true : existent;
                 }
                 return Object.assign({}, giocatore, {done: !existent})
+            })})
+        },
+        setPlayerBet: (state, action: {payload: scommessa}) => {
+            return Object.assign({}, state, {players: state.players.map(giocatore => {
+                if(giocatore.name == action.payload.ref){
+                    return Object.assign({}, giocatore, {bet: giocatore.bet+action.payload.chips})
+                } else {
+                    return giocatore
+                }
+            })})
+        },
+        resetPlayersBet: (state) => {
+            return Object.assign({}, state, {players: state.players.map(giocatore => {
+                return Object.assign({}, giocatore, {bet: 0})
             })})
         },
         updatePlayersBetting: (state) => {return Object.assign({}, state, {playersBetting: [...state.playersInManche]})},
@@ -164,4 +179,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, outOfManche, moveDone, resetDone, raiseDone, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const {addPlayer, outOfManche, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
