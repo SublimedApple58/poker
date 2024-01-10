@@ -53,6 +53,7 @@ function Commands(){
             setTimeout(()=>{
                 assignFish();
                 dispatch(updatePlayersInManche());
+                dispatch(updatePlayersBetting());
                 dispatch(hideAll());
                 dispatch(nextManche());
                 dispatch(resetMin());
@@ -60,16 +61,18 @@ function Commands(){
             }, 2000);
         }
         else if(round != 0) {
-            if(playerTurn!=1){
-                setStyle(invisible);
-                setTimeout(() => {
-                    action()
-                }, 1000)
-            } else {
-                setStyle(visible);
-            }
-            if(round>1 && round<5) {
-                dispatch(setCentralCardVisible(round))
+            if(playersInGame.length > 1){
+                if(playerTurn!=1){
+                    setStyle(invisible);
+                    setTimeout(() => {
+                        action();
+                    }, 1000)
+                } else {
+                    setStyle(visible);
+                }
+                if(round>1 && round<5) {
+                    dispatch(setCentralCardVisible(round))
+                }
             }
         }
     }, [round])
@@ -201,7 +204,7 @@ function Commands(){
             if(compareArrays(players[playersInManche[i]-1].carte, numeriGiocatori[indexOfMax(punteggi)])){
                 dispatch(win(players[playersInManche[i]-1].name));
                 // si occupa di cacciare dal gioco chi non ha piu' soldi
-                for(let j = 0; i<players.length; i++){
+                for(let j = 0; j<players.length; j++){
                     if(players[j].chips == 0 && playersInGame.includes(players[j].name) && players[j].name != players[playersInManche[i]-1].name){
                         dispatch(outOfManche(players[j].name));
                         dispatch(outOfGame(players[j].name));
