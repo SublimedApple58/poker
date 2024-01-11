@@ -2,9 +2,9 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, hideAll, moveDone, outOfGame, outOfManche, raiseDone, removeChips, resetCards, resetDone, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updatePlayersBetting, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, moveDone, outOfGame, outOfManche, raiseDone, removeChips, resetCards, resetDone, resetPlayersBet, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextManche, nextRound, nextTurn, resetMin, updateMin } from '../../state/gameStatus/gameSlice';
+import { nextManche, nextRound, nextTurn } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
 
@@ -19,16 +19,14 @@ function Commands(){
             opacity: '1'
         },
         dispatch = useDispatch(),
-        minimum = useSelector((state: RootState)=> state.game.lastBet),
         players = useSelector((state: RootState)=> state.giocatori.players),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         difficulty = useSelector((state: RootState) => state.game.difficulty),
         turns = useSelector((state: RootState) => state.game.turns),
         round = useSelector((state: RootState) => state.game.round),
         centralCards = useSelector((state: RootState) => state.giocatori.centralCards),
-        playersInManche = useSelector((state: RootState) => state.giocatori.playersInManche),
-        playersInGame = useSelector((state: RootState) => state.giocatori.playersInGame),
-        playersBetting = useSelector((state: RootState)  => state.giocatori.playersBetting)
+        giocatoriInManche = players.filter(giocatore => giocatore.inManche),
+        giocatoriInGame = players.filter(giocatore => giocatore.inGame);
 
     let [style, setStyle] = useState(visible);
 
@@ -37,7 +35,7 @@ function Commands(){
         let max = arr[0];
         let maxIndex = 0;
     
-        for (let i = 1; i < arr.length; i++) {
+        for (let i = 0; i < arr.length; i++) {
             if (arr[i] > max) {
                 maxIndex = i;
                 max = arr[i];
@@ -47,21 +45,24 @@ function Commands(){
         return maxIndex;
     }
 
+    function goForward(){
+        dispatch(nextTurn(players));
+    }
+
     useEffect(()=>{
         if (round == 5) {
             dispatch(showAll());
             setTimeout(()=>{
                 assignFish();
                 dispatch(updatePlayersInManche());
-                dispatch(updatePlayersBetting());
                 dispatch(hideAll());
+                dispatch(resetPlayersBet());
                 dispatch(nextManche());
-                dispatch(resetMin());
                 newManche();
             }, 2000);
         }
         else if(round != 0) {
-            if(playersInGame.length > 1){
+            dispatch(resetPlayersBet());
                 if(playerTurn!=1){
                     setStyle(invisible);
                     setTimeout(() => {
@@ -73,28 +74,21 @@ function Commands(){
                 if(round>1 && round<5) {
                     dispatch(setCentralCardVisible(round))
                 }
-            }
         }
     }, [round])
 
     useEffect(()=>{
-        if(playersInManche.length == 1){
+        if(giocatoriInManche.length == 1){
             dispatch(showAll());
             setTimeout(()=>{
                 assignFish();
                 dispatch(updatePlayersInManche());
-                dispatch(updatePlayersBetting());
                 dispatch(hideAll());
                 dispatch(nextManche());
-                dispatch(resetMin());
                 newManche();
             }, 2000);
          } else if(turns == 1) {
-            if(round == 1){
-                dispatch(updateMin(0))
-            }
             dispatch(nextRound());
-            dispatch(updatePlayersBetting());
             dispatch(resetDone())
          } else if(playerTurn!=1){
             setStyle(invisible);
@@ -107,9 +101,32 @@ function Commands(){
     }, [playerTurn])
 
     function action(){
+        const playersNames: number[] = players.map(giocatore => giocatore.name),
+          playersCards: cardProperties[] = [cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[0]), cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[1])],
+          numeri = centralCards.map(carta => cardHelper.converNumberToCard(carta.numero));
+        
+        let 
+          score: number = 0,
+          visibleCards: cardProperties[] = [];
+
+          if(round>1 && round<=4){
+            visibleCards = numeri.filter((carta, i) => i<=round);
+            score = gameHelper.calcScore(playersCards, visibleCards);
+          } else if(round>4){
+            visibleCards = [...numeri];
+            score = gameHelper.calcScore(playersCards, visibleCards);
+          } else {
+            score = gameHelper.calcScore(playersCards);
+          }
+
+        function casualNumber(number: number): number{
+            let x = Math.floor(Math.random() * number) + 1;
+            return x;
+        }
+
         switch(difficulty) {
             case 'easy':
-                easy();
+                easy(score, casualNumber);
                 break;
             case 'medium':
                 medium();
@@ -119,75 +136,85 @@ function Commands(){
         }
     }
 
-    function easy() {
-        if(minimum != 0){
-            let bet = minimum;
-            dispatch(removeChips({ref: playerTurn, chips: bet}));
-            dispatch(setPlayerBet({ref: playerTurn, chips: bet}));
-            dispatch(moveDone(playerTurn))
-            if(turns >= playersBetting.length){
-                dispatch(nextTurn({inManche: playersInManche, players: players}))
+    function easy(score: number, casualNumber: (par: number) => number) {
+        let totalToBet: number = 0;
+        if(round==1){
+            if(casualNumber(5) == 1){
+                fold();
             } else {
-                dispatch(nextTurn({inManche: playersBetting, players: players}))
+                call();
             }
         } else {
-            call();
+            switch(score){
+                case 0:
+                    fold();
+                    break;
+                case 1:
+                    call()
+                    break;
+                case 2:
+                    call()
+                    break;
+                case 3:
+                    raise(10)
+                    break;
+                case 4:
+                    raise(20)
+                    break;
+                case 5:
+                    raise(20)
+                    break;
+                case 6:
+                    raise(30)
+                    break;
+                case 7:
+                    raise(30)
+                    break;
+                case 8:
+                    raise(30)
+                    break;
+                case 9:
+                    break;
+            }
         }
     }
 
     function medium() {
-        if(minimum != 0){
-            let bet = minimum;
-            dispatch(removeChips({ref: playerTurn, chips: bet}));
-            dispatch(setPlayerBet({ref: playerTurn, chips: bet}));
-            if(turns >= playersBetting.length){
-                dispatch(nextTurn({inManche: playersInManche, players: players}))
-            } else {
-                dispatch(nextTurn({inManche: playersBetting, players: players}))
-            }
+        if(round == 1){
+            call();
+        } else if(round == 2 && playerTurn == 2){
+            raise(10);
         } else {
             call();
         }
     }
 
     function hard() {
-        if(minimum != 0){
-            let bet = minimum;
-            dispatch(removeChips({ref: playerTurn, chips: bet}));
-            dispatch(setPlayerBet({ref: playerTurn, chips: bet}));
-            if(turns >= playersBetting.length){
-                dispatch(nextTurn({inManche: playersInManche, players: players}))
-            } else {
-                dispatch(nextTurn({inManche: playersBetting, players: players}))
-            }
-        } else {
-            call();
-        }
+        call();
     }
 
     function assignFish(){
 
-        const numeriGiocatori: any[] = []; // da fare refactory
-        for(let i = 0; i<playersInManche.length; i++){
-            numeriGiocatori.push([players[playersInManche[i]-1].carte[0], players[playersInManche[i]-1].carte[1]])
-        }
-
-        const carteGiocatori: any[] = []  // da fare refactory
-        for(let i = 0; i<playersInManche.length; i++){
-            carteGiocatori.push([cardHelper.converNumberToCard(players[playersInManche[i]-1].carte[0]), cardHelper.converNumberToCard(players[playersInManche[i]-1].carte[1])]);
-        }
+        const 
+          numeriGiocatori: any[] = giocatoriInManche.map(giocatore => giocatore.carte), // da fare refactory
+          carteGiocatori: any[] = giocatoriInManche.map(giocatore => {  // da fare refactory
+            return [
+                cardHelper.converNumberToCard(giocatore.carte[0]), 
+                cardHelper.converNumberToCard(giocatore.carte[1])
+            ]
+        }); 
 
         const punteggi: number[] = [];
         for(let i = 0; i<carteGiocatori.length; i++){
-            if(round>1 && round<4){
+            if(round>1 && round<=4){
                 let carteCentraliScoperte: cardProperties[] = [];
-                for(let i = 0; i<round+1; i++){
+                for(let j = 0; j<round+1; j++){
                     carteCentraliScoperte.push(cardHelper.converNumberToCard(centralCards[i].numero))
                 }
                 punteggi.push(gameHelper.calcScore(carteGiocatori[i], carteCentraliScoperte));
             } else if(round>4){
                 let carteCentraliScoperte: cardProperties[] = [];
-                for(let i = 0; i<5; i++){
+                for(let j = 0; j<5; j++){
                     carteCentraliScoperte.push(cardHelper.converNumberToCard(centralCards[i].numero))
                 }
                 punteggi.push(gameHelper.calcScore(carteGiocatori[i], carteCentraliScoperte));
@@ -197,15 +224,16 @@ function Commands(){
             
         }
 
-        for(let i = 0; i<playersInManche.length; i++){
+        for(let i = 0; i<giocatoriInManche.length; i++){
             const compareArrays = (a: number[], b: number[]) => {
                 return JSON.stringify(a) === JSON.stringify(b);
               };
-            if(compareArrays(players[playersInManche[i]-1].carte, numeriGiocatori[indexOfMax(punteggi)])){
-                dispatch(win(players[playersInManche[i]-1].name));
+            if(compareArrays(players[giocatoriInManche[i].name-1].carte, numeriGiocatori[indexOfMax(punteggi)])){
+                dispatch(win(players[giocatoriInManche[i].name-1].name));
                 // si occupa di cacciare dal gioco chi non ha piu' soldi
+                const namesInGame = giocatoriInGame.map(giocatore => giocatore.name)
                 for(let j = 0; j<players.length; j++){
-                    if(players[j].chips == 0 && playersInGame.includes(players[j].name) && players[j].name != players[playersInManche[i]-1].name){
+                    if(players[j].chips == 0 && namesInGame.includes(players[j].name) && players[j].name != players[giocatoriInManche[i].name-1].name){
                         dispatch(outOfManche(players[j].name));
                         dispatch(outOfGame(players[j].name));
                     }
@@ -217,9 +245,9 @@ function Commands(){
     function newManche(){
         // creare nuova manche, azzerando carte e ricoprendole tutte quante
         dispatch(resetCards());
-        const carte = cardHelper.generateCasualCard(playersInManche.length);
+        const carte = cardHelper.generateCasualCard(giocatoriInManche.length);
         let contatore = 0;
-        for(let i = 0; i<=playersInManche.length; i++){            
+        for(let i = 0; i<=giocatoriInManche.length; i++){            
             dispatch(setPlayerCards({index: i, carte: [carte[contatore], carte[contatore+1]]}))
             contatore+=2;
         }
@@ -240,19 +268,16 @@ function Commands(){
 
     function call(){
         if(round == 1){
-            dispatch(removeChips({ref: playerTurn, chips: minimum}));
-            dispatch(setPlayerBet({ref: playerTurn, chips: minimum}));
+            dispatch(removeChips({ref: playerTurn, chips: 5}));
+            dispatch(setPlayerBet({ref: playerTurn, chips: 5}));
         } else {
             const playersName = players.map(giocatore => giocatore.name);
-            dispatch(removeChips({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet}))
-            dispatch(setPlayerBet({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet}));
+            const higher = findHigherBet();
+            dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
+            dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
         }
         dispatch(moveDone(playerTurn));
-        if(turns >= playersBetting.length){
-            dispatch(nextTurn({inManche: playersInManche, players: players}))
-        } else {
-            dispatch(nextTurn({inManche: playersBetting, players: players}))
-        }
+        goForward();
     }
 
     function raising(){
@@ -269,12 +294,8 @@ function Commands(){
                     dispatch(removeChips({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + (amountInput.current?.valueAsNumber ?? 0)}));
                     dispatch(setPlayerBet({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + (amountInput.current?.valueAsNumber ?? 0)}));
                     amountInput.current.value = '0';
-                    dispatch(raiseDone(playerTurn));
-                    if(turns >= playersBetting.length){
-                        dispatch(nextTurn({inManche: playersInManche, players: players}))
-                    } else {
-                        dispatch(nextTurn({inManche: playersBetting, players: players}))
-                    }
+                    dispatch(raiseDone());
+                    goForward();
                 }
             }
         }
@@ -282,37 +303,36 @@ function Commands(){
 
     function raise(bet: number){
         const playersName = players.map(giocatore => giocatore.name);
-        dispatch(removeChips({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + bet}));
-        dispatch(setPlayerBet({ref: playerTurn, chips: findHigherBet() - players[playersName.indexOf(playerTurn)].bet + bet}));
+        const higher = findHigherBet();
+        dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet + bet}));
+        dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
 
-        dispatch(raiseDone(playerTurn));
+        dispatch(raiseDone());
 
-        if(turns >= playersBetting.length){
-            dispatch(nextTurn({inManche: playersInManche, players: players}))
-        } else {
-            dispatch(nextTurn({inManche: playersBetting, players: players}))
-        }
+        goForward();
+    }
+
+    function allIn(){
+        const playersName = players.map(giocatore => giocatore.name);
+        dispatch(removeChips({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
+        dispatch(setPlayerBet({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips + players[playersName.indexOf(playerTurn)].bet}));
+
+        dispatch(raiseDone());
+
+        goForward();
     }
 
     function fold(){
-        dispatch(moveDone(playerTurn));
         dispatch(outOfManche(playerTurn));
-        if(turns >= playersBetting.length){
-            dispatch(nextTurn({inManche: playersInManche, players: players}))
-        } else {
-            dispatch(nextTurn({inManche: playersBetting, players: players}))
-        }
+        dispatch(moveDone(playerTurn));
+        goForward();
     }
 
     function check(){
         const playersName = players.map(giocatore => giocatore.name);
-        if(minimum == 0 && findHigherBet() - players[playersName.indexOf(playerTurn)].bet == 0){
+        if(round != 1 && findHigherBet() - players[playersName.indexOf(playerTurn)].bet == 0){
             dispatch(moveDone(playerTurn));
-            if(turns >= playersBetting.length){
-                dispatch(nextTurn({inManche: playersInManche, players: players}))
-            } else {
-                dispatch(nextTurn({inManche: playersBetting, players: players}))
-            }
+            goForward();
         } else {
             alert("you can't check if there's a minimum bet required to keep playing");
         }

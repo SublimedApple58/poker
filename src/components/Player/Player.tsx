@@ -7,16 +7,17 @@ function Player(props:{name: number, isUser: boolean, chips: number}){
 
     const 
       playerTurn = useSelector((state: RootState) => state.game.playerTurn),
-      playersInManche = useSelector((state: RootState) => state.giocatori.playersInManche);
+      players = useSelector((state: RootState) => state.giocatori.players),
+      round = useSelector((state: RootState) => state.game.round);
     
     const [inGame, setInGame] = useState(false);
 
     useEffect(()=>{
         setInGame(false);
-        for(let i = 0; i<playersInManche.length; i++){
-            playersInManche[i] == props.name ? setInGame(true) : inGame;
+        for(let i = 0; i<players.length; i++){
+            players[i].name == props.name ? setInGame(true) : inGame;
         }
-    }, [playerTurn])
+    }, [playerTurn, round])
 
     const 
       stylePlayer = props.isUser ? 'user' : 'player',

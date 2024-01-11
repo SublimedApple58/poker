@@ -4,10 +4,9 @@ interface game {
     round: number,
     playerTurn: number,
     turns: number,
-    lastBet: number,
     difficulty: string,
     manche: number,
-    lastManche: number,
+    finished: boolean
 }
 
 interface player{
@@ -17,17 +16,19 @@ interface player{
     isVisible: boolean,
     side: number,
     carte: number[],
-    done: boolean
+    done: boolean,
+    bet: number,
+    inManche: boolean,
+    inGame: boolean
 }
 
 const initialState: game = {
     round: 0, // momentaneo
     playerTurn: 1,
     turns: 1,
-    lastBet: 5,
     difficulty: '',
     manche: 1,
-    lastManche: 1
+    finished: false
 };
 
 const gameSlice = createSlice({
@@ -49,38 +50,84 @@ const gameSlice = createSlice({
                 round: 1
             })
         },
-        nextTurn: (state, action: {payload: {inManche: number[], players: player[]}}) => {
+        nextTurn: (state, action: {payload: player[]}) => {
             let allTrue: boolean = true;
-            for(let i = 0; i<action.payload.players.length; i++){
-                if(action.payload.players[i].name != state.playerTurn){
-                    !action.payload.players[i].done ? allTrue = false : allTrue;
-                }
-                if(!allTrue){break}
+            const players: player[] = action.payload;
+            for(let i = 0; i<players.length; i++){
+                !players[i].done && players[i].name != state.playerTurn ? allTrue = false : allTrue;
             }
+
+            let lastPlayerInManche = 0;
+            for(let i = 0; i<players.length; i++){
+                if(players[i].inManche){
+                    lastPlayerInManche = i+1;
+                }
+            }
+
             if(allTrue){
-                if(state.playerTurn == action.payload.inManche[action.payload.inManche.length-1]){
+                let nextOne: number = 0;
+                if(state.playerTurn == lastPlayerInManche){
+                    for(let i = 0; i<players.length; i++){
+                        if(state.round == 5){
+                            if(players[i].inGame){
+                                nextOne = i;
+                                break;
+                            }
+                        } else {
+                            if(players[i].inManche){
+                                nextOne = i;
+                                break;
+                            }
+                        }
+                    }
                     return Object.assign({}, state, {
                         turns: 1,
-                        playerTurn:  action.payload.inManche[0]
+                        playerTurn: nextOne + 1
                     })
                 } else {
+                    for(let i = state.playerTurn; i<players.length; i++){
+                        if(state.round == 5){
+                            if(players[i].inGame){
+                                nextOne = i;
+                                break;
+                            }
+                        } else {
+                            if(players[i].inManche){
+                                nextOne = i;
+                                break;
+                            }
+                        }
+                    }
                     return Object.assign({}, state, {
                         turns: 1,
-                        playerTurn:  action.payload.inManche[action.payload.inManche.indexOf(state.playerTurn)+1]
+                        playerTurn: nextOne + 1
                     })
                 }
             } else {
-                if(state.playerTurn == action.payload.inManche[action.payload.inManche.length-1]){
+                let nextOne: number = 0;
+                if(state.playerTurn == lastPlayerInManche){
+                    for(let i = 0; i<players.length; i++){
+                        if(!players[i].done){
+                            nextOne = i;
+                            break;
+                        }
+                    }
                     return Object.assign({}, state, {
-                        turns: state.turns+1,
-                        playerTurn:  action.payload.inManche[0]
+                        turns: state.turns + 1,
+                        playerTurn: nextOne + 1
                     })
                 } else {
+                    for(let i = state.playerTurn; i<players.length; i++){
+                        if(!players[i].done){
+                            nextOne = i;
+                            break;
+                        }
+                    }
                     return Object.assign({}, state, {
-                        turns: state.turns+1,
-                        playerTurn:  action.payload.inManche[action.payload.inManche.indexOf(state.playerTurn)+1]
+                        turns: state.turns + 1,
+                        playerTurn: nextOne + 1
                     })
-                }
+                } 
             }
         },
         nextManche: (state) => {

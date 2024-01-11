@@ -13,7 +13,9 @@ interface player{
     side: number,
     carte: number[],
     done: boolean,
-    bet: number
+    bet: number,
+    inManche: boolean,
+    inGame: boolean
 }
 
 export interface carteCentrali{
@@ -25,15 +27,11 @@ interface players{
     players: player[],
     centralChips: number,
     centralCards: carteCentrali[],
-    playersInManche: number[],
-    playersInGame: number[],
     playersBetting: number[]
 }
 
 const initialState: players ={
     players: [],
-    playersInManche: [],
-    playersInGame: [],
     centralChips: 0,
     centralCards: [],
     playersBetting: []
@@ -50,55 +48,48 @@ const playerSlice = createSlice({
     reducers: {
         addPlayer: (state, action: {payload: player}) => {
             return Object.assign({}, state, {
-                players: [...state.players, action.payload],
-                playersInManche: [...state.playersInManche, action.payload.name],
-                playersBetting: [...state.playersInManche, action.payload.name],
-                playersInGame: [...state.playersInManche, action.payload.name]
+                players: [...state.players, action.payload]
             })
         },
         outOfManche: (state, action: {payload: number}) =>{
-            const arrayProvvisorio = [...state.playersInManche];
-            arrayProvvisorio.splice(arrayProvvisorio.indexOf(action.payload), 1)
-            return Object.assign({}, state, {
-                playersInManche: arrayProvvisorio
-            })
+            return Object.assign({}, state, {players: state.players.map(giocatore => {
+                if(giocatore.name == action.payload){
+                    return Object.assign({}, giocatore, {inManche: false})
+                }
+            })})
         },
         outOfGame: (state, action: {payload: number}) => {
-            const arrayProvvisorio = [...state.playersInGame];
-            arrayProvvisorio.splice(arrayProvvisorio.indexOf(action.payload), 1)
-            return Object.assign({}, state, {
-                playersInGame: arrayProvvisorio
-            })
+            return Object.assign({}, state, {players: state.players.map(giocatore => {
+                if(giocatore.name == action.payload){
+                    return Object.assign({}, giocatore, {inGame: false})
+                }
+            })})
         },
         moveDone: (state, action: {payload: number}) => {
             return Object.assign({}, state, {players: state.players.map(giocatore => giocatore.name == action.payload ? Object.assign({}, giocatore, {done: true}) : giocatore)})
         },
-        raiseDone: (state, action: {payload: number}) => {
+        raiseDone: (state) => {
             return Object.assign({}, state, {players: state.players.map(giocatore => {
-                if(giocatore.name != action.payload){
-                    let existent: boolean = false;
-                    for(let i = 0; i<state.playersInManche.length; i++){
-                        giocatore.name == state.playersInManche[i] ? existent = true : existent;
-                    }
+                if(giocatore.inManche){
                     return Object.assign({}, giocatore, {done: false})
                 } else {
-                    return giocatore
+                    return giocatore;
                 }
             })})
         },
         resetDone: (state) => {
             return Object.assign({}, state, {players: state.players.map(giocatore => {
-                let existent: boolean = false;
-                for(let i = 0; i<state.playersInManche.length; i++){
-                    giocatore.name == state.playersInManche[i] ? existent = true : existent;
+                if(giocatore.inManche){
+                    return Object.assign({}, giocatore, {done: false})
+                } else {
+                    return giocatore;
                 }
-                return Object.assign({}, giocatore, {done: !existent})
             })})
         },
         setPlayerBet: (state, action: {payload: scommessa}) => {
             return Object.assign({}, state, {players: state.players.map(giocatore => {
                 if(giocatore.name == action.payload.ref){
-                    return Object.assign({}, giocatore, {bet: giocatore.bet+action.payload.chips})
+                    return Object.assign({}, giocatore, {bet: action.payload.chips})
                 } else {
                     return giocatore
                 }
@@ -109,8 +100,7 @@ const playerSlice = createSlice({
                 return Object.assign({}, giocatore, {bet: 0})
             })})
         },
-        updatePlayersBetting: (state) => {return Object.assign({}, state, {playersBetting: [...state.playersInManche]})},
-        updatePlayersInManche: (state) => {return Object.assign({}, state, {playersInManche: [...state.playersInGame]})},
+        updatePlayersInManche: (state) => {return Object.assign({}, state, {players: state.players.map(giocatore => Object.assign({}, giocatore, {inManche: giocatore.inGame}))})},
         removeChips: (state, action: {payload: scommessa}) => {
             return Object.assign({}, state, {
                 players: state.players.map(giocatore => {
@@ -186,4 +176,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, outOfManche, outOfGame, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersBetting, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const {addPlayer, outOfManche, outOfGame, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
