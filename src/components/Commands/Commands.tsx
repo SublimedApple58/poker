@@ -60,7 +60,6 @@ function Commands(){
         if(!compareArrays(playersDone, playersDoneCopy)){
             if(round >= 1){
                 goForward();
-                playersDoneCopy = [...playersDone];
                 dispatch(updateCopy())
             }
         }

@@ -83,13 +83,22 @@ const playerSlice = createSlice({
             })})
         },
         resetDone: (state) => {
-            return Object.assign({}, state, {players: state.players.map(giocatore => {
-                if(giocatore.inManche){
-                    return Object.assign({}, giocatore, {done: false})
-                } else {
-                    return giocatore;
-                }
-            })})
+            return Object.assign({}, state, {
+                players: state.players.map(giocatore => {
+                    if(giocatore.inManche){
+                        return Object.assign({}, giocatore, {done: false})
+                    } else {
+                        return giocatore;
+                    }
+                }),
+                playersCopy: state.players.map(giocatore => {
+                    if(giocatore.inManche){
+                        return Object.assign({}, giocatore, {done: false})
+                    } else {
+                        return giocatore;
+                    }
+                })
+            })
         },
         setPlayerBet: (state, action: {payload: scommessa}) => {
             return Object.assign({}, state, {players: state.players.map(giocatore => {
