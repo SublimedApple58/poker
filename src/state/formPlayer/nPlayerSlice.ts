@@ -25,6 +25,7 @@ export interface carteCentrali{
 
 interface players{
     players: player[],
+    playersCopy: player[],
     centralChips: number,
     centralCards: carteCentrali[],
     playersBetting: number[]
@@ -32,6 +33,7 @@ interface players{
 
 const initialState: players ={
     players: [],
+    playersCopy: [],
     centralChips: 0,
     centralCards: [],
     playersBetting: []
@@ -50,6 +52,9 @@ const playerSlice = createSlice({
             return Object.assign({}, state, {
                 players: [...state.players, action.payload]
             })
+        },
+        updateCopy: (state) => {
+            return Object.assign({}, state, {playersCopy: [...state.players]})
         },
         outOfManche: (state, action: {payload: number}) =>{
             return Object.assign({}, state, {players: state.players.map(giocatore => {
@@ -176,4 +181,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {addPlayer, outOfManche, outOfGame, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const {addPlayer, updateCopy, outOfManche, outOfGame, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
