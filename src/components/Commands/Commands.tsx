@@ -81,7 +81,7 @@ function Commands(){
                     setStyle(invisible);
                     setTimeout(() => {
                         action();
-                    }, 0)
+                    }, 1000)
                 } else {
                     setStyle(visible);
                 }
@@ -113,7 +113,7 @@ function Commands(){
             setStyle(invisible);
             setTimeout(() => {
                 action()
-            }, 0)
+            }, 1000)
         } else {
             setStyle(visible);
         }

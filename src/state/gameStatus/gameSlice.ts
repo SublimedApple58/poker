@@ -54,7 +54,7 @@ const gameSlice = createSlice({
             let allTrue: boolean = true;
             const players: player[] = action.payload;
             for(let i = 0; i<players.length; i++){
-                !players[i].done && players[i].name != state.playerTurn ? allTrue = false : allTrue;
+                players[i].name != state.playerTurn ? allTrue = false : allTrue;
             }
 
             let lastPlayerInManche = 0;
