@@ -70,55 +70,59 @@ function Commands(){
     }, [playersDone])
 
     useEffect(()=>{
-        if (round == 5) {
-            dispatch(showAll());
-            setTimeout(()=>{
-                assignFish();
-                dispatch(hideAll());
-                dispatch(updatePlayersInManche());
-                dispatch(nextManche());
-                newManche();
-            }, 2000);
-        }
-        else if(round != 0) {
-                if(playerTurn!=1){
-                    setStyle(invisible);
-                    setTimeout(() => {
-                        action();
-                    }, 1000)
-                } else {
-                    setStyle(visible);
-                }
-                if(round>1 && round<5) {
-                    dispatch(setCentralCardVisible(round))
-                }
-        }
+        if(giocatoriInGame.length > 1){
+            if (round == 5) {
+                dispatch(showAll());
+                setTimeout(()=>{
+                    assignFish();
+                    dispatch(hideAll());
+                    dispatch(updatePlayersInManche());
+                    dispatch(nextManche());
+                    newManche();
+                }, 2000);
+            }
+            else if(round != 0) {
+                    if(playerTurn!=1){
+                        setStyle(invisible);
+                        setTimeout(() => {
+                            action();
+                        }, 1000)
+                    } else {
+                        setStyle(visible);
+                    }
+                    if(round>1 && round<5) {
+                        dispatch(setCentralCardVisible(round))
+                    }
+            }
+        }   
     }, [round])
 
     useEffect(()=>{
         if(round == 0){
             dispatch(updateCopy())
         }
-        if(giocatoriInManche.length == 1){
-            dispatch(showAll());
-            setTimeout(()=>{
-                assignFish();
-                dispatch(updatePlayersInManche());
-                dispatch(hideAll());
-                dispatch(nextManche());
-                newManche();
-            }, 2000);
-         } else if(turns == 1) {
-            dispatch(resetPlayersBet());
-            dispatch(nextRound());
-            dispatch(resetDone());
-         } else if(playerTurn!=1){
-            setStyle(invisible);
-            setTimeout(() => {
-                action()
-            }, 1000)
-        } else {
-            setStyle(visible);
+        if(giocatoriInGame.length > 1){
+            if(giocatoriInManche.length == 1){
+                dispatch(showAll());
+                setTimeout(()=>{
+                    assignFish();
+                    dispatch(updatePlayersInManche());
+                    dispatch(hideAll());
+                    dispatch(nextManche());
+                    newManche();
+                }, 2000);
+             } else if(turns == 1) {
+                dispatch(resetPlayersBet());
+                dispatch(nextRound());
+                dispatch(resetDone());
+             } else if(playerTurn!=1){
+                setStyle(invisible);
+                setTimeout(() => {
+                    action()
+                }, 1000)
+            } else {
+                setStyle(visible);
+            }
         }
     }, [playerTurn])
 
