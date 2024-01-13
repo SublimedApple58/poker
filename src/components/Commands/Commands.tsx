@@ -163,7 +163,7 @@ function Commands(){
     }
 
     function easy(score: number, casualNumber: (par: number) => number) {
-        let totalToBet: number = 0;
+        // let totalToBet: number = 0;
         if(round==1){
             if(casualNumber(5) == 1){
                 fold();
@@ -339,15 +339,15 @@ function Commands(){
 
     function allIn(){
         const playersName = players.map(giocatore => giocatore.name);
+        const higher = findHigherBet();
         dispatch(removeChips({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
-        dispatch(setPlayerBet({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips + players[playersName.indexOf(playerTurn)].bet}));
+        dispatch(setPlayerBet({ref: playerTurn, chips: higher + players[playersName.indexOf(playerTurn)].chips}));
 
         dispatch(raiseDone());
         dispatch(setRaiseCalled());
     }
 
     function fold(){
-        const giocatori = players;
         dispatch(outOfManche(playerTurn));
         dispatch(moveDone(playerTurn));
     }
