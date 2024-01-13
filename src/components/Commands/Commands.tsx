@@ -4,7 +4,7 @@ import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { carteCentrali, hideAll, moveDone, outOfGame, outOfManche, raiseDone, removeChips, resetCards, resetDone, resetPlayersBet, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updateCopy, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextManche, nextRound, nextTurn } from '../../state/gameStatus/gameSlice';
+import { nextManche, nextRound, nextTurn, setRaiseCalled } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
 
@@ -28,7 +28,8 @@ function Commands(){
         giocatoriInManche = players.filter(giocatore => giocatore.inManche),
         giocatoriInGame = players.filter(giocatore => giocatore.inGame),
         playersDone = players.map(giocatore => giocatore.done),
-        playersCopy = useSelector((state: RootState)=> state.giocatori.playersCopy);
+        playersCopy = useSelector((state: RootState)=> state.giocatori.playersCopy),
+        raiseCalled = useSelector((state: RootState) => state.game.raiseCalled);
     
     let playersDoneCopy = playersCopy.map(giocatore => giocatore.done);
 
@@ -57,10 +58,14 @@ function Commands(){
         const compareArrays = (a: boolean[], b: boolean[]) => {
             return JSON.stringify(a) === JSON.stringify(b);
           };
-        if(!compareArrays(playersDone, playersDoneCopy)){
+        if(!compareArrays(playersDone, playersDoneCopy) || raiseCalled){
             if(round >= 1){
                 goForward();
-                dispatch(updateCopy())
+                if(raiseCalled){
+                    dispatch(setRaiseCalled());
+                } else {
+                    dispatch(updateCopy());
+                }
             }
         }
     }, [playersDone])
@@ -313,6 +318,7 @@ function Commands(){
                     dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
                     amountInput.current.value = '0';
                     dispatch(raiseDone());
+                    dispatch(setRaiseCalled());
                 }
             }
         }
@@ -325,6 +331,7 @@ function Commands(){
         dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
 
         dispatch(raiseDone());
+        dispatch(setRaiseCalled());
     }
 
     function allIn(){
