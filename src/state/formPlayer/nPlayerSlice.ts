@@ -60,6 +60,8 @@ const playerSlice = createSlice({
             return Object.assign({}, state, {players: state.players.map(giocatore => {
                 if(giocatore.name == action.payload){
                     return Object.assign({}, giocatore, {inManche: false})
+                } else {
+                    return giocatore
                 }
             })})
         },
@@ -67,6 +69,8 @@ const playerSlice = createSlice({
             return Object.assign({}, state, {players: state.players.map(giocatore => {
                 if(giocatore.name == action.payload){
                     return Object.assign({}, giocatore, {inGame: false})
+                } else {
+                    return giocatore
                 }
             })})
         },

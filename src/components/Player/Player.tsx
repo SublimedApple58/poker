@@ -15,7 +15,7 @@ function Player(props:{name: number, isUser: boolean, chips: number}){
     useEffect(()=>{
         setInGame(false);
         for(let i = 0; i<players.length; i++){
-            players[i].name == props.name ? setInGame(true) : inGame;
+            players[i].name == props.name && players[i].inManche ? setInGame(true) : inGame;
         }
     }, [playerTurn, round])
 

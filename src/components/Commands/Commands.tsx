@@ -60,12 +60,11 @@ function Commands(){
           };
         if(!compareArrays(playersDone, playersDoneCopy) || raiseCalled){
             if(round >= 1){
-                goForward();
                 if(raiseCalled){
                     dispatch(setRaiseCalled());
-                } else {
-                    dispatch(updateCopy());
                 }
+                dispatch(updateCopy());
+                goForward();
             }
         }
     }, [playersDone])
@@ -76,6 +75,7 @@ function Commands(){
             setTimeout(()=>{
                 assignFish();
                 dispatch(hideAll());
+                dispatch(updatePlayersInManche());
                 dispatch(nextManche());
                 newManche();
             }, 2000);
@@ -109,7 +109,6 @@ function Commands(){
                 newManche();
             }, 2000);
          } else if(turns == 1) {
-            dispatch(updatePlayersInManche());
             dispatch(resetPlayersBet());
             dispatch(nextRound());
             dispatch(resetDone());
@@ -340,9 +339,11 @@ function Commands(){
         dispatch(setPlayerBet({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips + players[playersName.indexOf(playerTurn)].bet}));
 
         dispatch(raiseDone());
+        dispatch(setRaiseCalled());
     }
 
     function fold(){
+        const giocatori = players;
         dispatch(outOfManche(playerTurn));
         dispatch(moveDone(playerTurn));
     }
