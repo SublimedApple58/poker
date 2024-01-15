@@ -79,3 +79,14 @@
 .centrali{
     top: 0;
 }
+
+/* .cirlce{
+    border: 1px solid red;
+    position: absolute;
+    height: 150px;
+    width: 150px;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 100%;
+} */

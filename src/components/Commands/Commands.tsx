@@ -78,16 +78,18 @@ function Commands(){
                     dispatch(hideAll());
                     dispatch(updatePlayersInManche());
                     dispatch(nextManche());
+                    dispatch(resetPlayersBet());
+                    dispatch(resetDone());
                     dispatch(resetAllIn());
                     newManche();
                 }, 2000);
             }
             else if(round != 0) {
                     if(playerTurn!=1){
-                        setStyle(invisible);
-                        setTimeout(() => {
-                            action();
-                        }, 1000)
+                        setStyle(visible);
+                        // setTimeout(() => {
+                        //     action();
+                        // }, 1000)
                     } else {
                         setStyle(visible);
                     }
@@ -110,6 +112,8 @@ function Commands(){
                     dispatch(updatePlayersInManche());
                     dispatch(hideAll());
                     dispatch(nextManche());
+                    dispatch(resetPlayersBet());
+                    dispatch(resetDone());
                     dispatch(resetAllIn());
                     newManche();
                 }, 2000);
@@ -118,10 +122,10 @@ function Commands(){
                 dispatch(nextRound());
                 dispatch(resetDone());
              } else if(playerTurn!=1){
-                setStyle(invisible);
-                setTimeout(() => {
-                    action()
-                }, 1000)
+                setStyle(visible);
+                // setTimeout(() => {
+                //     action()
+                // }, 1000)
             } else {
                 setStyle(visible);
             }
@@ -301,17 +305,21 @@ function Commands(){
     function call(){
         if(round == 1){
             dispatch(removeChips({ref: playerTurn, chips: 5}));
+            dispatch(moveDone(playerTurn));
         } else {
             const playersName = players.map(giocatore => giocatore.name);
             const higher = findHigherBet();
-            dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
-            dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
-            if((higher - players[playersName.indexOf(playerTurn)].bet) == players[playersName.indexOf(playerTurn)].chips){
-                dispatch(setAllIn(playerTurn));
+            if(higher - players[playersName.indexOf(playerTurn)].bet > players[playersName.indexOf(playerTurn)].chips){
+                alert("you don't have enough money to call, ALL IN or FOLD");
+            } else {
+                dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
+                dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
+                if((higher - players[playersName.indexOf(playerTurn)].bet) == players[playersName.indexOf(playerTurn)].chips){
+                    dispatch(setAllIn(playerTurn));
+                }
+                dispatch(moveDone(playerTurn));
             }
         }
-
-        dispatch(moveDone(playerTurn));
     }
 
     function raising(){
@@ -322,16 +330,18 @@ function Commands(){
                 amountInput.current.value = '0';
             } else {
                 const playersName = players.map(giocatore => giocatore.name);
-                if((amountInput.current?.valueAsNumber ?? 0)>players[playersName.indexOf(playerTurn)].chips){
-                    alert(`hey!! You don't have that much money`)
-                } else if(amountInput.current != null){
+                if(amountInput.current != null){
                     const higher = findHigherBet();
                     const bet = (amountInput.current?.valueAsNumber ?? 0);
-                    dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet + bet}));
-                    dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
-                    amountInput.current.value = '0';
-                    dispatch(raiseDone());
-                    dispatch(setRaiseCalled());
+                    if((higher - players[playersName.indexOf(playerTurn)].bet + bet)>players[playersName.indexOf(playerTurn)].chips){
+                        alert("you don't have enough money");
+                    } else {
+                        dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet + bet}));
+                        dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
+                        amountInput.current.value = '0';
+                        dispatch(raiseDone());
+                        dispatch(setRaiseCalled());
+                    }
                 }
             }
         }
@@ -352,9 +362,8 @@ function Commands(){
             alert("you can't all in now!")
         } else {
             const playersName = players.map(giocatore => giocatore.name);
-            const higher = findHigherBet();
             dispatch(removeChips({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
-            dispatch(setPlayerBet({ref: playerTurn, chips: higher + players[playersName.indexOf(playerTurn)].chips}));
+            dispatch(setPlayerBet({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
     
             dispatch(raiseDone());
             dispatch(setAllIn(playerTurn));
@@ -380,12 +389,13 @@ function Commands(){
         if(playerTurn == 1){
             comando();
         } else {
-            alert("It's not your turn")
-            if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
-                amountInput.current.value = '0';
-            } else if(amountInput.current != null){
-                amountInput.current.value = '0';
-            }
+            // alert("It's not your turn")
+            // if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
+            //     amountInput.current.value = '0';
+            // } else if(amountInput.current != null){
+            //     amountInput.current.value = '0';
+            // }
+            comando();
         }
     }
 
