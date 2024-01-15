@@ -32,7 +32,7 @@
     transition: all .3s ease-out
 }
 
-.commands button:nth-child(4){
+.commands button:nth-child(5){
     border-right: none;
 }
 

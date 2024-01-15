@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, hideAll, moveDone, outOfGame, outOfManche, raiseDone, removeChips, resetCards, resetDone, resetPlayersBet, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updateCopy, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, moveDone, outOfGame, outOfManche, raiseDone, removeChips, resetAllIn, resetCards, resetDone, resetPlayersBet, setAllIn, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updateCopy, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, setRaiseCalled } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
@@ -78,6 +78,7 @@ function Commands(){
                     dispatch(hideAll());
                     dispatch(updatePlayersInManche());
                     dispatch(nextManche());
+                    dispatch(resetAllIn());
                     newManche();
                 }, 2000);
             }
@@ -109,6 +110,7 @@ function Commands(){
                     dispatch(updatePlayersInManche());
                     dispatch(hideAll());
                     dispatch(nextManche());
+                    dispatch(resetAllIn());
                     newManche();
                 }, 2000);
              } else if(turns == 1) {
@@ -200,16 +202,20 @@ function Commands(){
                     raise(30)
                     break;
                 case 9:
+                    allIn();
                     break;
             }
         }
     }
 
     function medium() {
+        const playersName = players.map(giocatore => giocatore.name);
         if(round == 1){
             call();
-        } else if(round == 2 && playerTurn == 2){
-            raise(10);
+        } else if(players[playersName.indexOf(playerTurn)].allIn){
+            check();
+        } else if((round == 2 && playerTurn == 2) || (round == 3 && playerTurn == 3)){
+            fold();
         } else {
             call();
         }
@@ -300,7 +306,11 @@ function Commands(){
             const higher = findHigherBet();
             dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
             dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
+            if((higher - players[playersName.indexOf(playerTurn)].bet) == players[playersName.indexOf(playerTurn)].chips){
+                dispatch(setAllIn(playerTurn));
+            }
         }
+
         dispatch(moveDone(playerTurn));
     }
 
@@ -338,13 +348,18 @@ function Commands(){
     }
 
     function allIn(){
-        const playersName = players.map(giocatore => giocatore.name);
-        const higher = findHigherBet();
-        dispatch(removeChips({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
-        dispatch(setPlayerBet({ref: playerTurn, chips: higher + players[playersName.indexOf(playerTurn)].chips}));
-
-        dispatch(raiseDone());
-        dispatch(setRaiseCalled());
+        if(round == 1){
+            alert("you can't all in now!")
+        } else {
+            const playersName = players.map(giocatore => giocatore.name);
+            const higher = findHigherBet();
+            dispatch(removeChips({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
+            dispatch(setPlayerBet({ref: playerTurn, chips: higher + players[playersName.indexOf(playerTurn)].chips}));
+    
+            dispatch(raiseDone());
+            dispatch(setAllIn(playerTurn));
+            dispatch(setRaiseCalled());
+        }
     }
 
     function fold(){
@@ -354,7 +369,7 @@ function Commands(){
 
     function check(){
         const playersName = players.map(giocatore => giocatore.name);
-        if(round != 1 && findHigherBet() - players[playersName.indexOf(playerTurn)].bet == 0){
+        if(round != 1 && (findHigherBet() - players[playersName.indexOf(playerTurn)].bet == 0 || players[playersName.indexOf(playerTurn)].allIn)){
             dispatch(moveDone(playerTurn));
         } else {
             alert("you can't check if there's a minimum bet required to keep playing");
@@ -381,6 +396,7 @@ function Commands(){
                 <button onClick={() => azione(check)}>check</button>
                 <button onClick={() => azione(call)}>call</button>
                 <button onClick={() => azione(raising)}>raise</button>
+                <button onClick={() => azione(allIn)}>All In</button>
             </div>
             <div className="amount" style={style} >
                 <input type="number" placeholder='Insert amount' ref={amountInput}/>
