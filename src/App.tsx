@@ -8,16 +8,13 @@ import Table from './components/Table/Table';
 
 function App() {
 
-    const 
-      numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length);
-      // playersInGame = useSelector((state: RootState) => state.giocatori.players.filter(giocatore => giocatore.inGame))
+    const numberPlayer = useSelector((state: RootState)=> state.giocatori.players.length);
 
   return (
     <>  
           <div className="contenitore">       
               {numberPlayer <= 2 && <Form />}
               {numberPlayer >= 3 && numberPlayer <=8 && <Table />}
-              {/* {playersInGame.length == 1 && <EndGame />}  */}
           </div>
     </>
   )

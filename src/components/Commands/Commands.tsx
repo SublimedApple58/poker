@@ -86,10 +86,10 @@ function Commands(){
             }
             else if(round != 0) {
                     if(playerTurn!=1){
-                        setStyle(visible);
-                        // setTimeout(() => {
-                        //     action();
-                        // }, 1000)
+                        setStyle(invisible);
+                        setTimeout(() => {
+                            action();
+                        }, 1000)
                     } else {
                         setStyle(visible);
                     }
@@ -97,7 +97,9 @@ function Commands(){
                         dispatch(setCentralCardVisible(round))
                     }
             }
-        }   
+        } else {
+            setStyle(invisible);
+        }
     }, [round])
 
     useEffect(()=>{
@@ -122,13 +124,15 @@ function Commands(){
                 dispatch(nextRound());
                 dispatch(resetDone());
              } else if(playerTurn!=1){
-                setStyle(visible);
-                // setTimeout(() => {
-                //     action()
-                // }, 1000)
+                setStyle(invisible);
+                setTimeout(() => {
+                    action()
+                }, 1000)
             } else {
                 setStyle(visible);
             }
+        } else {
+            setStyle(invisible);
         }
     }, [playerTurn])
 
@@ -389,13 +393,12 @@ function Commands(){
         if(playerTurn == 1){
             comando();
         } else {
-            // alert("It's not your turn")
-            // if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
-            //     amountInput.current.value = '0';
-            // } else if(amountInput.current != null){
-            //     amountInput.current.value = '0';
-            // }
-            comando();
+            alert("It's not your turn")
+            if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
+                amountInput.current.value = '0';
+            } else if(amountInput.current != null){
+                amountInput.current.value = '0';
+            }
         }
     }
 

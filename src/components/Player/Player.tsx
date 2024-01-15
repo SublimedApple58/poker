@@ -17,7 +17,7 @@ function Player(props:{name: number, isUser: boolean, chips: number}){
       stile,
       folded = {opacity: '50%'},
       notFolded = {opacity: '100%'},
-      animation = {},
+      animation = {animation: 'highlight 1s ease-out infinite forwards'},
       nonAnimation = {animation: 'none'}
 
     useEffect(()=>{
