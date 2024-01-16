@@ -50,10 +50,6 @@ function Commands(){
         return maxIndex;
     }
 
-    function goForward(){
-        dispatch(nextTurn(players));
-    }
-
     useEffect(()=>{
         const compareArrays = (a: boolean[], b: boolean[]) => {
             return JSON.stringify(a) === JSON.stringify(b);
@@ -64,7 +60,7 @@ function Commands(){
                     dispatch(setRaiseCalled());
                 }
                 dispatch(updateCopy());
-                goForward();
+                dispatch(nextTurn(players));
             }
         }
     }, [playersDone])
@@ -327,25 +323,23 @@ function Commands(){
     }
 
     function raising(){
-        if(round==1){
-            alert("At first round you can only call or fold")
+        if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
+            amountInput.current.value = '0';
         } else {
-            if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
-                amountInput.current.value = '0';
-            } else {
-                const playersName = players.map(giocatore => giocatore.name);
-                if(amountInput.current != null){
-                    const higher = findHigherBet();
-                    const bet = (amountInput.current?.valueAsNumber ?? 0);
-                    if((higher - players[playersName.indexOf(playerTurn)].bet + bet)>players[playersName.indexOf(playerTurn)].chips){
-                        alert("you don't have enough money");
-                    } else {
-                        dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet + bet}));
-                        dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
-                        amountInput.current.value = '0';
-                        dispatch(raiseDone());
-                        dispatch(setRaiseCalled());
-                    }
+            const playersName = players.map(giocatore => giocatore.name);
+            if(amountInput.current != null){
+                const higher = findHigherBet();
+                const bet = (amountInput.current?.valueAsNumber ?? 0);
+                if((higher - players[playersName.indexOf(playerTurn)].bet + bet)>players[playersName.indexOf(playerTurn)].chips){
+                    alert("you don't have enough money");
+                } else if(round == 1 && bet<5){
+                    alert("The minimum amount of money to bet to partecipate is 5 chips");
+                } else {
+                    dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet + bet}));
+                    dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
+                    amountInput.current.value = '0';
+                    dispatch(raiseDone());
+                    dispatch(setRaiseCalled());
                 }
             }
         }
