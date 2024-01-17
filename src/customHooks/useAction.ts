@@ -1,119 +1,117 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../state/store";
-import { moveDone, outOfManche, raiseDone, removeChips, setAllIn, setPlayerBet } from "../state/formPlayer/nPlayerSlice";
-import { setRaiseCalled } from "../state/gameStatus/gameSlice";
+import useMoves from "./useMoves";
 import { Moves } from "../components/Commands/Commands";
-
-export function indexOfMax(arr: number[]) {
-        
-    let max = arr[0];
-    let maxIndex = 0;
-
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] > max) {
-            maxIndex = i;
-            max = arr[i];
-        }
-    }
-
-    return maxIndex;
-}
+import { useSelector } from "react-redux";
+import { RootState } from "../state/store";
+import gameHelper, {cardProperties} from "../helper/gameHelper";
+import cardHelper from "../helper/cardHelper";
 
 export default function useAction(){
 
     const 
-        players = useSelector((state: RootState) => state.giocatori.players),
-        playerTurn = useSelector((state: RootState) => state.game.playerTurn),
+        setMove = useMoves(),
         round = useSelector((state: RootState) => state.game.round),
-        dispatch = useDispatch();
+        players = useSelector((state: RootState) => state.giocatori.players),
+        centralCards = useSelector((state: RootState) => state.giocatori.centralCards),
+        difficulty = useSelector((state: RootState) => state.game.difficulty),
+        playerTurn = useSelector((state: RootState) => state.game.playerTurn);
 
-    function findHigherBet(){
-        const scommesse: number[] = players.map(giocatore => giocatore.bet);
-        const maxBet: number = players[indexOfMax(scommesse)].bet;
-        return maxBet;
+
+    function action(){
+        const playersNames: number[] = players.map(giocatore => giocatore.name),
+          playersCards: cardProperties[] = [cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[0]), cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[1])],
+          numeri = centralCards.map(carta => cardHelper.converNumberToCard(carta.numero));
+        
+        let 
+          score: number = 0,
+          visibleCards: cardProperties[] = [];
+
+          if(round>1 && round<=4){
+            visibleCards = numeri.filter((carta, i) => i<=round);
+            score = gameHelper.calcScore(playersCards, visibleCards);
+          } else if(round>4){
+            visibleCards = [...numeri];
+            score = gameHelper.calcScore(playersCards, visibleCards);
+          } else {
+            score = gameHelper.calcScore(playersCards);
+          }
+
+        function casualNumber(number: number): number{
+            let x = Math.floor(Math.random() * number) + 1;
+            return x;
+        }
+
+        switch(difficulty) {
+            case 'easy':
+                easy(score, casualNumber);
+                break;
+            case 'medium':
+                medium();
+                break;
+            case 'hard':
+                hard();
+        }
     }
-    
-    function call(){
-        if(round == 1){
-            dispatch(removeChips({ref: playerTurn, chips: 5}));
-            dispatch(moveDone(playerTurn));
-        } else {
-            const playersName = players.map(giocatore => giocatore.name);
-            const higher = findHigherBet();
-            if(higher - players[playersName.indexOf(playerTurn)].bet > players[playersName.indexOf(playerTurn)].chips){
-                alert("you don't have enough money to call, ALL IN or FOLD");
+
+    function easy(score: number, casualNumber: (par: number) => number) {
+        // let totalToBet: number = 0;
+        if(round==1){
+            if(casualNumber(5) == 1){
+               setMove
             } else {
-                dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
-                dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
-                if((higher - players[playersName.indexOf(playerTurn)].bet) == players[playersName.indexOf(playerTurn)].chips){
-                    dispatch(setAllIn(playerTurn));
-                }
-                dispatch(moveDone(playerTurn));
+                setMove(Moves.call);
+            }
+        } else {
+            switch(score){
+                case 0:
+                    setMove(Moves.fold);
+                    break;
+                case 1:
+                    setMove(Moves.call);
+                    break;
+                case 2:
+                    setMove(Moves.call);
+                    break;
+                case 3:
+                    setMove(Moves.raise, 10);
+                    break;
+                case 4:
+                    setMove(Moves.raise, 10);
+                    break;
+                case 5:
+                    setMove(Moves.raise, 10);
+                    break;
+                case 6:
+                    setMove(Moves.raise, 10);
+                    break;
+                case 7:
+                    setMove(Moves.raise, 10);
+                    break;
+                case 8:
+                    setMove(Moves.raise, 10);
+                    break;
+                case 9:
+                    setMove(Moves.allIn);
+                    break;
             }
         }
     }
 
-    function raise(bet: number){
+    function medium() {
         const playersName = players.map(giocatore => giocatore.name);
-        const higher = findHigherBet();
-        dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet + bet}));
-        dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
-
-        dispatch(raiseDone());
-        dispatch(setRaiseCalled());
-    }
-
-    function allIn(){
         if(round == 1){
-            alert("you can't all in now!")
+            setMove(Moves.call);
+        } else if(players[playersName.indexOf(playerTurn)].allIn){
+            setMove(Moves.check);
+        } else if((round == 2 && playerTurn == 2) || (round == 3 && playerTurn == 3)){
+            setMove(Moves.allIn);
         } else {
-            const playersName = players.map(giocatore => giocatore.name);
-            dispatch(removeChips({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
-            dispatch(setPlayerBet({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
-    
-            dispatch(raiseDone());
-            dispatch(setAllIn(playerTurn));
-            dispatch(setRaiseCalled());
+            setMove(Moves.call);
         }
     }
 
-    function fold(){
-        dispatch(outOfManche(playerTurn));
-        dispatch(moveDone(playerTurn));
+    function hard() {
+        setMove(Moves.call);
     }
 
-    function check(){
-        const playersName = players.map(giocatore => giocatore.name);
-        if(round != 1 && (findHigherBet() - players[playersName.indexOf(playerTurn)].bet == 0 || players[playersName.indexOf(playerTurn)].allIn)){
-            dispatch(moveDone(playerTurn));
-        } else {
-            alert("you can't check if there's a minimum bet required to keep playing");
-        }
-    }
-
-    function setMove(move: Moves, bet?: number){
-        switch(move){
-            case Moves.fold:
-                fold();
-                break;
-            case Moves.call:
-                call();
-                break;
-            case Moves.check:
-                check();
-                break;
-            case Moves.allIn:
-                allIn();
-                break;
-            case Moves.raise:
-                if(bet){
-                    raise(bet);
-                } else {
-                    alert("you need to specify a bet")
-                }
-                break;
-        }
-    }
-
-    return setMove;
+    return action;
 }

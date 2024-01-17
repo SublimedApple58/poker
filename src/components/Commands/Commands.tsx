@@ -2,13 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { carteCentrali, hideAll, moveDone, outOfGame, outOfManche, raiseDone, removeChips, resetAllIn, resetCards, resetDone, resetPlayersBet, setAllIn, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updateCopy, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali, hideAll, outOfGame, outOfManche, raiseDone, removeChips, resetAllIn, resetCards, resetDone, resetPlayersBet, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updateCopy, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextManche, nextRound, nextTurn, setRaiseCalled, setTurn } from '../../state/gameStatus/gameSlice';
+import { nextManche, nextRound, nextTurn, setRaiseCalled } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
-import useAction, { indexOfMax } from '../../customHooks/useAction';
-import useTurn from '../../customHooks/useTurn';
+import { indexOfMax } from '../../customHooks/useMoves';
+import useMoves from '../../customHooks/useMoves';
+import useAction from '../../customHooks/useAction';
 
 export enum Moves{
     check,
@@ -32,7 +33,6 @@ function Commands(){
         dispatch = useDispatch(),
         players = useSelector((state: RootState)=> state.giocatori.players),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
-        difficulty = useSelector((state: RootState) => state.game.difficulty),
         turns = useSelector((state: RootState) => state.game.turns),
         round = useSelector((state: RootState) => state.game.round),
         centralCards = useSelector((state: RootState) => state.giocatori.centralCards),
@@ -41,7 +41,8 @@ function Commands(){
         playersDone = players.map(giocatore => giocatore.done),
         playersCopy = useSelector((state: RootState)=> state.giocatori.playersCopy),
         raiseCalled = useSelector((state: RootState) => state.game.raiseCalled),
-        setMove = useAction();
+        setMove = useMoves(),
+        action = useAction();
     
     let playersDoneCopy = playersCopy.map(giocatore => giocatore.done);
 
@@ -128,103 +129,6 @@ function Commands(){
             setStyle(invisible);
         }
     }, [playerTurn])
-
-    function action(){
-        const playersNames: number[] = players.map(giocatore => giocatore.name),
-          playersCards: cardProperties[] = [cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[0]), cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[1])],
-          numeri = centralCards.map(carta => cardHelper.converNumberToCard(carta.numero));
-        
-        let 
-          score: number = 0,
-          visibleCards: cardProperties[] = [];
-
-          if(round>1 && round<=4){
-            visibleCards = numeri.filter((carta, i) => i<=round);
-            score = gameHelper.calcScore(playersCards, visibleCards);
-          } else if(round>4){
-            visibleCards = [...numeri];
-            score = gameHelper.calcScore(playersCards, visibleCards);
-          } else {
-            score = gameHelper.calcScore(playersCards);
-          }
-
-        function casualNumber(number: number): number{
-            let x = Math.floor(Math.random() * number) + 1;
-            return x;
-        }
-
-        switch(difficulty) {
-            case 'easy':
-                easy(score, casualNumber);
-                break;
-            case 'medium':
-                medium();
-                break;
-            case 'hard':
-                hard();
-        }
-    }
-
-    function easy(score: number, casualNumber: (par: number) => number) {
-        // let totalToBet: number = 0;
-        if(round==1){
-            if(casualNumber(5) == 1){
-               setMove
-            } else {
-                setMove(Moves.call);
-            }
-        } else {
-            switch(score){
-                case 0:
-                    setMove(Moves.fold);
-                    break;
-                case 1:
-                    setMove(Moves.call);
-                    break;
-                case 2:
-                    setMove(Moves.call);
-                    break;
-                case 3:
-                    setMove(Moves.raise, 10);
-                    break;
-                case 4:
-                    setMove(Moves.raise, 10);
-                    break;
-                case 5:
-                    setMove(Moves.raise, 10);
-                    break;
-                case 6:
-                    setMove(Moves.raise, 10);
-                    break;
-                case 7:
-                    setMove(Moves.raise, 10);
-                    break;
-                case 8:
-                    setMove(Moves.raise, 10);
-                    break;
-                case 9:
-                    setMove(Moves.allIn);
-                    break;
-            }
-        }
-    }
-
-    function medium() {
-        const playersName = players.map(giocatore => giocatore.name);
-        if(round == 1){
-            setMove(Moves.call);
-        } else if(players[playersName.indexOf(playerTurn)].allIn){
-            setMove(Moves.check);
-        } else if((round == 2 && playerTurn == 2) || (round == 3 && playerTurn == 3)){
-            setMove(Moves.allIn);
-        } else {
-            setMove(Moves.call);
-        }
-    }
-
-    function hard() {
-        setMove(Moves.call);
-    }
 
     function assignFish(){
 
@@ -322,13 +226,9 @@ function Commands(){
         }
     }
 
-    function azione(comando: void |  Function){
+    function azione(comando: void){
         if(playerTurn == 1){
-            if(comando == Function){
-                comando();
-            } else {
-                comando;
-            }
+            comando;
         } else {
             alert("It's not your turn")
             if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
@@ -345,7 +245,7 @@ function Commands(){
                 <button onClick={() => azione(setMove(Moves.fold))}>fold</button>
                 <button onClick={() => azione(setMove(Moves.check))}>check</button>
                 <button onClick={() => azione(setMove(Moves.call))}>call</button>
-                <button onClick={() => azione(setMove(Moves.raise, (amountInput.current?.valueAsNumber ?? 0)))}>raise</button>
+                <button onClick={() => azione(raising())}>raise</button>
                 <button onClick={() => azione(setMove(Moves.fold))}>All In</button>
             </div>
             <div className="amount" style={style} >
