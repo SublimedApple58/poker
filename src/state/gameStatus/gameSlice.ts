@@ -8,6 +8,7 @@ interface game {
     manche: number,
     finished: boolean,
     raiseCalled: boolean,
+    counter: number
 }
 
 interface player{
@@ -30,13 +31,17 @@ const initialState: game = {
     difficulty: '',
     manche: 1,
     finished: false,
-    raiseCalled: false
+    raiseCalled: false,
+    counter: 0
 };
 
 const gameSlice = createSlice({
     name: 'game',
     initialState, 
     reducers: {
+        increment: (state) => {
+            return Object.assign({}, state, {counter: state.counter+1})
+        },
         setTurn: (state, action: {payload: number}) =>{
             return Object.assign({}, state, {
                 playerTurn: action.payload
@@ -160,4 +165,4 @@ const gameSlice = createSlice({
 })
 
 export default gameSlice.reducer;
-export const { nextRound, restartRound, updateMin, resetMin, nextTurn, setTurn, setRaiseCalled, setDifficulty, nextManche} = gameSlice.actions
+export const {increment, nextRound, restartRound, updateMin, resetMin, nextTurn, setTurn, setRaiseCalled, setDifficulty, nextManche} = gameSlice.actions

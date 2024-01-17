@@ -7,6 +7,7 @@ import { RootState } from '../../state/store';
 import { nextManche, nextRound, nextTurn, setRaiseCalled } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
+import useTurn from '../../customHooks/useTurn';
 
 function Commands(){
 
@@ -34,6 +35,8 @@ function Commands(){
     let playersDoneCopy = playersCopy.map(giocatore => giocatore.done);
 
     let [style, setStyle] = useState(visible);
+
+    useTurn(playerTurn);
 
     function indexOfMax(arr: number[]) {
         
