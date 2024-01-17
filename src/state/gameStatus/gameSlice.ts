@@ -39,7 +39,7 @@ const gameSlice = createSlice({
     name: 'game',
     initialState, 
     reducers: {
-        increment: (state) => {
+        increment: (state) => { // esperimento da togliere
             return Object.assign({}, state, {counter: state.counter+1})
         },
         setTurn: (state, action: {payload: number}) =>{

@@ -4,10 +4,20 @@ import './commands.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { carteCentrali, hideAll, moveDone, outOfGame, outOfManche, raiseDone, removeChips, resetAllIn, resetCards, resetDone, resetPlayersBet, setAllIn, setCentralCardVisible, setCentralCards, setPlayerBet, setPlayerCards, showAll, updateCopy, updatePlayersInManche, win} from '../../state/formPlayer/nPlayerSlice';
 import { RootState } from '../../state/store';
-import { nextManche, nextRound, nextTurn, setRaiseCalled } from '../../state/gameStatus/gameSlice';
+import { nextManche, nextRound, nextTurn, setRaiseCalled, setTurn } from '../../state/gameStatus/gameSlice';
 import gameHelper, { cardProperties } from '../../helper/gameHelper';
 import cardHelper from '../../helper/cardHelper';
+import useAction, { indexOfMax } from '../../customHooks/useAction';
 import useTurn from '../../customHooks/useTurn';
+
+export enum Moves{
+    check,
+    fold, 
+    allIn,
+    raise,
+    call
+}
+
 
 function Commands(){
 
@@ -30,28 +40,12 @@ function Commands(){
         giocatoriInGame = players.filter(giocatore => giocatore.inGame),
         playersDone = players.map(giocatore => giocatore.done),
         playersCopy = useSelector((state: RootState)=> state.giocatori.playersCopy),
-        raiseCalled = useSelector((state: RootState) => state.game.raiseCalled);
+        raiseCalled = useSelector((state: RootState) => state.game.raiseCalled),
+        setMove = useAction();
     
     let playersDoneCopy = playersCopy.map(giocatore => giocatore.done);
 
     let [style, setStyle] = useState(visible);
-
-    useTurn(playerTurn);
-
-    function indexOfMax(arr: number[]) {
-        
-        let max = arr[0];
-        let maxIndex = 0;
-    
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i] > max) {
-                maxIndex = i;
-                max = arr[i];
-            }
-        }
-    
-        return maxIndex;
-    }
 
     useEffect(()=>{
         const compareArrays = (a: boolean[], b: boolean[]) => {
@@ -175,41 +169,41 @@ function Commands(){
         // let totalToBet: number = 0;
         if(round==1){
             if(casualNumber(5) == 1){
-                fold();
+               setMove
             } else {
-                call();
+                setMove(Moves.call);
             }
         } else {
             switch(score){
                 case 0:
-                    fold();
+                    setMove(Moves.fold);
                     break;
                 case 1:
-                    call()
+                    setMove(Moves.call);
                     break;
                 case 2:
-                    call()
+                    setMove(Moves.call);
                     break;
                 case 3:
-                    raise(10)
+                    setMove(Moves.raise, 10);
                     break;
                 case 4:
-                    raise(20)
+                    setMove(Moves.raise, 10);
                     break;
                 case 5:
-                    raise(20)
+                    setMove(Moves.raise, 10);
                     break;
                 case 6:
-                    raise(30)
+                    setMove(Moves.raise, 10);
                     break;
                 case 7:
-                    raise(30)
+                    setMove(Moves.raise, 10);
                     break;
                 case 8:
-                    raise(30)
+                    setMove(Moves.raise, 10);
                     break;
                 case 9:
-                    allIn();
+                    setMove(Moves.allIn);
                     break;
             }
         }
@@ -218,18 +212,18 @@ function Commands(){
     function medium() {
         const playersName = players.map(giocatore => giocatore.name);
         if(round == 1){
-            call();
+            setMove(Moves.call);
         } else if(players[playersName.indexOf(playerTurn)].allIn){
-            check();
+            setMove(Moves.check);
         } else if((round == 2 && playerTurn == 2) || (round == 3 && playerTurn == 3)){
-            fold();
+            setMove(Moves.allIn);
         } else {
-            call();
+            setMove(Moves.call);
         }
     }
 
     function hard() {
-        call();
+        setMove(Moves.call);
     }
 
     function assignFish(){
@@ -305,26 +299,6 @@ function Commands(){
         return maxBet;
     }
 
-    function call(){
-        if(round == 1){
-            dispatch(removeChips({ref: playerTurn, chips: 5}));
-            dispatch(moveDone(playerTurn));
-        } else {
-            const playersName = players.map(giocatore => giocatore.name);
-            const higher = findHigherBet();
-            if(higher - players[playersName.indexOf(playerTurn)].bet > players[playersName.indexOf(playerTurn)].chips){
-                alert("you don't have enough money to call, ALL IN or FOLD");
-            } else {
-                dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
-                dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
-                if((higher - players[playersName.indexOf(playerTurn)].bet) == players[playersName.indexOf(playerTurn)].chips){
-                    dispatch(setAllIn(playerTurn));
-                }
-                dispatch(moveDone(playerTurn));
-            }
-        }
-    }
-
     function raising(){
         if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
             amountInput.current.value = '0';
@@ -348,47 +322,13 @@ function Commands(){
         }
     }
 
-    function raise(bet: number){
-        const playersName = players.map(giocatore => giocatore.name);
-        const higher = findHigherBet();
-        dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet + bet}));
-        dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
-
-        dispatch(raiseDone());
-        dispatch(setRaiseCalled());
-    }
-
-    function allIn(){
-        if(round == 1){
-            alert("you can't all in now!")
-        } else {
-            const playersName = players.map(giocatore => giocatore.name);
-            dispatch(removeChips({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
-            dispatch(setPlayerBet({ref: playerTurn, chips: players[playersName.indexOf(playerTurn)].chips}));
-    
-            dispatch(raiseDone());
-            dispatch(setAllIn(playerTurn));
-            dispatch(setRaiseCalled());
-        }
-    }
-
-    function fold(){
-        dispatch(outOfManche(playerTurn));
-        dispatch(moveDone(playerTurn));
-    }
-
-    function check(){
-        const playersName = players.map(giocatore => giocatore.name);
-        if(round != 1 && (findHigherBet() - players[playersName.indexOf(playerTurn)].bet == 0 || players[playersName.indexOf(playerTurn)].allIn)){
-            dispatch(moveDone(playerTurn));
-        } else {
-            alert("you can't check if there's a minimum bet required to keep playing");
-        }
-    }
-
-    function azione(comando: Function){
+    function azione(comando: void |  Function){
         if(playerTurn == 1){
-            comando();
+            if(comando == Function){
+                comando();
+            } else {
+                comando;
+            }
         } else {
             alert("It's not your turn")
             if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
@@ -402,11 +342,11 @@ function Commands(){
     return (
         <>
             <div className="commands" style={style}>
-                <button onClick={() => azione(fold)}>fold</button>
-                <button onClick={() => azione(check)}>check</button>
-                <button onClick={() => azione(call)}>call</button>
-                <button onClick={() => azione(raising)}>raise</button>
-                <button onClick={() => azione(allIn)}>All In</button>
+                <button onClick={() => azione(setMove(Moves.fold))}>fold</button>
+                <button onClick={() => azione(setMove(Moves.check))}>check</button>
+                <button onClick={() => azione(setMove(Moves.call))}>call</button>
+                <button onClick={() => azione(setMove(Moves.raise, (amountInput.current?.valueAsNumber ?? 0)))}>raise</button>
+                <button onClick={() => azione(setMove(Moves.fold))}>All In</button>
             </div>
             <div className="amount" style={style} >
                 <input type="number" placeholder='Insert amount' ref={amountInput}/>
