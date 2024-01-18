@@ -7,6 +7,7 @@ import { setRaiseCalled } from '../../state/gameStatus/gameSlice';
 import { indexOfMax } from '../../customHooks/useMoves';
 import useMoves from '../../customHooks/useMoves';
 import useTurn from '../../customHooks/useTurn';
+import useRound from '../../customHooks/useRound';
 
 export enum Moves{
     check,
@@ -28,6 +29,7 @@ function Commands(){
         style = useSelector((state: RootState) => state.game.style);
 
     useTurn();
+    useRound();
 
     function findHigherBet(){
         const scommesse: number[] = players.map(giocatore => giocatore.bet);

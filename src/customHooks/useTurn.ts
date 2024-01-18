@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nextRound, nextTurn, setRaiseCalled, setStyle } from "../state/gameStatus/gameSlice";
-import { resetDone, resetPlayersBet, setCentralCardVisible, updateCopy } from "../state/formPlayer/nPlayerSlice";
+import { nextTurn, setRaiseCalled, setStyle } from "../state/gameStatus/gameSlice";
+import { updateCopy } from "../state/formPlayer/nPlayerSlice";
 import useManche from "./useManche";
 import { RootState } from "../state/store";
 import useAction from "./useAction";
+import useRound from "./useRound";
 
 export default function useTurn(){
 
@@ -18,6 +19,7 @@ export default function useTurn(){
         dispatch = useDispatch(),
         endManche = useManche(),
         action = useAction(),
+        endRound = useRound(),
         round = useSelector((state: RootState) => state.game.round),
         turns = useSelector((state: RootState) => state.game.turns),
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
@@ -48,29 +50,6 @@ export default function useTurn(){
     }, [playersDone])
 
     useEffect(()=>{
-        if(giocatoriInGame.length > 1){
-            if (round == 5) {
-                endManche();
-            }
-            else if(round != 0) {
-                    if(playerTurn!=1){
-                        dispatch(setStyle(invisible));
-                        setTimeout(() => {
-                            action();
-                        }, 1000)
-                    } else {
-                        dispatch(setStyle(visible));
-                    }
-                    if(round>1 && round<5) {
-                        dispatch(setCentralCardVisible(round))
-                    }
-            }
-        } else {
-            dispatch(setStyle(invisible));
-        }
-    }, [round])
-
-    useEffect(()=>{
         if(round == 0){
             dispatch(updateCopy())
         }
@@ -78,9 +57,7 @@ export default function useTurn(){
             if(giocatoriInManche.length == 1){
                 endManche();
              } else if(turns == 1) {
-                dispatch(resetPlayersBet());
-                dispatch(nextRound());
-                dispatch(resetDone());
+                endRound();
              } else if(playerTurn!=1){
                 dispatch(setStyle(invisible));
                 setTimeout(() => {
