@@ -103,7 +103,7 @@ export default function useAction(){
         } else if(players[playersName.indexOf(playerTurn)].allIn){
             setMove(Moves.check);
         } else if((round == 2 && playerTurn == 2) || (round == 3 && playerTurn == 3)){
-            setMove(Moves.allIn);
+            setMove(Moves.raise, 10);
         } else {
             setMove(Moves.call);
         }

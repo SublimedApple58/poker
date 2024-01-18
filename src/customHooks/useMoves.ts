@@ -3,6 +3,7 @@ import { RootState } from "../state/store";
 import { moveDone, outOfManche, raiseDone, removeChips, setAllIn, setPlayerBet } from "../state/formPlayer/nPlayerSlice";
 import { setRaiseCalled } from "../state/gameStatus/gameSlice";
 import { Moves } from "../components/Commands/Commands";
+import { player } from "../state/formPlayer/nPlayerSlice";
 
 export function indexOfMax(arr: number[]) {
         
@@ -92,27 +93,56 @@ export default function useMoves(){
     }
 
     function setMove(move: Moves, bet?: number){
-        switch(move){
-            case Moves.fold:
-                fold();
-                break;
-            case Moves.call:
-                call();
-                break;
-            case Moves.check:
-                check();
-                break;
-            case Moves.allIn:
-                allIn();
-                break;
-            case Moves.raise:
-                if(bet){
-                    raise(bet);
-                } else {
-                    alert("you need to specify a bet")
-                }
-                break;
+        const 
+            higher = findHigherBet(),
+            possibleMoves: Moves[] = [Moves.fold, Moves.allIn],
+            playersName = players.map(giocatore => giocatore.name),
+            player: player = players[playersName.indexOf(playerTurn)];
+        
+        if(player.bet >= higher){
+            possibleMoves.push(Moves.check, Moves.call);
+            if(bet && bet <= player.chips){
+                possibleMoves.push(Moves.raise);
+            }
+        } else if(player.chips >= higher - player.bet){
+            possibleMoves.push(Moves.call);
+            if(bet && (higher - player.bet) + bet){
+                possibleMoves.push(Moves.raise);
+            }
         }
+
+        let possible: boolean =  false;
+
+        for(let i = 0; i<possibleMoves.length; i++){
+            move == possibleMoves[i] ? possible = true : possible;
+        }
+
+        if(possible){
+            switch(move){
+                case Moves.fold:
+                    fold();
+                    break;
+                case Moves.call:
+                    call();
+                    break;
+                case Moves.check:
+                    check();
+                    break;
+                case Moves.allIn:
+                    allIn();
+                    break;
+                case Moves.raise:
+                    if(bet){
+                        raise(bet)
+                    } else {
+                        alert("You need a bet to raise");
+                    }
+                    break;
+            }
+        } else {
+            alert("You can't do this");
+        }
+
     }
 
     return setMove;

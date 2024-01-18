@@ -5,7 +5,7 @@ interface cardsToAdd{
     index: number
 }
 
-interface player{
+export interface player{
     name: number,
     chips: number,
     isUser: boolean
