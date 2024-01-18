@@ -207,15 +207,15 @@ class gameHelper{
 
     static calcScore(playerCards: cardProperties[], tableCard?: cardProperties[]){
         const
-         coppia: number = 1,
-         doppiaCoppia: number = 2,
-         tris: number = 3,
-         scala: number = 4,
-         colore: number = 5,
-         full: number = 6,
-         poker: number = 7,
-         scalaColore: number = 8,
-         scalaReale: number = 9;
+         coppia: number = 15,
+         doppiaCoppia: number = 30,
+         tris: number = 45,
+         scala: number = 60,
+         colore: number = 75,
+         full: number = 90,
+         poker: number = 105,
+         scalaColore: number = 120,
+         scalaReale: number = 200;
 
         let score: number = 0; 
         const 
@@ -291,6 +291,17 @@ class gameHelper{
                 }
             }
         }   
+
+        let numeriCarte = playerCards.map(carta => carta.valore);
+        numeriCarte.sort(function(a, b) {
+            if(a === b){
+                return 0;
+            } else {
+                return a < b ? -1 : 1;
+            }
+        });
+        const higherCard = numeriCarte[numeriCarte.length-1];
+        score += higherCard;
 
         return score;
     }

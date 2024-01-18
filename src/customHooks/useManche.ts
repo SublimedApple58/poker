@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import cardHelper from "../helper/cardHelper";
 import gameHelper, {cardProperties} from "../helper/gameHelper";
-import { carteCentrali, outOfGame, outOfManche, resetCards, setCentralCards, setPlayerCards, win } from "../state/formPlayer/nPlayerSlice";
+import { carteCentrali, hideAll, outOfGame, outOfManche, resetAllIn, resetCards, resetDone, resetPlayersBet, setCentralCards, setPlayerCards, showAll, updatePlayersInManche, win } from "../state/formPlayer/nPlayerSlice";
 import { RootState } from "../state/store";
 import { indexOfMax } from "./useMoves";
+import { nextManche } from "../state/gameStatus/gameSlice";
 
 export default function useManche(){
 
@@ -37,7 +38,7 @@ export default function useManche(){
             } else if(round>4){
                 let carteCentraliScoperte: cardProperties[] = [];
                 for(let j = 0; j<5; j++){
-                    carteCentraliScoperte.push(cardHelper.converNumberToCard(centralCards[i].numero))
+                    carteCentraliScoperte.push(cardHelper.converNumberToCard(centralCards[j].numero))
                 }
                 punteggi.push(gameHelper.calcScore(carteGiocatori[i], carteCentraliScoperte));
             } else {
@@ -64,7 +65,7 @@ export default function useManche(){
         }
     }
 
-    function newManche(){
+    function resetTable(){
         // creare nuova manche, azzerando carte e ricoprendole tutte quante
         dispatch(resetCards());
         const carte = cardHelper.generateCasualCard(giocatoriInManche.length);
@@ -82,5 +83,19 @@ export default function useManche(){
         dispatch(setCentralCards(carteConvertiteCentrali));
     }
 
-    return {assignFish, newManche};
+    function newManche(){
+        dispatch(showAll());
+        setTimeout(()=>{
+            assignFish();
+            dispatch(updatePlayersInManche());
+            dispatch(hideAll());
+            dispatch(nextManche());
+            dispatch(resetPlayersBet());
+            dispatch(resetDone());
+            dispatch(resetAllIn());
+            resetTable();
+        }, 2000)
+    }
+
+    return newManche;
 }

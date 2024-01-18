@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nextManche, nextRound, nextTurn, setRaiseCalled, setStyle } from "../state/gameStatus/gameSlice";
-import { hideAll, resetAllIn, resetDone, resetPlayersBet, setCentralCardVisible, showAll, updateCopy, updatePlayersInManche } from "../state/formPlayer/nPlayerSlice";
+import { nextRound, nextTurn, setRaiseCalled, setStyle } from "../state/gameStatus/gameSlice";
+import { resetDone, resetPlayersBet, setCentralCardVisible, updateCopy } from "../state/formPlayer/nPlayerSlice";
 import useManche from "./useManche";
 import { RootState } from "../state/store";
 import useAction from "./useAction";
@@ -50,17 +50,7 @@ export default function useTurn(){
     useEffect(()=>{
         if(giocatoriInGame.length > 1){
             if (round == 5) {
-                dispatch(showAll());
-                setTimeout(()=>{
-                    endManche.assignFish();
-                    dispatch(hideAll());
-                    dispatch(updatePlayersInManche());
-                    dispatch(nextManche());
-                    dispatch(resetPlayersBet());
-                    dispatch(resetDone());
-                    dispatch(resetAllIn());
-                    endManche.newManche();
-                }, 2000);
+                endManche();
             }
             else if(round != 0) {
                     if(playerTurn!=1){
@@ -86,17 +76,7 @@ export default function useTurn(){
         }
         if(giocatoriInGame.length > 1){
             if(giocatoriInManche.length == 1){
-                dispatch(showAll());
-                setTimeout(()=>{
-                    endManche.assignFish();
-                    dispatch(updatePlayersInManche());
-                    dispatch(hideAll());
-                    dispatch(nextManche());
-                    dispatch(resetPlayersBet());
-                    dispatch(resetDone());
-                    dispatch(resetAllIn());
-                    endManche.newManche();
-                }, 2000);
+                endManche();
              } else if(turns == 1) {
                 dispatch(resetPlayersBet());
                 dispatch(nextRound());
