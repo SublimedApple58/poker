@@ -1,11 +1,4 @@
-
-interface cardProperties{
-    seme: string,
-    nome: string,
-    numero: number,
-    valore: number,
-    src: string
-}
+import { cardProperties } from "./gameHelper";
 
 class cardHelper{
     static converNumberToCard (number: number): cardProperties {

@@ -17,7 +17,8 @@ export default function useAction(){
 
 
     function action(){
-        const playersNames: number[] = players.map(giocatore => giocatore.name),
+        const 
+          playersNames: number[] = players.map(giocatore => giocatore.name),
           playersCards: cardProperties[] = [cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[0]), cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[1])],
           numeri = centralCards.map(carta => cardHelper.converNumberToCard(carta.numero));
         
@@ -56,7 +57,7 @@ export default function useAction(){
         // let totalToBet: number = 0;
         if(round==1){
             if(casualNumber(5) == 1){
-               setMove
+               setMove(Moves.fold);
             } else {
                 setMove(Moves.call);
             }

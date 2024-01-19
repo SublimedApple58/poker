@@ -6,6 +6,7 @@ import { ReactElement, useEffect, useState} from "react";
 import Card from "../Cards/Card";
 import Commands from "../Commands/Commands";
 import './Table.css';
+import animationHelper from "../../helper/animationHelper";
 
 function Table(){
     const
@@ -42,6 +43,8 @@ function Table(){
     function renderCenterCard() : ReactElement[] {
         return centralCards.map((carta, i) => <Card isVisible={carta.isVisible} numero={carta.numero} key={i}/>);
     }
+    
+    animationHelper.createChipsElement();
 
     return(
         <>
@@ -50,7 +53,7 @@ function Table(){
                     <div className="leftPlayer">{renderContainer(1)}</div>
                     <div className="topPlayer">{renderContainer(0)}</div>
                     <div className="rightPlayer">{renderContainer(3)}</div>
-                    <div className="center">{renderCenterCard()} <div className="chips centrali"><p>{centralChips}</p></div></div>
+                    <div className="center">{renderCenterCard()} <div className="chips chipsPosition centrali"><p>{centralChips}</p></div></div>
                 </div>
                 <div className="textEndGame" style={styleEnd}><h1>PLAYER NUMBER {playerTurn} WON THE GAME</h1></div>
                 <div className='bottom' style={styleTable}>{renderPlayer(2)}</div>

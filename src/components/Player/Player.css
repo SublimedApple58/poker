@@ -32,27 +32,30 @@
     margin-top: 5%;
 }
 
+.chipsPosition{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+}
+
 .chips{
     width: 35px;
     height: 35px;
-    position: absolute;
     border-radius: 100%;
-    display: flex;
-    justify-content: center;
     background-image: url(../../../icon/poker-chip.png);
     background-size: cover;
 }
 
-.chips p{
+.chipsPosition p{
     position: relative;
     transition: all .3s ease-out;
 }
 
-.bottom .chips p, .left .chips p, .centrali p{
+.bottom .chipsPosition p, .left .chipsPosition p, .centrali p{
     top: -20px
 }
 
-.top .chips p, .right .chips p{
+.top .chipsPosition p, .right .chipsPosition p{
     bottom: -40px
 }
 
