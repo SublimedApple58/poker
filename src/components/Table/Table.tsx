@@ -12,10 +12,10 @@ function Table(){
     const
         players = useSelector((state: RootState)=> state.giocatori.players),
         centralChips = useSelector((state: RootState) => state.giocatori.centralChips),
-        playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         centralCards = useSelector((state: RootState)=> state.giocatori.centralCards),
         playersInGame = useSelector((state: RootState) => state.giocatori.players.filter(giocatore => giocatore.inGame)),
-        [endGame, setEndGame] = useState(false);
+        [endGame, setEndGame] = useState(false),
+        winner = useSelector((state: RootState) => state.giocatori.players.filter(giocatore => giocatore.inGame)[0]);
     
     let 
       styleTable = {},
@@ -43,8 +43,9 @@ function Table(){
     function renderCenterCard() : ReactElement[] {
         return centralCards.map((carta, i) => <Card isVisible={carta.isVisible} numero={carta.numero} key={i}/>);
     }
-    
+
     animationHelper.createChipsElement();
+    
 
     return(
         <>
@@ -55,7 +56,7 @@ function Table(){
                     <div className="rightPlayer">{renderContainer(3)}</div>
                     <div className="center">{renderCenterCard()} <div className="chips chipsPosition centrali"><p>{centralChips}</p></div></div>
                 </div>
-                <div className="textEndGame" style={styleEnd}><h1>PLAYER NUMBER {playerTurn} WON THE GAME</h1></div>
+                <div className="textEndGame" style={styleEnd}><h1>PLAYER NUMBER {winner.name} WON THE GAME</h1></div>
                 <div className='bottom' style={styleTable}>{renderPlayer(2)}</div>
                 <div className='left' style={styleTable}>{renderPlayer(1)}</div>
                 <div className='top' style={styleTable}>{renderPlayer(0)}</div>

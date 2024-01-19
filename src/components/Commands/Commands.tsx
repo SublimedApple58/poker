@@ -38,7 +38,7 @@ function Commands(){
             if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
                 amountInput.current.value = '0';
             } else if(amountInput.current != null){
-                amountInput.current.value = '0';
+                amountInput.current.value = '';
             }
         }
     }
@@ -50,7 +50,7 @@ function Commands(){
                 <button onClick={() => azione(setMove(Moves.check))}>check</button>
                 <button onClick={() => azione(setMove(Moves.call))}>call</button>
                 <button onClick={() => azione(raising())}>raise</button>
-                <button onClick={() => azione(setMove(Moves.fold))}>All In</button>
+                <button onClick={() => azione(setMove(Moves.allIn))}>All In</button>
             </div>
             <div className="amount" style={style} >
                 <input type="number" placeholder='Insert amount' ref={amountInput}/>
