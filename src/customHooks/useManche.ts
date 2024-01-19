@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import cardHelper from "../helper/cardHelper";
 import gameHelper, {cardProperties} from "../helper/gameHelper";
-import { carteCentrali, hideAll, outOfGame, outOfManche, resetAllIn, resetCards, resetDone, resetPlayersBet, setCentralCards, setPlayerCards, showAll, updatePlayersInManche, win } from "../state/formPlayer/nPlayerSlice";
+import { hideAll, outOfGame, outOfManche, resetAllIn, resetCards, resetDone, resetPlayersBet, setCentralCards, setPlayerCards, showAll, updatePlayersInManche, win } from "../state/formPlayer/nPlayerSlice";
 import { RootState } from "../state/store";
-import { indexOfMax } from "./useMoves";
+import { indexOfMax, carteCentrali } from "../modules/exports";
 import { nextManche } from "../state/gameStatus/gameSlice";
 
 export default function useManche(){

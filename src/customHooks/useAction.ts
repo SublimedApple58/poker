@@ -1,5 +1,5 @@
 import useMoves from "./useMoves";
-import { Moves } from "../components/Commands/Commands";
+import { Moves } from "../modules/exports";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import gameHelper, {cardProperties} from "../helper/gameHelper";

@@ -1,27 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { player, carteCentrali } from "../../modules/exports";
 
 interface cardsToAdd{
     carte: number[],
     index: number
-}
-
-export interface player{
-    name: number,
-    chips: number,
-    isUser: boolean
-    isVisible: boolean,
-    side: number,
-    carte: number[],
-    done: boolean,
-    bet: number,
-    inManche: boolean,
-    inGame: boolean,
-    allIn: boolean
-}
-
-export interface carteCentrali{
-    numero: number,
-    isVisible: boolean
 }
 
 interface players{
