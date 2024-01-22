@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { player, carteCentrali } from "../../modules/exports";
+import animationHelper from "../../helper/animationHelper";
 
 interface cardsToAdd{
     carte: number[],
@@ -115,6 +116,7 @@ const playerSlice = createSlice({
         },
         updatePlayersInManche: (state) => {return Object.assign({}, state, {players: state.players.map(giocatore => Object.assign({}, giocatore, {inManche: giocatore.inGame}))})},
         removeChips: (state, action: {payload: scommessa}) => {
+            animationHelper.createChipsElement(action.payload.ref);
             return Object.assign({}, state, {
                 players: state.players.map(giocatore => {
                     if(giocatore.name == action.payload.ref){

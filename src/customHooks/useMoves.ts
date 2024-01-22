@@ -23,16 +23,17 @@ export default function useMoves(){
     function call(){
         if(round == 1){
             dispatch(removeChips({ref: playerTurn, chips: 5}));
-            dispatch(moveDone(playerTurn));
         } else {
             const higher = findHigherBet();
-            dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
-            dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
-            if((higher - players[playersName.indexOf(playerTurn)].bet) == players[playersName.indexOf(playerTurn)].chips){
-                dispatch(setAllIn(playerTurn));
+            if(higher - players[playersName.indexOf(playerTurn)].bet > 0){
+                dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
+                dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
+                if((higher - players[playersName.indexOf(playerTurn)].bet) == players[playersName.indexOf(playerTurn)].chips){
+                    dispatch(setAllIn(playerTurn));
+                }
             }
-            dispatch(moveDone(playerTurn));
         }
+        dispatch(moveDone(playerTurn));
     }
 
     function raise(bet: number){

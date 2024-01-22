@@ -4,7 +4,7 @@ import gameHelper, {cardProperties} from "../helper/gameHelper";
 import { hideAll, outOfGame, outOfManche, resetAllIn, resetCards, resetDone, resetPlayersBet, setCentralCards, setPlayerCards, showAll, updatePlayersInManche, win } from "../state/formPlayer/nPlayerSlice";
 import { RootState } from "../state/store";
 import { indexOfMax, carteCentrali } from "../modules/exports";
-import { nextManche } from "../state/gameStatus/gameSlice";
+import { nextManche, restartRound } from "../state/gameStatus/gameSlice";
 
 export default function useManche(){
 
@@ -90,6 +90,7 @@ export default function useManche(){
             dispatch(updatePlayersInManche());
             dispatch(hideAll());
             dispatch(nextManche());
+            dispatch(restartRound());
             dispatch(resetPlayersBet());
             dispatch(resetDone());
             dispatch(resetAllIn());

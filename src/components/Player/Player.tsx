@@ -42,7 +42,7 @@ function Player(props:{name: number, isUser: boolean, chips: number}){
 
     return (
         <>
-                <div className={stylePlayer} style={stile}>
+                <div className={[stylePlayer, `n${props.name}`].join(' ')} style={stile}>
                     <div className="chips chipsPosition">
                         <p>{props.chips}</p>
                     </div>

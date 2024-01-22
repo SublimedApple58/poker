@@ -61,8 +61,8 @@ export default function useTurn(){
              } else if(playerTurn!=1){
                 dispatch(setStyle(invisible));
                 setTimeout(() => {
-                    action()
-                }, 1000)
+                    action();
+                }, 1000);
             } else {
                 dispatch(setStyle(visible));
             }

@@ -29,7 +29,7 @@ interface player{
 }
 
 const initialState: game = {
-    round: 0, // momentaneo
+    round: 0,
     playerTurn: 1,
     turns: 1,
     difficulty: '',
@@ -147,7 +147,6 @@ const gameSlice = createSlice({
         nextManche: (state) => {
             return Object.assign({}, state, {
                 manche: state.manche + 1,
-                round: 1
             })
         },
         updateMin: (state, action: {payload: number}) => {

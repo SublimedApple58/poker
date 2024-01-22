@@ -6,10 +6,13 @@ import { ReactElement, useEffect, useState} from "react";
 import Card from "../Cards/Card";
 import Commands from "../Commands/Commands";
 import './Table.css';
-import animationHelper from "../../helper/animationHelper";
 
 function Table(){
     const
+        playerTurn = useSelector((state: RootState) => state.game.playerTurn),
+        round = useSelector((state: RootState) => state.game.round),
+        turns = useSelector((state: RootState) => state.game.turns),
+        manche = useSelector((state: RootState) => state.game.manche),
         players = useSelector((state: RootState)=> state.giocatori.players),
         centralChips = useSelector((state: RootState) => state.giocatori.centralChips),
         centralCards = useSelector((state: RootState)=> state.giocatori.centralCards),
@@ -43,8 +46,6 @@ function Table(){
     function renderCenterCard() : ReactElement[] {
         return centralCards.map((carta, i) => <Card isVisible={carta.isVisible} numero={carta.numero} key={i}/>);
     }
-
-    animationHelper.createChipsElement();
     
 
     return(

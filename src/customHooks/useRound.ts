@@ -33,7 +33,7 @@ export default function useRound(){
                         dispatch(setStyle(invisible));
                         setTimeout(() => {
                             action();
-                        }, 1000)
+                        }, 1000);
                     } else {
                         dispatch(setStyle(visible));
                     }
