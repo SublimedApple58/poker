@@ -1,9 +1,10 @@
 import useMoves from "./useMoves";
-import { Moves } from "../modules/exports";
+import { Moves, indexOfMax } from "../modules/exports";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import gameHelper, {cardProperties} from "../helper/gameHelper";
 import cardHelper from "../helper/cardHelper";
+import { player } from "../modules/exports";
 
 export default function useAction(){
 
@@ -13,7 +14,16 @@ export default function useAction(){
         players = useSelector((state: RootState) => state.giocatori.players),
         centralCards = useSelector((state: RootState) => state.giocatori.centralCards),
         difficulty = useSelector((state: RootState) => state.game.difficulty),
-        playerTurn = useSelector((state: RootState) => state.game.playerTurn);
+        playerTurn = useSelector((state: RootState) => state.game.playerTurn),
+        playersName = players.map(giocatore => giocatore.name),
+        player: player = players[playersName.indexOf(playerTurn)],
+        higher = findHigherBet();
+
+    function findHigherBet(){
+        const scommesse: number[] = players.map(giocatore => giocatore.bet);
+        const maxBet: number = players[indexOfMax(scommesse)].bet;
+        return maxBet;
+    }
 
 
     function action(){
@@ -111,7 +121,15 @@ export default function useAction(){
     }
 
     function hard() {
-        setMove(Moves.call);
+        let mossa;
+        if(round == 1){
+            mossa = Moves.call
+        } else if(player.bet >= higher){
+            mossa = Moves.check
+        } else {
+            mossa = Moves.call
+        }
+        setMove(mossa);
     }
 
     return action;

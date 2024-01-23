@@ -21,7 +21,7 @@ export default function useRound(){
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         round = useSelector((state: RootState) => state.game.round),
         players = useSelector((state: RootState)=> state.giocatori.players),
-        giocatoriInGame = players.filter(giocatore => giocatore.inGame)
+        giocatoriInGame = players.filter(giocatore => giocatore.inGame);
 
     useEffect(()=>{
         if(giocatoriInGame.length > 1){

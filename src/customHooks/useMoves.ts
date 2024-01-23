@@ -73,14 +73,16 @@ export default function useMoves(){
             player: player = players[playersName.indexOf(playerTurn)];
         
         if(round == 1){
-            if(player.chips >= 5 && player.chips >= higher - player.bet){
+            if(player.bet >= 5 && player.bet >= higher){
+                possibleMoves.push(Moves.check);
+            } else if(player.chips >= 5 && player.chips >= higher - player.bet){
                 possibleMoves.push(Moves.call);
             }
             if(bet && player.chips >= bet + (higher - player.bet) && bet >= 5){
                 possibleMoves.push(Moves.raise);
             }
         } else if(player.bet >= higher){
-            possibleMoves.push(Moves.check, Moves.call);
+            possibleMoves.push(Moves.check);
             if(bet && bet <= player.chips){
                 possibleMoves.push(Moves.raise);
             }

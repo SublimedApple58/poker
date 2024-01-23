@@ -168,4 +168,4 @@ const gameSlice = createSlice({
 })
 
 export default gameSlice.reducer;
-export const {nextRound, restartRound, updateMin, resetMin, nextTurn, setTurn, setStyle, setRaiseCalled, setDifficulty, nextManche} = gameSlice.actions
+export const { nextRound, restartRound, updateMin, resetMin, nextTurn, setTurn, setStyle, setRaiseCalled, setDifficulty, nextManche} = gameSlice.actions
