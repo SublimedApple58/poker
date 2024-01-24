@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { resetDone, resetPlayersBet, setCentralCardVisible } from "../state/formPlayer/nPlayerSlice";
+import { resetDone, resetFinished, resetPlayersBet, setCentralCardVisible } from "../state/formPlayer/nPlayerSlice";
 import { nextRound, setStyle } from "../state/gameStatus/gameSlice";
 import { useEffect } from "react";
 import { RootState } from "../state/store";
@@ -50,6 +50,7 @@ export default function useRound(){
         dispatch(resetPlayersBet());
         dispatch(nextRound());
         dispatch(resetDone());
+        dispatch(resetFinished());
     }
 
     return newRound;

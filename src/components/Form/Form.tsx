@@ -1,6 +1,7 @@
 import './Form.css'
 import { useDispatch } from 'react-redux';
-import { addPlayer, carteCentrali } from '../../state/formPlayer/nPlayerSlice';
+import { addPlayer } from '../../state/formPlayer/nPlayerSlice';
+import { carteCentrali } from '../../modules/exports';
 import { useRef, useState } from 'react';
 import cardHelper from '../../helper/cardHelper';
 import { setDifficulty, setTurn } from '../../state/gameStatus/gameSlice';
@@ -56,7 +57,7 @@ function Form() {
                 integerTableSide = Math.trunc(i/4),
                 tableSide = 3 - (i - (integerTableSide * 4));
                 
-          dispatch(addPlayer({name: i, chips: 100, isVisible: i==1, isUser: i==1, side: tableSide, done: false, bet: 0, carte: [carte[contatore], carte[contatore+1]], inManche: true, inGame: true, allIn: false}))
+          dispatch(addPlayer({name: i, chips: 100, isVisible: i==1, isUser: i==1, side: tableSide, done: false, finished: false, bet: 0, carte: [carte[contatore], carte[contatore+1]], inManche: true, inGame: true, allIn: false}))
           contatore+=2;
         }
         const carteCentrali = carte.slice(contatore);

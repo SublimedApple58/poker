@@ -1,11 +1,12 @@
 export interface player{
     name: number,
     chips: number,
-    isUser: boolean
+    isUser: boolean,
     isVisible: boolean,
     side: number,
     carte: number[],
     done: boolean,
+    finished: boolean,
     bet: number,
     inManche: boolean,
     inGame: boolean,

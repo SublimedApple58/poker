@@ -31,7 +31,6 @@ export default function useAction(){
           playersNames: number[] = players.map(giocatore => giocatore.name),
           playersCards: cardProperties[] = [cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[0]), cardHelper.converNumberToCard(players[playersNames.indexOf(playerTurn)].carte[1])],
           numeri = centralCards.map(carta => cardHelper.converNumberToCard(carta.numero));
-        
         let 
           score: number = 0,
           visibleCards: cardProperties[] = [];
@@ -64,46 +63,104 @@ export default function useAction(){
     }
 
     function easy(score: number, casualNumber: (par: number) => number) {
+        let 
+            mossa = Moves.fold,
+            bet: number | undefined,
+            call: Moves;
+
+        player.bet >= higher ? call = Moves.check : call = Moves.call;
+        if(call == Moves.call){
+            player.chips < (higher - player.bet) ? call = Moves.fold : call = Moves.call;
+        }
+
+        const finished: boolean = player.finished;
+            
         // let totalToBet: number = 0;
         if(round==1){
             if(casualNumber(5) == 1){
-               setMove(Moves.fold);
+               mossa = Moves.fold;
             } else {
-                setMove(Moves.call);
+                mossa = Moves.call;
             }
         } else {
-            switch(score){
-                case 0:
-                    setMove(Moves.fold);
+            switch(true){
+                case score <= 14:
+                    if(call == Moves.check){
+                        mossa = call;
+                    } else {
+                        mossa = Moves.fold;
+                    }
                     break;
-                case 1:
-                    setMove(Moves.call);
+                case score >= 15 && score < 30:
+                    if(call == Moves.check){
+                        mossa = call;
+                    } else {
+                        mossa = Moves.fold;
+                    }
                     break;
-                case 2:
-                    setMove(Moves.call);
+                case score >= 30 && score < 45:
+                    mossa = call;
                     break;
-                case 3:
-                    setMove(Moves.raise, 10);
+                case score >= 45 && score < 60:
+                    if(finished){
+                        mossa = call
+                    } else {
+                        mossa = Moves.raise;
+                        bet = 10;
+                    }
                     break;
-                case 4:
-                    setMove(Moves.raise, 10);
+                case score >= 60 && score < 75:
+                    if(finished){
+                        mossa = call
+                    } else {
+                        mossa = Moves.raise;
+                        bet = 10;
+                    }
                     break;
-                case 5:
-                    setMove(Moves.raise, 10);
+                case score >= 75 && score < 90:
+                    if(finished){
+                        mossa = call
+                    } else {
+                        mossa = Moves.raise;
+                        bet = 10;
+                    }
                     break;
-                case 6:
-                    setMove(Moves.raise, 10);
+                case score >= 90 && score < 105:
+                    if(finished){
+                        mossa = call
+                    } else {
+                        mossa = Moves.raise;
+                        bet = 10;
+                    }
                     break;
-                case 7:
-                    setMove(Moves.raise, 10);
+                case score >= 105 && score < 120:
+                    if(finished){
+                        mossa = call
+                    } else {
+                        mossa = Moves.raise;
+                        bet = 20;
+                    }
                     break;
-                case 8:
-                    setMove(Moves.raise, 10);
+                case score >= 120 && score < 200:
+                    if(finished){
+                        mossa = call
+                    } else {
+                        mossa = Moves.allIn;
+                    }
                     break;
-                case 9:
-                    setMove(Moves.allIn);
+                case score >= 200:
+                    if(finished){
+                        mossa = call
+                    } else {
+                        mossa = Moves.allIn;
+                    }
                     break;
             }
+        }
+        if(bet){
+            setMove(mossa, bet);
+        } else {
+            setMove(mossa);
         }
     }
 

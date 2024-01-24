@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
 import useMoves from '../../customHooks/useMoves';
 import useTurn from '../../customHooks/useTurn';
-import useRound from '../../customHooks/useRound';
 import { Moves } from '../../modules/exports';
 
 function Commands(){
@@ -16,7 +15,6 @@ function Commands(){
         style = useSelector((state: RootState) => state.game.style);
 
     useTurn();
-    useRound();
 
     function raising(){
         if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
-import { moveDone, outOfManche, raiseDone, removeChips, setAllIn, setPlayerBet } from "../state/formPlayer/nPlayerSlice";
+import { moveDone, outOfManche, raiseDone, removeChips, setAllIn, setFinished, setPlayerBet } from "../state/formPlayer/nPlayerSlice";
 import { setRaiseCalled } from "../state/gameStatus/gameSlice";
 import { Moves } from "../modules/exports";
 import { player, indexOfMax } from "../modules/exports";
@@ -42,6 +42,7 @@ export default function useMoves(){
         dispatch(setPlayerBet({ref: playerTurn, chips: higher + bet}));
         dispatch(raiseDone());
         dispatch(setRaiseCalled());
+        dispatch(setFinished(playerTurn));
 
         if(((higher - players[playersName.indexOf(playerTurn)].bet) +  bet) == players[playersName.indexOf(playerTurn)].chips){
             dispatch(setAllIn(playerTurn));
