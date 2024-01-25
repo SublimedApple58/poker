@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import cardHelper from '../../helper/cardHelper';
 import { setDifficulty, setTurn } from '../../state/gameStatus/gameSlice';
 import { setCentralCards } from "../../state/formPlayer/nPlayerSlice";
+import { Difficulty } from '../../modules/exports';
 
 function Form() {
   const 
@@ -17,30 +18,30 @@ function Form() {
     [easy, setEasy] = useState(noShadow),
     [medium, setMedium] = useState(noShadow),
     [hard, setHard] = useState(noShadow),
-    [level, setLevel] = useState(''),
+    [level, setLevel] = useState(0),
     dispatch = useDispatch();
 
-  function setShadow(emoji: string) {
+  function setShadow(emoji: Difficulty) {
       setEasy(noShadow);
       setMedium(noShadow);
       setHard(noShadow);
       setLevel(emoji);
 
       switch (emoji) {
-        case 'easy' : 
+        case Difficulty.easy : 
           setEasy(shadow);
           break;
-        case 'medium' : 
+        case Difficulty.medium : 
           setMedium(shadow);
           break;
-        case 'hard' : 
+        case Difficulty.hard : 
           setHard(shadow);
           break;
       }
     }
 
   function setPlayers(){
-    if(level != ''){
+    if(level != 0){
       const 
         nPlayers = riferimento.current?.valueAsNumber ?? 0,
         carte = cardHelper.generateCasualCard(nPlayers);
@@ -57,7 +58,21 @@ function Form() {
                 integerTableSide = Math.trunc(i/4),
                 tableSide = 3 - (i - (integerTableSide * 4));
                 
-          dispatch(addPlayer({name: i, chips: 100, isVisible: i==1, isUser: i==1, side: tableSide, done: false, finished: false, bet: 0, carte: [carte[contatore], carte[contatore+1]], inManche: true, inGame: true, allIn: false}))
+          dispatch(addPlayer(
+              {name: i, 
+              chips: 100, 
+              isVisible: i==1, 
+              isUser: i==1, 
+              side: tableSide, 
+              done: false, 
+              finished: false, 
+              bet: 0, 
+              carte: [carte[contatore], carte[contatore+1]], 
+              inManche: true, 
+              inGame: true, 
+              allIn: false,
+              bluff: false}
+            ))
           contatore+=2;
         }
         const carteCentrali = carte.slice(contatore);
@@ -82,9 +97,9 @@ function Form() {
             <input type="number" inputMode='numeric' ref={riferimento} className='nPlayer'/>
             <h2>Bluff level</h2>
             <div className="options">
-              <div className="easy" onClick={() => setShadow('easy')} style={easy}></div>
-              <div className="medium" onClick={() => setShadow('medium')} style={medium} ></div>
-              <div className="hard" onClick={() =>setShadow('hard')} style={hard} ></div>
+              <div className="easy" onClick={() => setShadow(Difficulty.easy)} style={easy}></div>
+              <div className="medium" onClick={() => setShadow(Difficulty.medium)} style={medium} ></div>
+              <div className="hard" onClick={() =>setShadow(Difficulty.hard)} style={hard} ></div>
             </div>
             <button className='submit' onClick={setPlayers}>Start playing</button>
           </div>

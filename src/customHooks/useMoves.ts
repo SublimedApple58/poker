@@ -56,6 +56,7 @@ export default function useMoves(){
         dispatch(raiseDone());
         dispatch(setAllIn(playerTurn));
         dispatch(setRaiseCalled());
+        dispatch(setFinished(playerTurn));
     }
 
     function fold(){

@@ -4,7 +4,7 @@ interface game {
     round: number,
     playerTurn: number,
     turns: number,
-    difficulty: string,
+    difficulty: number,
     manche: number,
     finished: boolean,
     raiseCalled: boolean,
@@ -32,7 +32,7 @@ const initialState: game = {
     round: 0,
     playerTurn: 1,
     turns: 1,
-    difficulty: '',
+    difficulty: 0,
     manche: 1,
     finished: false,
     raiseCalled: false,
@@ -159,7 +159,7 @@ const gameSlice = createSlice({
                 lastBet: 5,
             })
         },
-        setDifficulty: (state, action: {payload: string}) => {
+        setDifficulty: (state, action: {payload: number}) => {
             return Object.assign({}, state, {
                 difficulty: action.payload
             })

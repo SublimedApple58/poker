@@ -10,7 +10,8 @@ export interface player{
     bet: number,
     inManche: boolean,
     inGame: boolean,
-    allIn: boolean
+    allIn: boolean,
+    bluff: boolean
 }
 
 export interface carteCentrali{
@@ -33,10 +34,21 @@ export function indexOfMax(arr: number[]) {
     return maxIndex;
 }
 
+export function casualNumber(number: number): number{
+    let x = Math.floor(Math.random() * number) + 1;
+    return x;
+}
+
 export enum Moves{
     check,
     fold, 
     allIn,
     raise,
     call
+}
+
+export enum Difficulty{
+    easy = 1,
+    medium = 6,
+    hard = 4
 }

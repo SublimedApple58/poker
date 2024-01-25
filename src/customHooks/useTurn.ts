@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nextTurn, setRaiseCalled, setStyle } from "../state/gameStatus/gameSlice";
-import { updateCopy } from "../state/formPlayer/nPlayerSlice";
+import { setBluff, updateCopy } from "../state/formPlayer/nPlayerSlice";
 import useManche from "./useManche";
 import { RootState } from "../state/store";
 import useAction from "./useAction";
 import useRound from "./useRound";
+import { casualNumber } from "../modules/exports";
 
 export default function useTurn(){
 
@@ -28,7 +29,8 @@ export default function useTurn(){
         giocatoriInGame = players.filter(giocatore => giocatore.inGame),
         playersDone = players.map(giocatore => giocatore.done),
         playersCopy = useSelector((state: RootState)=> state.giocatori.playersCopy),
-        raiseCalled = useSelector((state: RootState) => state.game.raiseCalled);
+        raiseCalled = useSelector((state: RootState) => state.game.raiseCalled),
+        difficulty = useSelector((state: RootState) => state.game.difficulty);
 
     
     let playersDoneCopy = playersCopy.map(giocatore => giocatore.done);
@@ -51,7 +53,12 @@ export default function useTurn(){
 
     useEffect(()=>{
         if(round == 0){
-            dispatch(updateCopy())
+            dispatch(updateCopy());
+            for(let i = 1; i<=players.length; i++){
+                if(casualNumber(difficulty) == 1){
+                    dispatch(setBluff(i))
+                }
+            }
         }
         if(giocatoriInGame.length > 1){
             if(giocatoriInManche.length == 1){
