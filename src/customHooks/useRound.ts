@@ -50,7 +50,6 @@ export default function useRound(){
         dispatch(resetPlayersBet());
         dispatch(nextRound());
         dispatch(resetDone());
-        dispatch(resetFinished());
     }
 
     return newRound;
