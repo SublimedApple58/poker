@@ -12,7 +12,8 @@ export default function useMoves(){
         playerTurn = useSelector((state: RootState) => state.game.playerTurn),
         round = useSelector((state: RootState) => state.game.round),
         dispatch = useDispatch(),
-        playersName = players.map(giocatore => giocatore.name);
+        playersName = players.map(giocatore => giocatore.name),
+        player = players[playersName.indexOf(playerTurn)];
 
     function findHigherBet(){
         const scommesse: number[] = players.map(giocatore => giocatore.bet);
@@ -21,7 +22,7 @@ export default function useMoves(){
     }
     
     function call(){
-        if(round == 1){
+        if(round == 1 && player.bet < 5){
             dispatch(removeChips({ref: playerTurn, chips: 5}));
         } else {
             const higher = findHigherBet();

@@ -80,7 +80,15 @@ export default function useAction(){
             if(casualNumber(5) == 1){
                mossa = Moves.fold;
             } else {
-                mossa = Moves.call;
+                if(player.bet >= 5){
+                    if(higher - player.bet > player.chips){
+                        mossa = Moves.fold;
+                    } else {
+                        mossa = call;
+                    }
+                } else {
+                    mossa = Moves.call;
+                }
             }
         } else {
             switch(true){
@@ -92,65 +100,54 @@ export default function useAction(){
                     }
                     break;
                 case score >= 15 && score < 30:
-                    if(call == Moves.check){
-                        mossa = call;
-                    } else {
+                    if(higher - player.bet > (player.chips/100*10)){
                         mossa = Moves.fold;
+                    } else {
+                        mossa = call;
                     }
                     break;
                 case score >= 30 && score < 45:
-                    mossa = call;
+                    if(higher - player.bet > (player.chips/100*20)){
+                        mossa = Moves.fold;
+                    } else {
+                        mossa = call;
+                    }
                     break;
                 case score >= 45 && score < 60:
                     if(finished){
-                        mossa = call
-                    } else {
-                        mossa = Moves.raise;
-                        bet = 10;
-                    }
-                    break;
-                case score >= 60 && score < 75:
-                    if(finished){
-                        mossa = call
-                    } else {
-                        mossa = Moves.raise;
-                        bet = 10;
-                    }
-                    break;
-                case score >= 75 && score < 90:
-                    if(finished){
-                        mossa = call
-                    } else {
-                        mossa = Moves.raise;
-                        bet = 10;
-                    }
-                    break;
-                case score >= 90 && score < 105:
-                    if(finished){
-                        mossa = call
-                    } else {
-                        mossa = Moves.raise;
-                        bet = 10;
-                    }
-                    break;
-                case score >= 105 && score < 120:
-                    if(finished){
-                        mossa = call
+                        if(higher - player.bet > (player.chips/100*45)){
+                            mossa = Moves.fold;
+                        } else {
+                            mossa = call;
+                        }
                     } else {
                         mossa = Moves.raise;
                         bet = 20;
                     }
                     break;
-                case score >= 120 && score < 200:
+                case score >= 60 && score < 120:
                     if(finished){
-                        mossa = call
+                        if(higher - player.bet > player.chips){
+                            mossa = Moves.fold;
+                        } else {
+                            mossa = call
+                        }
                     } else {
-                        mossa = Moves.allIn;
+                        if((higher - player.bet + 20) > player.chips){
+                            if(higher - player.bet > player.chips){
+                                mossa = Moves.fold;
+                            } else {
+                                mossa = call
+                            }
+                        } else {
+                            mossa = Moves.raise;
+                            bet = 20;
+                        }
                     }
                     break;
-                case score >= 200:
+                case score >= 120:
                     if(finished){
-                        mossa = call
+                        mossa = Moves.check
                     } else {
                         mossa = Moves.allIn;
                     }
