@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { resetDone, resetFinished, resetPlayersBet, setCentralCardVisible } from "../state/formPlayer/nPlayerSlice";
+import { resetDone, resetPlayersBet, setCentralCardVisible } from "../state/formPlayer/nPlayerSlice";
 import { nextRound, setStyle } from "../state/gameStatus/gameSlice";
 import { useEffect } from "react";
 import { RootState } from "../state/store";
