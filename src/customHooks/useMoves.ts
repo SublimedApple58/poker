@@ -84,17 +84,20 @@ export default function useMoves(){
             if(bet && player.chips >= bet + (higher - player.bet) && bet >= 5){
                 possibleMoves.push(Moves.raise);
             }
-        } else if(player.bet >= higher){
-            possibleMoves.push(Moves.check);
-            if(bet && bet <= player.chips){
-                possibleMoves.push(Moves.raise);
+            } else if(player.bet >= higher){
+                possibleMoves.push(Moves.check);
+                if(bet && bet <= player.chips){
+                    possibleMoves.push(Moves.raise);
+                }
+            } else if(player.chips >= higher - player.bet){
+                possibleMoves.push(Moves.call);
+                if(bet && (higher - player.bet) + bet){
+                    possibleMoves.push(Moves.raise);
+                }
             }
-        } else if(player.chips >= higher - player.bet){
-            possibleMoves.push(Moves.call);
-            if(bet && (higher - player.bet) + bet){
-                possibleMoves.push(Moves.raise);
+            if(player.allIn){
+                possibleMoves.push(Moves.check)
             }
-        }
         if(bet && bet == 0){
             delete possibleMoves[possibleMoves.indexOf(Moves.raise)]
         };
