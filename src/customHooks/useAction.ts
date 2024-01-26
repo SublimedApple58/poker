@@ -329,7 +329,8 @@ export default function useAction(){
         let 
             mossa = Moves.fold,
             bet: number | undefined,
-            call: Moves;
+            call: Moves,
+            bluff: boolean = player.bluff;
 
         player.bet >= higher ? call = Moves.check : call = Moves.call;
 
@@ -338,9 +339,9 @@ export default function useAction(){
         }
 
         const finished: boolean = player.finished;
-        
+
         if(round==1){
-            if(casualNumber(8) == 1){
+            if(casualNumber(7) == 1){
             mossa = Moves.fold;
             } else {
                 if(player.bet >= 5){
@@ -355,48 +356,49 @@ export default function useAction(){
             }
         } else {
             switch(true){
-                case score <= 14: //nulla
-                    if(call == Moves.check){
-                        mossa = call;
+                case score <= 14: // nulla
+                    if(bluff){
+                        if(finished){
+                            if(higher - player.bet > player.chips){
+                                mossa = Moves.fold;
+                            } else {
+                                mossa = call
+                            }
+                        } else {
+                            mossa = Moves.raise;
+                            bet = 10;
+                        }
                     } else {
-                        mossa = Moves.fold;
+                        if(call == Moves.check){
+                            mossa = call;
+                        } else {
+                            mossa = Moves.fold;
+                        }
                     }
                     break;
                 case score >= 15 && score < 30: // coppia
-                    if(higher - player.bet > (player.chips/100*10)){
-                        mossa = Moves.fold;
+                    if(bluff){
+                        if(finished){
+                            if(higher - player.bet > player.chips){
+                                mossa = Moves.fold;
+                            } else {
+                                mossa = call
+                            }
+                        } else {
+                            mossa = Moves.raise;
+                            bet = 10;
+                        }
                     } else {
-                        mossa = call;
-                    }
-                    break;
-                case score >= 30 && score < 45: // doppia coppia
-                    if(higher - player.bet > (player.chips/100*20)){
-                        mossa = Moves.fold;
-                    } else {
-                        mossa = call;
-                    }
-                    break;
-                case score >= 45 && score < 60: // tris
-                    if(finished){
-                        if(higher - player.bet > (player.chips/100*45)){
+                        if(higher - player.bet > (player.chips/100*10)){
                             mossa = Moves.fold;
                         } else {
                             mossa = call;
                         }
-                    } else {
-                        mossa = Moves.raise;
-                        bet = 20;
                     }
                     break;
-                case score >= 60 && score < 120: // scala, colore, full, poker
-                    if(finished){
-                        if(higher - player.bet > player.chips){
-                            mossa = Moves.fold;
-                        } else {
-                            mossa = call
-                        }
-                    } else {
-                        if((higher - player.bet + 20) > player.chips){
+                case score >= 30 && score < 45: // doppia coppia
+                    if(bluff){
+                        if(finished){
                             if(higher - player.bet > player.chips){
                                 mossa = Moves.fold;
                             } else {
@@ -405,6 +407,65 @@ export default function useAction(){
                         } else {
                             mossa = Moves.raise;
                             bet = 20;
+                        }
+                    } else {
+                        if(higher - player.bet > (player.chips/100*20)){
+                            mossa = Moves.fold;
+                        } else {
+                            mossa = call;
+                        }
+                    }
+                    break;
+                case score >= 45 && score < 60: // tris
+                    if(bluff){
+                        if(finished){
+                            if(higher - player.bet > player.chips){
+                                mossa = Moves.fold;
+                            } else {
+                                mossa = call
+                            }
+                        } else {
+                            mossa = Moves.raise;
+                            bet = 30;
+                        }
+                    } else {
+                        if(finished){
+                            if(higher - player.bet > (player.chips/100*40)){
+                                mossa = Moves.fold;
+                            } else {
+                                mossa = call;
+                            }
+                        } else {
+                            if((player.chips - (higher - player.bet + 20)) >= (player.chips/100*60)){
+                                mossa = Moves.raise;
+                                bet = 20;
+                            } else {
+                                if(higher - player.bet > (player.chips/100*40)){
+                                    mossa = Moves.fold;
+                                } else {
+                                    mossa = call;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case score >= 60 && score < 120: // scala, colore, full, poker
+                    if(finished){
+                        if(higher - player.bet > (player.chips/100*50)){
+                            mossa = Moves.fold;
+                        } else {
+                            mossa = call
+                        }
+                    } else {
+                        if((player.chips - (higher - player.bet + 20)) >= (player.chips/100*50)){
+                            mossa = Moves.raise;
+                            bet = 20;
+                        } else {
+                            if(higher - player.bet > (player.chips/100*50)){
+                                mossa = Moves.fold;
+                            } else {
+                                mossa = call
+                            }
                         }
                     }
                     break;
