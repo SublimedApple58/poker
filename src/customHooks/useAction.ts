@@ -99,7 +99,11 @@ export default function useAction(){
                         mossa = call;
                     }
                 } else {
-                    mossa = Moves.call;
+                    if(higher - player.bet > player.chips/100*40){
+                        mossa = Moves.fold;
+                    } else {
+                        mossa = Moves.call;
+                    }
                 }
             }
         } else {
@@ -190,7 +194,11 @@ export default function useAction(){
                         mossa = call;
                     }
                 } else {
-                    mossa = Moves.call;
+                    if(higher - player.bet > player.chips){
+                        mossa = Moves.fold;
+                    } else {
+                        mossa = Moves.call;
+                    }
                 }
             }
         } else {
@@ -345,7 +353,11 @@ export default function useAction(){
                         mossa = call;
                     }
                 } else {
-                    mossa = Moves.call;
+                    if(higher - player.bet > player.chips){
+                        mossa = Moves.fold;
+                    } else {
+                        mossa = Moves.call;
+                    }
                 }
             }
         } else {

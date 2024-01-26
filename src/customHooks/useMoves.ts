@@ -13,7 +13,8 @@ export default function useMoves(){
         round = useSelector((state: RootState) => state.game.round),
         dispatch = useDispatch(),
         playersName = players.map(giocatore => giocatore.name),
-        player = players[playersName.indexOf(playerTurn)];
+        player = players[playersName.indexOf(playerTurn)],
+        higher = findHigherBet();
 
     function findHigherBet(){
         const scommesse: number[] = players.map(giocatore => giocatore.bet);
@@ -22,10 +23,9 @@ export default function useMoves(){
     }
     
     function call(){
-        if(round == 1 && player.bet < 5){
+        if(round == 1 && player.bet < 5 && higher < 5){
             dispatch(removeChips({ref: playerTurn, chips: 5}));
         } else {
-            const higher = findHigherBet();
             if(higher - players[playersName.indexOf(playerTurn)].bet > 0){
                 dispatch(removeChips({ref: playerTurn, chips: higher - players[playersName.indexOf(playerTurn)].bet}))
                 dispatch(setPlayerBet({ref: playerTurn, chips: higher}));
@@ -76,14 +76,14 @@ export default function useMoves(){
             player: player = players[playersName.indexOf(playerTurn)];
         
         if(round == 1){
-            if(player.bet >= 5 && player.bet >= higher){
-                possibleMoves.push(Moves.check);
-            } else if(player.chips >= 5 && player.chips >= higher - player.bet){
-                possibleMoves.push(Moves.call);
-            }
-            if(bet && player.chips >= bet + (higher - player.bet) && bet >= 5){
-                possibleMoves.push(Moves.raise);
-            }
+                if(player.bet >= 5 && player.bet >= higher){
+                    possibleMoves.push(Moves.check);
+                } else if(player.chips >= 5 && player.chips >= higher - player.bet){
+                    possibleMoves.push(Moves.call);
+                }
+                if(bet && player.chips >= bet + (higher - player.bet) && bet >= 5){
+                    possibleMoves.push(Moves.raise);
+                }
             } else if(player.bet >= higher){
                 possibleMoves.push(Moves.check);
                 if(bet && bet <= player.chips){
