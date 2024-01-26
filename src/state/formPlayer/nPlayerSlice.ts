@@ -51,17 +51,14 @@ const playerSlice = createSlice({
                 return Object.assign({}, player, {finished: false})
             })});
         },
-        setBluff: (state, action: {payload: number}) => {
+        setBluff: (state, action: {payload: {ref: number, bluff: boolean}}) => {
             return Object.assign({}, state, {players: state.players.map(player => {
-                if(!player.bluff && player.name == action.payload){
-                    return Object.assign({}, player, {bluff: true});
+                if(player.name == action.payload.ref){
+                    return Object.assign({}, player, {bluff: action.payload.bluff});
                 } else {
                     return player;
                 }
             })});
-        },
-        resetBluff: (state) => {
-            return Object.assign({}, state, {players: state.players.map(player => Object.assign({}, player, {bluff: false}))})
         },
         updateCopy: (state) => {
             return Object.assign({}, state, {playersCopy: [...state.players]})
@@ -217,4 +214,4 @@ const playerSlice = createSlice({
 })
 
 export default playerSlice.reducer;
-export const {resetBluff, setBluff, setFinished, resetFinished, addPlayer, setAllIn, resetAllIn, updateCopy, outOfManche, outOfGame, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;
+export const { setBluff, setFinished, resetFinished, addPlayer, setAllIn, resetAllIn, updateCopy, outOfManche, outOfGame, moveDone, resetDone, raiseDone, setPlayerBet, resetPlayersBet, updatePlayersInManche, win, removeChips, setCentralCards, setCentralCardVisible, resetCards, setPlayerCards, showAll, hideAll} = playerSlice.actions;

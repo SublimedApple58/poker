@@ -55,9 +55,7 @@ export default function useTurn(){
         if(round == 0){
             dispatch(updateCopy());
             for(let i = 1; i<=players.length; i++){
-                if(casualNumber(difficulty) == 1){
-                    dispatch(setBluff(i))
-                }
+                dispatch(setBluff({ref: i, bluff: casualNumber(difficulty) == 1}))
             }
         }
         if(giocatoriInGame.length > 1){

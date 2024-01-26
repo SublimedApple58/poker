@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import cardHelper from "../helper/cardHelper";
 import gameHelper, {cardProperties} from "../helper/gameHelper";
-import { hideAll, outOfGame, outOfManche, resetAllIn, resetBluff, resetCards, resetDone, resetFinished, resetPlayersBet, setCentralCards, setPlayerCards, showAll, updatePlayersInManche, win } from "../state/formPlayer/nPlayerSlice";
+import { hideAll, outOfGame, outOfManche, resetAllIn, resetCards, resetDone, resetFinished, resetPlayersBet, setBluff, setCentralCards, setPlayerCards, showAll, updatePlayersInManche, win } from "../state/formPlayer/nPlayerSlice";
 import { RootState } from "../state/store";
-import { indexOfMax, carteCentrali } from "../modules/exports";
-import { nextManche, restartRound } from "../state/gameStatus/gameSlice";
+import { indexOfMax, carteCentrali, casualNumber } from "../modules/exports";
+import { nextManche, restartRound, setRaiseCalled } from "../state/gameStatus/gameSlice";
 
 export default function useManche(){
 
@@ -14,7 +14,8 @@ export default function useManche(){
     round = useSelector((state: RootState) => state.game.round),
     players = useSelector((state: RootState) => state.giocatori.players),
     giocatoriInManche = players.filter(giocatore => giocatore.inManche),
-    giocatoriInGame = players.filter(giocatore => giocatore.inGame);
+    giocatoriInGame = players.filter(giocatore => giocatore.inGame),
+    difficulty = useSelector((state: RootState) => state.game.difficulty);
 
     function assignFish(){
 
@@ -94,8 +95,11 @@ export default function useManche(){
             dispatch(resetPlayersBet());
             dispatch(resetDone());
             dispatch(resetAllIn());
-            dispatch(resetBluff());
             dispatch(resetFinished());
+            dispatch(setRaiseCalled());
+            for(let i = 1; i<=players.length; i++){
+                dispatch(setBluff({ref: i, bluff: casualNumber(difficulty) == 1}))
+            }
             resetTable();
         }, 2000)
     }

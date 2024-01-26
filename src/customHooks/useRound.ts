@@ -27,19 +27,18 @@ export default function useRound(){
         if(giocatoriInGame.length > 1){
             if (round == 5) {
                 endManche();
-            }
-            else if(round != 0) {
-                    if(playerTurn!=1){
-                        dispatch(setStyle(invisible));
-                        setTimeout(() => {
-                            action();
-                        }, 1000);
-                    } else {
-                        dispatch(setStyle(visible));
-                    }
-                    if(round>1 && round<5) {
-                        dispatch(setCentralCardVisible(round))
-                    }
+            } else if(round != 0) {
+                if(playerTurn!=1){
+                    dispatch(setStyle(invisible));
+                    setTimeout(() => {
+                        action();
+                    }, 1000);
+                } else {
+                    dispatch(setStyle(visible));
+                }
+                if(round>1 && round<5) {
+                    dispatch(setCentralCardVisible(round))
+                }
             }
         } else {
             dispatch(setStyle(invisible));
