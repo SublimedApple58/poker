@@ -101,7 +101,7 @@ export default function useManche(){
                 dispatch(setBluff({ref: i, bluff: casualNumber(difficulty) == 1}))
             }
             resetTable();
-        }, 2000)
+        }, 3000)
     }
 
     return newManche;

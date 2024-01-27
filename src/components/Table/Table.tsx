@@ -28,7 +28,7 @@ function Table(){
         if(playersInGame.length == 1){
             setTimeout(() => {
                 setEndGame(true);
-            }, 1000)
+            }, 2000)
         }
     }, [playersInGame]);
 
@@ -62,12 +62,12 @@ function Table(){
                 <div className='left' style={styleTable}>{renderPlayer(1)}</div>
                 <div className='top' style={styleTable}>{renderPlayer(0)}</div>
                 <div className='right' style={styleTable}>{renderPlayer(3)}</div>
-                <div className="turno" style={styleTable}>
+                {/* <div className="turno" style={styleTable}>
                     <h1>Turno: giocatore {playerTurn}</h1>
                     <h1>Round {round}</h1>
                     <h1>Turns: {turns}</h1>
                     <h1>manche: {manche}</h1>
-                </div>
+                </div> */}
                 <Commands/>
         </>
     )

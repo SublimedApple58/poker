@@ -67,7 +67,7 @@ export default function useTurn(){
                 dispatch(setStyle(invisible));
                 setTimeout(() => {
                     action();
-                }, 1000);
+                }, 1500);
             } else {
                 dispatch(setStyle(visible));
             }
