@@ -49,7 +49,7 @@ class cardHelper{
             }
 
 
-            src = `../../cartePng/${nome}_of_${seme}.png`;
+            src = `../assets/cartePng/${nome}_of_${seme}.png`;
 
             return {seme, nome, numero, valore, src}
         }
