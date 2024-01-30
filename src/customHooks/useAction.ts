@@ -60,7 +60,7 @@ export default function useAction(){
           visibleCards: cardProperties[] = [];
 
           if(round>1 && round<=4){
-            visibleCards = numeri.filter((carta, i) => i<=round);
+            visibleCards = numeri.slice(round);
             score = gameHelper.calcScore(playersCards, visibleCards);
           } else if(round>4){
             visibleCards = [...numeri];

@@ -9,10 +9,6 @@ import './Table.css';
 
 function Table(){
     const
-        playerTurn = useSelector((state: RootState) => state.game.playerTurn),
-        round = useSelector((state: RootState) => state.game.round),
-        turns = useSelector((state: RootState) => state.game.turns),
-        manche = useSelector((state: RootState) => state.game.manche),
         players = useSelector((state: RootState)=> state.giocatori.players),
         centralChips = useSelector((state: RootState) => state.giocatori.centralChips),
         centralCards = useSelector((state: RootState)=> state.giocatori.centralCards),
