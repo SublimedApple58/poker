@@ -5,9 +5,12 @@ import CardContainer from "../CardContainer/CardContainer";
 import { ReactElement, useEffect, useState} from "react";
 import Card from "../Cards/Card";
 import Commands from "../Commands/Commands";
+import useTurn from '../../customHooks/useTurn';
 import './Table.css';
 
 function Table(){
+    useTurn();
+
     const
         players = useSelector((state: RootState)=> state.giocatori.players),
         centralChips = useSelector((state: RootState) => state.giocatori.centralChips),

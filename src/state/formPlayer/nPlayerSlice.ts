@@ -202,7 +202,7 @@ const playerSlice = createSlice({
         },
         showAll: (state) => {
             return Object.assign({}, state, {
-                players: state.players.map(player => Object.assign({}, player, { isVisible: true}))
+                players: state.players.map(player => Object.assign({}, player, { isVisible: player.inManche}))
             })
         }, 
         hideAll: (state) => {
