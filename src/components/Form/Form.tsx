@@ -93,7 +93,7 @@ function Form() {
     return(
         <>
           <div className="form">
-            <h2>Choise n. of player</h2>
+            <h2>Choose n. of player</h2>
             <input type="number" inputMode='numeric' ref={riferimento} className='nPlayer'/>
             <h2>Bluff level</h2>
             <div className="options">
