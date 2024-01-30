@@ -43,7 +43,7 @@
     width: 35px;
     height: 35px;
     border-radius: 100%;
-    background-image: url(./file/icon/poker-chip.png);
+    background-image: url(/file/icon/poker-chip.png);
     transition: all .5s ease-out;
     background-size: cover;
 }

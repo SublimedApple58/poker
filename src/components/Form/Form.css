@@ -73,11 +73,11 @@
 }
 
 .easy{
-    background-image: url("./file/icon/bluff/smile.png")
+    background-image: url("/file/icon/bluff/smile.png")
 }
 .medium{
-    background-image: url("./file/icon/bluff/confused.png")
+    background-image: url("/file/icon/bluff/confused.png")
 }
 .hard{
-    background-image: url("./file/icon/bluff/wink.png")
+    background-image: url("/file/icon/bluff/wink.png")
 }
