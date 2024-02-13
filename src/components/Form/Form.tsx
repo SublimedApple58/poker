@@ -84,6 +84,8 @@ function Form() {
         });
         dispatch(setCentralCards(carteConvertiteCentrali));
 
+      } else {
+        alert('you can select only a number o players between 3 and 8')
       }
     } else {
       alert('you need to choose a difficulty level')
