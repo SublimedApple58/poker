@@ -18,7 +18,7 @@ function Commands(){
             amountInput.current.value = '0';
         } else {
             if(amountInput.current != null){
-                const bet = (amountInput.current?.valueAsNumber ?? 0);
+                const bet = Math.trunc(amountInput.current?.valueAsNumber ?? 0);
                 setMove(Moves.raise, bet);
                 amountInput.current.value = '0';
             }
