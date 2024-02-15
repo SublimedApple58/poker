@@ -83,7 +83,8 @@ function Form() {
           }
         });
         dispatch(setCentralCards(carteConvertiteCentrali));
-
+      } else {
+        alert('you need to chose a number between 3 and 8');
       }
     } else {
       alert('you need to choose a difficulty level')
