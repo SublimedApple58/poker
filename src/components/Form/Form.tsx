@@ -43,7 +43,7 @@ function Form() {
   function setPlayers(){
     if(level != 0){
       const 
-        nPlayers = riferimento.current?.valueAsNumber ?? 0,
+        nPlayers = Math.trunc(riferimento.current?.valueAsNumber ?? 0),
         carte = cardHelper.generateCasualCard(nPlayers);
 
       let contatore = 0;
@@ -84,8 +84,6 @@ function Form() {
         });
         dispatch(setCentralCards(carteConvertiteCentrali));
 
-      } else {
-        alert('you can select only a number o players between 3 and 8')
       }
     } else {
       alert('you need to choose a difficulty level')
