@@ -17,10 +17,12 @@ function Commands(){
         if(Number.isNaN((amountInput.current?.valueAsNumber ?? 0)) && amountInput.current != null){
             amountInput.current.value = '0';
         } else {
-            if(amountInput.current != null){
+            if(amountInput.current != null && (amountInput.current?.valueAsNumber ?? 0) > 1){
                 const bet = Math.trunc(amountInput.current?.valueAsNumber ?? 0);
                 setMove(Moves.raise, bet);
                 amountInput.current.value = '0';
+            } else {
+                alert("you can't do this")
             }
         }
     }
