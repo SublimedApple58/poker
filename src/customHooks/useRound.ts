@@ -22,6 +22,7 @@ export default function useRound(){
         round = useSelector((state: RootState) => state.game.round),
         players = useSelector((state: RootState)=> state.giocatori.players),
         giocatoriInGame = players.filter(giocatore => giocatore.inGame);
+        // allInDone: boolean = players.filter(giocatore => giocatore.allIn) == giocatoriInGame.filter(giocatore => giocatore.inManche);
 
     useEffect(()=>{
         if(giocatoriInGame.length > 1){

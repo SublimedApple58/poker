@@ -26,6 +26,7 @@ export default function useTurn(){
         playerTurn = useSelector((state: RootState)=> state.game.playerTurn),
         players = useSelector((state: RootState)=> state.giocatori.players),
         giocatoriInManche = players.filter(giocatore => giocatore.inManche),
+        allInDone: boolean = players.filter(giocatore => giocatore.allIn) == giocatoriInManche,
         giocatoriInGame = players.filter(giocatore => giocatore.inGame),
         playersDone = players.map(giocatore => giocatore.done),
         playersCopy = useSelector((state: RootState)=> state.giocatori.playersCopy),
@@ -59,7 +60,7 @@ export default function useTurn(){
             }
         }
         if(giocatoriInGame.length > 1){
-            if(giocatoriInManche.length == 1){
+            if(giocatoriInManche.length == 1 || allInDone){
                 endManche();
              } else if(turns == 1) {
                 endRound();
